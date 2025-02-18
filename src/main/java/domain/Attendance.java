@@ -1,21 +1,22 @@
 package domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class Attendance {
     private final String name;
-    private final LocalDate date;
+    private final List<LocalDateTime> dateTimes;
 
-    public Attendance(String name, LocalDate date) {
+    public Attendance(String name, List<LocalDateTime> dateTimes) {
         this.name = name;
-        this.date = date;
+        this.dateTimes = dateTimes;
     }
 
     public String getName() {
         return name;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public List<LocalDateTime> getDateTimes() {
+        return dateTimes;
     }
 }
