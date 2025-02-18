@@ -53,4 +53,15 @@ class AttendanceRepositoryTest {
         Assertions.assertThat(attendances)
                 .isEqualTo(List.of(attendance1, attendance2));
     }
+
+    @Test
+    void 존재하지_않는_닉네임은_찾지_못한다() {
+        // given
+        AttendanceRepository attendanceRepository = new AttendanceRepository();
+
+        // when & then
+        Assertions.assertThatThrownBy(() -> attendanceRepository.findByName("이름"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 이름의 출석 정보가 없습니다.");
+    }
 }
