@@ -1,10 +1,11 @@
 package domain;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AttendanceRepository {
-    private final Map<String, Attendance> attendances = new HashMap<>();
+    private final Map<String, Attendance> attendances = new LinkedHashMap<>();
 
     public void save(Attendance attendance) {
         attendances.put(attendance.getName(), attendance);
@@ -15,5 +16,10 @@ public class AttendanceRepository {
             return attendances.get(name);
         }
         throw new IllegalArgumentException("해당 이름의 출석 정보가 없습니다.");
+    }
+
+    public List<Attendance> findAll() {
+        return attendances.values().stream()
+                .toList();
     }
 }

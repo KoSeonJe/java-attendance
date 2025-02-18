@@ -3,6 +3,7 @@ package domain;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.time.LocalDate;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -55,5 +56,22 @@ class AttendanceTest {
         // then
         Assertions.assertThat(attendance)
                 .isEqualTo(foundAttendance);
+    }
+
+    @Test
+    void 출석을_모두_찾는다() {
+        // given
+        AttendanceRepository attendanceRepository = new AttendanceRepository();
+        Attendance attendance1 = new Attendance("이름1", LocalDate.now());
+        attendanceRepository.save(attendance1);
+        Attendance attendance2 = new Attendance("이름2", LocalDate.now());
+        attendanceRepository.save(attendance2);
+
+        // when
+        List<Attendance> attendances = attendanceRepository.findAll();
+
+        // then
+        Assertions.assertThat(attendances)
+                .isEqualTo(List.of(attendance1, attendance2));
     }
 }
