@@ -37,8 +37,23 @@ class AttendanceTest {
         attendanceRepository.save(attendance);
 
         // then
-        Attendance savedAttendance = attendanceRepository.get("이름");
+        Attendance savedAttendance = attendanceRepository.findByName("이름");
         Assertions.assertThat(attendance)
                 .isEqualTo(savedAttendance);
+    }
+
+    @Test
+    void 출석을_찾는다() {
+        // given
+        AttendanceRepository attendanceRepository = new AttendanceRepository();
+        Attendance attendance = new Attendance("이름", LocalDate.now());
+        attendanceRepository.save(attendance);
+
+        // when
+        Attendance foundAttendance = attendanceRepository.findByName("이름");
+
+        // then
+        Assertions.assertThat(attendance)
+                .isEqualTo(foundAttendance);
     }
 }
