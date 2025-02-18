@@ -3,14 +3,10 @@ package domain;
 import java.time.LocalDate;
 
 public class Attendance {
-
     private final String name;
     private final LocalDate date;
 
-    public Attendance(
-        final String name,
-        final LocalDate date
-    ) {
+    public Attendance(String name, LocalDate date) {
         this.name = name;
         this.date = date;
     }
