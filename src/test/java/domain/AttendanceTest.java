@@ -3,6 +3,7 @@ package domain;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,24 @@ class AttendanceTest {
         // given
         LocalDateTime dateTime = LocalDateTime.of(2024, 12, 2, 13, 4);
         Attendance attendance = new Attendance("이름", List.of(dateTime));
-        
+
         // when & then
         Assertions.assertThatThrownBy(() -> attendance.addAttendance(dateTime))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 이름의 출석 정보가 이미 존재합니다.");
+    }
+
+    @Test
+    void 출석을_한다() {
+        // given
+        LocalDateTime dateTime = LocalDateTime.of(2024, 12, 2, 13, 4);
+        Attendance attendance = new Attendance("이름", new ArrayList<>(List.of()));
+
+        // when
+        attendance.addAttendance(dateTime);
+
+        // then
+        Assertions.assertThat(attendance.getDateTimes())
+                .isEqualTo(List.of(dateTime));
     }
 }

@@ -26,6 +26,8 @@ public class Attendance {
                 throw new IllegalArgumentException("해당 이름의 출석 정보가 이미 존재합니다.");
             }
         });
+
+        dateTimes.add(dateTime);
     }
 
     private boolean isEqualsDate(LocalDateTime dateTime, LocalDateTime time) {
