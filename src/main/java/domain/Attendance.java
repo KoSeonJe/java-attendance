@@ -19,4 +19,17 @@ public class Attendance {
     public List<LocalDateTime> getDateTimes() {
         return dateTimes;
     }
+
+    public void addAttendance(LocalDateTime dateTime) {
+        dateTimes.forEach(time -> {
+            if (isEqualsDate(dateTime, time)) {
+                throw new IllegalArgumentException("해당 이름의 출석 정보가 이미 존재합니다.");
+            }
+        });
+    }
+
+    private boolean isEqualsDate(LocalDateTime dateTime, LocalDateTime time) {
+        return time.getYear() == dateTime.getYear() && time.getMonth() == dateTime.getMonth()
+                && time.getDayOfMonth() == dateTime.getDayOfMonth();
+    }
 }
