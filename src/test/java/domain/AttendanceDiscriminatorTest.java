@@ -1,6 +1,7 @@
 package domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -35,5 +36,22 @@ class AttendanceDiscriminatorTest {
 
         // then
         assertThat(attendanceDiscriminator).isEqualTo(AttendanceDiscriminator.ABSENCE);
+    }
+
+    @Test
+    void 주말에_출석할_수_없다() {
+        // given & when & then
+        assertThatThrownBy(() -> AttendanceDiscriminator.calculateDiscriminator(Day.SATURDAY, LocalDateTime.now()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("주말에는 출석할 수 없습니다.");
+    }
+
+    @Test
+    void 캠퍼스_운영_시간이_아니다() {
+        // given & when & then
+        assertThatThrownBy(
+                () -> AttendanceDiscriminator.calculateDiscriminator(Day.MONDAY, LocalDateTime.of(2024, 12, 2, 7, 59)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("캠퍼스 운영 시간이 아닙니다.");
     }
 }

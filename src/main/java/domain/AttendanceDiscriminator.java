@@ -16,6 +16,14 @@ public enum AttendanceDiscriminator {
     }
 
     public static AttendanceDiscriminator calculateDiscriminator(Day today, LocalDateTime localDateTime) {
+        if (today.isWeekend()) {
+            throw new IllegalArgumentException("주말에는 출석할 수 없습니다.");
+        }
+
+        if (isOutsideCampusHours(localDateTime)) {
+            throw new IllegalArgumentException("캠퍼스 운영 시간이 아닙니다.");
+        }
+
         int startHour = today.getStartHour();
         int hour = localDateTime.getHour();
         int minute = localDateTime.getMinute();
