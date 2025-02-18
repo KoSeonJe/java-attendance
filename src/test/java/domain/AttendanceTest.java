@@ -70,4 +70,15 @@ class AttendanceTest {
                 .isEqualTo(List.of(updateDateTime));
     }
 
+    @Test
+    void 출석이_없으면_수정하지_못한다() {
+        // given
+        LocalDateTime dateTime = LocalDateTime.of(2024, 12, 2, 13, 4);
+        Attendance attendance = new Attendance("이름", new ArrayList<>(List.of()));
+
+        // when & then
+        Assertions.assertThatThrownBy(() -> attendance.updateAttendance(dateTime))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 이름의 출석 정보가 없습니다.");
+    }
 }

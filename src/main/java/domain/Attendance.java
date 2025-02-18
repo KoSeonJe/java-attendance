@@ -38,6 +38,12 @@ public class Attendance {
     public void updateAttendance(LocalDateTime updateDateTime) {
         dateTimes.stream()
                 .filter(dateTime -> isEqualsDate(updateDateTime, dateTime))
-                .forEach(dateTime -> dateTimes.set(dateTimes.indexOf(dateTime), updateDateTime));
+                .findFirst()
+                .ifPresentOrElse(
+                        dateTime -> dateTimes.set(dateTimes.indexOf(dateTime), updateDateTime),
+                        () -> {
+                            throw new IllegalArgumentException("해당 이름의 출석 정보가 없습니다.");
+                        }
+                );
     }
 }
