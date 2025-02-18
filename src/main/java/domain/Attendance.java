@@ -34,4 +34,10 @@ public class Attendance {
         return time.getYear() == dateTime.getYear() && time.getMonth() == dateTime.getMonth()
                 && time.getDayOfMonth() == dateTime.getDayOfMonth();
     }
+
+    public void updateAttendance(LocalDateTime updateDateTime) {
+        dateTimes.stream()
+                .filter(dateTime -> isEqualsDate(updateDateTime, dateTime))
+                .forEach(dateTime -> dateTimes.set(dateTimes.indexOf(dateTime), updateDateTime));
+    }
 }

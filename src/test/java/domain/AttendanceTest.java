@@ -54,4 +54,20 @@ class AttendanceTest {
         Assertions.assertThat(attendance.getDateTimes())
                 .isEqualTo(List.of(dateTime));
     }
+
+    @Test
+    void 출석을_수정한다() {
+        // given
+        LocalDateTime dateTime = LocalDateTime.of(2024, 12, 2, 13, 4);
+        Attendance attendance = new Attendance("이름", new ArrayList<>(List.of(dateTime)));
+
+        //given
+        LocalDateTime updateDateTime = LocalDateTime.of(2024, 12, 2, 13, 6);
+        attendance.updateAttendance(updateDateTime);
+
+        //when
+        Assertions.assertThat(attendance.getDateTimes())
+                .isEqualTo(List.of(updateDateTime));
+    }
+
 }
