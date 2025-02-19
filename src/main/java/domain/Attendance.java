@@ -23,13 +23,16 @@ public class Attendance {
         return dateTimes.stream().anyMatch(time -> isEqualsDate(dateTime, time));
     }
 
-    public void updateAttendance(LocalDateTime updateDateTime) {
+    public LocalDateTime updateAttendance(LocalDateTime updateDateTime) {
         int index = IntStream.range(0, dateTimes.size())
                 .filter(i -> isEqualsDate(updateDateTime, dateTimes.get(i)))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 날짜의 출석 정보가 없습니다."));
 
+        LocalDateTime beforeTime = dateTimes.get(index);
         dateTimes.set(index, updateDateTime);
+
+        return beforeTime;
     }
 
     private boolean isEqualsDate(LocalDateTime dateTime, LocalDateTime time) {
@@ -37,7 +40,7 @@ public class Attendance {
                 time.getMonth() == dateTime.getMonth() &&
                 time.getDayOfMonth() == dateTime.getDayOfMonth();
     }
-    
+
     public List<LocalDateTime> getDateTimes() {
         return new ArrayList<>(dateTimes);
     }

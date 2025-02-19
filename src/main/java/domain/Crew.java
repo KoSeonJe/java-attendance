@@ -24,7 +24,11 @@ public class Crew {
         attendance.addAttendance(dateTime);
     }
 
-    public void updateAttendance(LocalDateTime updateDateTime) {
-        attendance.updateAttendance(updateDateTime);
+    public LocalDateTime updateAttendance(LocalDateTime updateDateTime) {
+        return attendance.updateAttendance(updateDateTime);
+    }
+
+    public Attendance getAttendance() {
+        return attendance;
     }
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import domain.AttendanceStatus;
+import domain.Crew;
 import domain.CrewRepository;
 import domain.Day;
 import domain.MenuOption;
@@ -31,6 +32,29 @@ public class AttendanceController {
                 LocalDateTime attendanceDateTime = LocalDateTime.of(dateTime.toLocalDate(), arriveTime);
                 CrewRepository.getInstance().findByName(nickName).addAttendance(attendanceDateTime);
                 outputView.printArriveResult(dateTime, today.getDayOfWeekKorean(), attendanceStatus.getName());
+            }
+
+            if (menuOption == MenuOption.EDIT) {
+                String updateNickName = inputView.readUpdateNickName();
+                int updateDate = inputView.readUpdateDate();
+                LocalTime updateArriveTime = inputView.readUpdateArriveTime();
+                Crew crew = CrewRepository.getInstance().findByName(updateNickName);
+
+                LocalDateTime updateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), updateDate,
+                        updateArriveTime.getHour(), updateArriveTime.getMinute());
+                LocalDateTime beforeTime = crew.updateAttendance(updateTime);
+
+                Day updateDay = Day.findByDayOfWeek(beforeTime.getDayOfWeek());
+                AttendanceStatus updateAttendanceStatus = AttendanceStatus.calculateDiscriminator(updateDay,
+                        updateTime);
+
+                Day beforeDay = Day.findByDayOfWeek(beforeTime.getDayOfWeek());
+                AttendanceStatus beforeAttendanceStatus = AttendanceStatus.calculateDiscriminator(beforeDay,
+                        beforeTime);
+
+                outputView.printUpdateResult(updateDay.getDayOfWeekKorean(), beforeTime, beforeAttendanceStatus,
+                        updateTime,
+                        updateAttendanceStatus);
             }
         }
     }

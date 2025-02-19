@@ -6,7 +6,6 @@ import domain.CrewRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,13 +33,12 @@ public class DataInitializer {
     }
 
     private void registerOrUpdateCrew(String name, LocalDateTime dateTime) {
-        // ✅ 기존 Crew가 있으면 출석 추가, 없으면 새로 생성
         CrewRepository crewRepository = CrewRepository.getInstance();
         Crew crew = crewRepository.findOptionalByName(name)
                 .orElse(null);
 
         if (crew == null) {
-            crewRepository.save(new Crew(name, new Attendance(new ArrayList<>())));
+            crewRepository.save(new Crew(name, new Attendance(List.of(dateTime))));
             return;
         }
         crew.addAttendance(dateTime);

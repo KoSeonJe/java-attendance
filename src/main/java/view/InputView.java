@@ -29,16 +29,44 @@ public class InputView {
     }
 
     public LocalTime readArriveTime() {
+        System.out.println("등교 시간을 입력해 주세요.");
+        String arriveTime = readInput();
+        return parseToTime(arriveTime);
+    }
+
+    private String readInput() {
+        return scanner.nextLine();
+    }
+
+    public String readUpdateNickName() {
+        System.out.println("출석을 수정하려는 크루의 닉네임을 입력해 주세요.");
+        return readInput();
+    }
+
+    public int readUpdateDate() {
+        System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
+        return parseToInt(readInput());
+    }
+
+    public LocalTime readUpdateArriveTime() {
+        System.out.println("언제로 변경하겠습니까?");
+        String updateArriveTime = readInput();
+        return parseToTime(updateArriveTime);
+    }
+
+    private LocalTime parseToTime(String rawTime) {
         try {
-            System.out.println("등교 시간을 입력해 주세요.");
-            String arriveTime = readInput().trim();
-            return LocalTime.parse(arriveTime, TIME_FORMATTER);
+            return LocalTime.parse(rawTime.trim(), TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("잘못된 시간 형식입니다. 올바른 형식 (HH:mm)으로 다시 입력해 주세요.");
         }
     }
 
-    private String readInput() {
-        return scanner.nextLine();
+    private int parseToInt(String rawInput) {
+        try {
+            return Integer.parseInt(rawInput);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("잘못된 숫자 형식입니다. 숫자로 다시 입력해 주세요.");
+        }
     }
 }
