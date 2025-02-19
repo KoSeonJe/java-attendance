@@ -1,21 +1,23 @@
 package domain;
 
-public enum Day {
-    MONDAY("월", false, 13, 18),
-    TUESDAY("화", false, 10, 18),
-    WEDNESDAY("수", false, 10, 18),
-    THURSDAY("목", false, 10, 18),
-    FRIDAY("금", false, 10, 18),
-    SATURDAY("토", true, 0, 0),
-    SUNDAY("일", true, 0, 0);
+import java.time.DayOfWeek;
 
-    private final String name;
+public enum Day {
+    MONDAY(DayOfWeek.MONDAY, false, 13, 18),
+    TUESDAY(DayOfWeek.TUESDAY, false, 10, 18),
+    WEDNESDAY(DayOfWeek.WEDNESDAY, false, 10, 18),
+    THURSDAY(DayOfWeek.THURSDAY, false, 10, 18),
+    FRIDAY(DayOfWeek.FRIDAY, false, 10, 18),
+    SATURDAY(DayOfWeek.SATURDAY, true, null, null),
+    SUNDAY(DayOfWeek.SUNDAY, true, null, null);
+
+    private final DayOfWeek dayOfWeek;
     private final boolean isWeekend;
     private final Integer startHour;
     private final Integer endHour;
 
-    Day(String name, boolean isWeekend, Integer startHour, Integer endHour) {
-        this.name = name;
+    Day(DayOfWeek dayOfWeek, boolean isWeekend, Integer startHour, Integer endHour) {
+        this.dayOfWeek = dayOfWeek;
         this.isWeekend = isWeekend;
         this.startHour = startHour;
         this.endHour = endHour;
