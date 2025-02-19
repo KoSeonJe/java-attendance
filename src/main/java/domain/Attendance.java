@@ -41,6 +41,12 @@ public class Attendance {
                 time.getDayOfMonth() == dateTime.getDayOfMonth();
     }
 
+    public List<LocalDateTime> getDateTimesUntilDate(LocalDateTime dateTime) {
+        return dateTimes.stream()
+                .filter(time -> time.isBefore(dateTime) || time.isEqual(dateTime))
+                .toList();
+    }
+
     public List<LocalDateTime> getDateTimes() {
         return new ArrayList<>(dateTimes);
     }

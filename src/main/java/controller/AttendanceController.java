@@ -1,5 +1,6 @@
 package controller;
 
+import domain.AttendanceResults;
 import domain.AttendanceStatus;
 import domain.Crew;
 import domain.CrewRepository;
@@ -7,6 +8,7 @@ import domain.Day;
 import domain.MenuOption;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import view.InputView;
 import view.OutputView;
 
@@ -55,6 +57,15 @@ public class AttendanceController {
                 outputView.printUpdateResult(updateDay.getDayOfWeekKorean(), beforeTime, beforeAttendanceStatus,
                         updateTime,
                         updateAttendanceStatus);
+            }
+
+            if (menuOption == MenuOption.RECORD) {
+                String nickName = inputView.readNickName();
+
+                Crew crew = CrewRepository.getInstance().findByName(nickName);
+                List<LocalDateTime> dateTimes = crew.getDateTimesUntilDate(dateTime);
+                AttendanceResults attendanceResults = AttendanceResults.from(dateTimes);
+                outputView.printAttendanceResults(attendanceResults);
             }
         }
     }

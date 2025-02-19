@@ -3,9 +3,15 @@ package domain;
 import java.util.List;
 
 public enum Penalty {
-    WARNING,
-    INTERVIEW,
-    WEEDING;
+    WARNING("경고"),
+    INTERVIEW("면담"),
+    WEEDING("제적");
+
+    private final String name;
+
+    Penalty(String name) {
+        this.name = name;
+    }
 
     public static Penalty calculatePenalty(List<AttendanceStatus> attendanceStatuses) {
         int absenceCount = 0;
@@ -38,5 +44,9 @@ public enum Penalty {
         }
 
         return null;
+    }
+
+    public String getName() {
+        return name;
     }
 }

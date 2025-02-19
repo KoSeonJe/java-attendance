@@ -16,6 +16,10 @@ public class Crew {
         return name;
     }
 
+    public List<LocalDateTime> getDateTimesUntilDate(LocalDateTime dateTime) {
+        return attendance.getDateTimesUntilDate(dateTime);
+    }
+
     public List<LocalDateTime> getDateTimes() {
         return attendance.getDateTimes();
     }
