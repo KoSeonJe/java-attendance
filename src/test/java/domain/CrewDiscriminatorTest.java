@@ -6,7 +6,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 
-class AttendanceDiscriminatorTest {
+class CrewDiscriminatorTest {
 
     @Test
     void 출석_여부를_판단한다() {

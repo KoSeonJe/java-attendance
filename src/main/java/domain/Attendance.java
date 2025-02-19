@@ -1,49 +1,44 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Attendance {
-    private final String name;
     private final List<LocalDateTime> dateTimes;
 
-    public Attendance(String name, List<LocalDateTime> dateTimes) {
-        this.name = name;
-        this.dateTimes = dateTimes;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<LocalDateTime> getDateTimes() {
-        return dateTimes;
+    public Attendance(List<LocalDateTime> dateTimes) {
+        this.dateTimes = new ArrayList<>(dateTimes);
     }
 
     public void addAttendance(LocalDateTime dateTime) {
-        dateTimes.forEach(time -> {
-            if (isEqualsDate(dateTime, time)) {
-                throw new IllegalArgumentException("해당 이름의 출석 정보가 이미 존재합니다.");
-            }
-        });
-
+        if (isAlreadyExists(dateTime)) {
+            throw new IllegalArgumentException("해당 날짜의 출석 정보가 이미 존재합니다.");
+        }
         dateTimes.add(dateTime);
     }
 
-    private boolean isEqualsDate(LocalDateTime dateTime, LocalDateTime time) {
-        return time.getYear() == dateTime.getYear() && time.getMonth() == dateTime.getMonth()
-                && time.getDayOfMonth() == dateTime.getDayOfMonth();
+    private boolean isAlreadyExists(LocalDateTime dateTime) {
+        return dateTimes.stream().anyMatch(time -> isEqualsDate(dateTime, time));
     }
 
     public void updateAttendance(LocalDateTime updateDateTime) {
-        dateTimes.stream()
-                .filter(dateTime -> isEqualsDate(updateDateTime, dateTime))
+        int index = IntStream.range(0, dateTimes.size())
+                .filter(i -> isEqualsDate(updateDateTime, dateTimes.get(i)))
                 .findFirst()
-                .ifPresentOrElse(
-                        dateTime -> dateTimes.set(dateTimes.indexOf(dateTime), updateDateTime),
-                        () -> {
-                            throw new IllegalArgumentException("해당 이름의 출석 정보가 없습니다.");
-                        }
-                );
+                .orElseThrow(() -> new IllegalArgumentException("해당 날짜의 출석 정보가 없습니다."));
+
+        dateTimes.set(index, updateDateTime);
+    }
+
+    private boolean isEqualsDate(LocalDateTime dateTime, LocalDateTime time) {
+        return time.getYear() == dateTime.getYear() &&
+                time.getMonth() == dateTime.getMonth() &&
+                time.getDayOfMonth() == dateTime.getDayOfMonth();
+    }
+    
+    public List<LocalDateTime> getDateTimes() {
+        return new ArrayList<>(dateTimes);
     }
 }
