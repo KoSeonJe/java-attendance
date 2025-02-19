@@ -10,7 +10,7 @@ public class AttendanceController {
         this.inputView = inputView;
     }
 
-    public void run() {
-        inputView.readMenuOption(LocalDateTime.of(2024, 12, 13, 10, 6));
+    public void run(LocalDateTime dateTime) {
+        inputView.readMenuOption(dateTime);
     }
 }
