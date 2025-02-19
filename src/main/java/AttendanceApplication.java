@@ -1,5 +1,4 @@
 import controller.AttendanceController;
-import domain.CrewRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,7 +12,7 @@ public class AttendanceApplication {
         OutputView outputView = new OutputView();
         DataInitializer dataInitializer = new DataInitializer();
         dataInitializer.initialize("src/main/resources/attendances.csv");
-        AttendanceController controller = new AttendanceController(inputView, outputView, CrewRepository.getInstance());
+        AttendanceController controller = new AttendanceController(inputView, outputView);
 
         LocalDateTime dateTime = parseDateTimeFromArgs(args);
         controller.run(dateTime);
