@@ -2,7 +2,7 @@ package domain;
 
 import java.time.LocalDateTime;
 
-public enum AttendanceDiscriminator {
+public enum AttendanceStatus {
     ATTENDANCE("출석", 0),
     PERCEPTION("지각", 5),
     ABSENCE("결석", 30);
@@ -10,12 +10,12 @@ public enum AttendanceDiscriminator {
     private final String name;
     private final int limitTime;
 
-    AttendanceDiscriminator(String name, int limitMinute) {
+    AttendanceStatus(String name, int limitMinute) {
         this.name = name;
         this.limitTime = limitMinute;
     }
 
-    public static AttendanceDiscriminator calculateDiscriminator(Day today, LocalDateTime localDateTime) {
+    public static AttendanceStatus calculateDiscriminator(Day today, LocalDateTime localDateTime) {
         if (today.isWeekend()) {
             throw new IllegalArgumentException("주말에는 출석할 수 없습니다.");
         }
