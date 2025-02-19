@@ -8,8 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class CrewTest {
-
-
+    
     @Test
     void 출석을_여러개_생성한다() {
         // given
