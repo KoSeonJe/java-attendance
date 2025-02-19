@@ -3,14 +3,21 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CrewRepositoryTest {
 
+    @BeforeEach
+    void setUp() {
+        CrewRepository crewRepository = CrewRepository.getInstance();
+        crewRepository.clear();
+    }
+
     @Test
     void 출석을_저장한다() {
         // given
-        CrewRepository crewRepository = new CrewRepository();
+        CrewRepository crewRepository = CrewRepository.getInstance();
         Crew crew = new Crew("이름", new Attendance(List.of(LocalDateTime.now())));
 
         // when
@@ -25,7 +32,7 @@ class CrewRepositoryTest {
     @Test
     void 출석을_찾는다() {
         // given
-        CrewRepository crewRepository = new CrewRepository();
+        CrewRepository crewRepository = CrewRepository.getInstance();
         Crew crew = new Crew("이름", new Attendance(List.of(LocalDateTime.now())));
         crewRepository.save(crew);
 
@@ -41,7 +48,7 @@ class CrewRepositoryTest {
     @Test
     void 출석을_모두_찾는다() {
         // given
-        CrewRepository crewRepository = new CrewRepository();
+        CrewRepository crewRepository = CrewRepository.getInstance();
         Crew crew1 = new Crew("이름1", new Attendance(List.of(LocalDateTime.now())));
         Crew crew2 = new Crew("이름2", new Attendance(List.of(LocalDateTime.now())));
         crewRepository.save(crew1);
@@ -58,7 +65,7 @@ class CrewRepositoryTest {
     @Test
     void 존재하지_않는_닉네임은_찾지_못한다() {
         // given
-        CrewRepository crewRepository = new CrewRepository();
+        CrewRepository crewRepository = CrewRepository.getInstance();
 
         // when & then
         Assertions.assertThatThrownBy(() -> crewRepository.findByName("이름"))

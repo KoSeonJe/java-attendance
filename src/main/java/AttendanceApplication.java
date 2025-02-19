@@ -1,13 +1,19 @@
 import controller.AttendanceController;
+import domain.CrewRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import view.input.InputView;
+import util.DataInitializer;
+import view.InputView;
+import view.OutputView;
 
 public class AttendanceApplication {
     public static void main(String[] args) {
         InputView inputView = new InputView();
-        AttendanceController controller = new AttendanceController(inputView);
+        OutputView outputView = new OutputView();
+        DataInitializer dataInitializer = new DataInitializer();
+        dataInitializer.initialize("src/main/resources/attendances.csv");
+        AttendanceController controller = new AttendanceController(inputView, outputView, CrewRepository.getInstance());
 
         LocalDateTime dateTime = parseDateTimeFromArgs(args);
         controller.run(dateTime);
