@@ -43,4 +43,12 @@ public enum AttendanceStatus {
         int hour = localDateTime.getHour();
         return hour < 8 || hour > 18;
     }
+
+    public boolean isAbsence() {
+        return this == ABSENCE;
+    }
+
+    public boolean isPerception() {
+        return this == PERCEPTION;
+    }
 }
