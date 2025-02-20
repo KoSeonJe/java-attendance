@@ -29,73 +29,77 @@ public class AttendanceController {
 
     public void run(LocalDateTime localDateTime) {
         while (true) {
-            MenuOption menuOption = inputView.readMenuOption(localDateTime);
+            try {
+                MenuOption menuOption = inputView.readMenuOption(localDateTime);
 
-            if (menuOption == MenuOption.CHECK) {
-                String nickName = inputView.readNickName();
-                Crew crew = new Crew(nickName);
-                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(crew);
+                if (menuOption == MenuOption.CHECK) {
+                    String nickName = inputView.readNickName();
+                    Crew crew = new Crew(nickName);
+                    CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(crew);
 
-                LocalTime arriveTime = inputView.readArriveTime();
-                DateTime dateTime = new DateTime(new Date(localDateTime.toLocalDate()),
-                        new Time(arriveTime.getHour(), arriveTime.getMinute()));
+                    LocalTime arriveTime = inputView.readArriveTime();
+                    DateTime dateTime = new DateTime(new Date(localDateTime.toLocalDate()),
+                            new Time(arriveTime.getHour(), arriveTime.getMinute()));
 
-                crewAttendance.addAttendance(dateTime);
-                AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(dateTime.getDate());
+                    crewAttendance.addAttendance(dateTime);
+                    AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(dateTime.getDate());
 
-                outputView.printArriveResult(dateTime, attendanceStatus.getName());
-            }
+                    outputView.printArriveResult(dateTime, attendanceStatus.getName());
+                }
 
-            if (menuOption == MenuOption.EDIT) {
-                String updateNickName = inputView.readUpdateNickName();
-                Crew updateCrew = new Crew(updateNickName);
-                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(updateCrew);
+                if (menuOption == MenuOption.EDIT) {
+                    String updateNickName = inputView.readUpdateNickName();
+                    Crew updateCrew = new Crew(updateNickName);
+                    CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(updateCrew);
 
-                int updateDate = inputView.readUpdateDate();
-                LocalTime updateArriveTime = inputView.readUpdateArriveTime();
-                DateTime afterDateTime = new DateTime(
-                        new Date(LocalDate.of(localDateTime.getYear(), localDateTime.getMonth(), updateDate)),
-                        new Time(updateArriveTime.getHour(), updateArriveTime.getMinute()));
+                    int updateDate = inputView.readUpdateDate();
+                    LocalTime updateArriveTime = inputView.readUpdateArriveTime();
+                    DateTime afterDateTime = new DateTime(
+                            new Date(LocalDate.of(localDateTime.getYear(), localDateTime.getMonth(), updateDate)),
+                            new Time(updateArriveTime.getHour(), updateArriveTime.getMinute()));
 
-                DateTime beforeDateTime = crewAttendance.retrieveDateTime(afterDateTime.getDate());
-                AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(
-                        beforeDateTime.getDate());
+                    DateTime beforeDateTime = crewAttendance.retrieveDateTime(afterDateTime.getDate());
+                    AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(
+                            beforeDateTime.getDate());
 
-                crewAttendance.updateAttendance(afterDateTime);
-                AttendanceStatus afterAttendanceStatus = crewAttendance.calculateAttendanceStatus(
-                        afterDateTime.getDate());
+                    crewAttendance.updateAttendance(afterDateTime);
+                    AttendanceStatus afterAttendanceStatus = crewAttendance.calculateAttendanceStatus(
+                            afterDateTime.getDate());
 
-                outputView.printUpdateResult(beforeDateTime, beforeAttendanceStatus.getName(),
-                        afterDateTime, afterAttendanceStatus.getName());
-            }
+                    outputView.printUpdateResult(beforeDateTime, beforeAttendanceStatus.getName(),
+                            afterDateTime, afterAttendanceStatus.getName());
+                }
 
-            if (menuOption == MenuOption.RECORD) {
-                String nickName = inputView.readNickName();
-                Crew crew = new Crew(nickName);
-                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(crew);
+                if (menuOption == MenuOption.RECORD) {
+                    String nickName = inputView.readNickName();
+                    Crew crew = new Crew(nickName);
+                    CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(crew);
 
-                List<AttendanceRecodeDto> attendanceRecodeDtos = crewAttendance.retrieveDateTimesOrderByDate()
-                        .stream()
-                        .map(AttendanceRecodeDto::from)
-                        .toList();
+                    List<AttendanceRecodeDto> attendanceRecodeDtos = crewAttendance.retrieveDateTimesOrderByDate()
+                            .stream()
+                            .map(AttendanceRecodeDto::from)
+                            .toList();
 
-                AttendanceResultDto attendanceResultDto = AttendanceResultDto.of(
-                        nickName, crewAttendance.calculateAttendanceStatuses());
+                    AttendanceResultDto attendanceResultDto = AttendanceResultDto.of(
+                            nickName, crewAttendance.calculateAttendanceStatuses());
 
-                outputView.printTotalAttendanceStatus(attendanceRecodeDtos, attendanceResultDto);
-            }
+                    outputView.printTotalAttendanceStatus(attendanceRecodeDtos, attendanceResultDto);
+                }
 
-            if (menuOption == MenuOption.RISK) {
-                List<CrewAttendance> crewAttendances = CrewAttendanceRepository.getInstance().findAll();
-                List<PenaltyCrewDto> penaltyCrewDtos = crewAttendances.stream()
-                        .filter(CrewAttendance::isPenalty)
-                        .map(PenaltyCrewDto::of)
-                        .toList();
-                outputView.printPenaltyCrews(penaltyCrewDtos);
-            }
+                if (menuOption == MenuOption.RISK) {
+                    List<CrewAttendance> crewAttendances = CrewAttendanceRepository.getInstance().findAll();
+                    List<PenaltyCrewDto> penaltyCrewDtos = crewAttendances.stream()
+                            .filter(CrewAttendance::isPenalty)
+                            .map(PenaltyCrewDto::of)
+                            .toList();
+                    outputView.printPenaltyCrews(penaltyCrewDtos);
+                }
 
-            if (menuOption == MenuOption.EXIT) {
-                break;
+                if (menuOption == MenuOption.EXIT) {
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
+                outputView.printMessage(e.getMessage());
             }
         }
     }

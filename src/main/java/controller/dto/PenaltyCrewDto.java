@@ -15,13 +15,14 @@ public record PenaltyCrewDto(
 
     public static PenaltyCrewDto of(CrewAttendance crewAttendance) {
         List<AttendanceStatus> attendanceStatuses = crewAttendance.calculateAttendanceStatuses();
-        Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(attendanceStatuses);
+        Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(
+                attendanceStatuses);
 
         return new PenaltyCrewDto(
                 crewAttendance.getCrew().getName(),
                 attendanceStatusCount.get(AttendanceStatus.ABSENCE),
                 attendanceStatusCount.get(AttendanceStatus.PERCEPTION),
                 Penalty.calculatePenalty(attendanceStatuses).getName()
-        )
+        );
     }
 }
