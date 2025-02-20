@@ -26,8 +26,8 @@ public class DataInitializer {
     public void initialize(LocalDateTime todayLocalDateTime, String filePath) {
         validateDecember2024(todayLocalDateTime);
         Set<String> crewNames = extractCrewNames(filePath);
-        Map<Date, Time> initialDateTimes = initializeAttendanceMap(todayLocalDateTime);
-        storeCrewData(crewNames, initialDateTimes, filePath, todayLocalDateTime);
+        Map<Date, Time> initialDateTimes = createInitialAttendanceMap(todayLocalDateTime);
+        registerCrewData(crewNames, initialDateTimes, filePath, todayLocalDateTime);
     }
 
     private void validateDecember2024(LocalDateTime todayLocalDateTime) {
@@ -39,61 +39,72 @@ public class DataInitializer {
     private Set<String> extractCrewNames(String filePath) {
         List<String> lines = FileDataLoader.loadLines(filePath);
         Set<String> crewNames = new HashSet<>();
-        lines.stream().skip(1)
-                .map(line -> splitItems(line)[0])
+
+        lines.stream()
+                .skip(1)
+                .map(this::extractCrewName)
                 .forEach(crewNames::add);
+
         return crewNames;
     }
 
-    private Map<Date, Time> initializeAttendanceMap(LocalDateTime todayLocalDateTime) {
+    private String extractCrewName(String line) {
+        return splitItems(line)[0];
+    }
+
+    private Map<Date, Time> createInitialAttendanceMap(LocalDateTime todayLocalDateTime) {
         Map<Date, Time> dateTimes = new HashMap<>();
         LocalDate currentDate = START_DATE;
 
         while (!currentDate.isAfter(todayLocalDateTime.toLocalDate())) {
-            Date date = new Date(currentDate);
-            if (!date.isHoliday()) {
-                dateTimes.put(date, new Time(null, null));
-            }
+            addNonHolidayDate(dateTimes, currentDate);
             currentDate = currentDate.plusDays(1);
         }
-
         return dateTimes;
     }
 
-    private void storeCrewData(Set<String> crewNames, Map<Date, Time> initialDateTimes,
-                               String filePath, LocalDateTime todayLocalDateTime) {
+    private void addNonHolidayDate(Map<Date, Time> dateTimes, LocalDate currentDate) {
+        Date date = new Date(currentDate);
+        if (!date.isHoliday()) {
+            dateTimes.put(date, new Time(null, null));
+        }
+    }
+
+    private void registerCrewData(Set<String> crewNames, Map<Date, Time> initialDateTimes,
+                                  String filePath, LocalDateTime todayLocalDateTime) {
         CrewAttendanceRepository crewAttendanceRepository = CrewAttendanceRepository.getInstance();
 
-        for (String name : crewNames) {
+        crewNames.forEach(name -> {
             Crew crew = new Crew(name);
             CrewAttendance crewAttendance = new CrewAttendance(crew, new Attendance(new HashMap<>(initialDateTimes)));
 
             loadAndApplyAttendance(crewAttendance, filePath, todayLocalDateTime);
             crewAttendanceRepository.save(crewAttendance);
-        }
+        });
     }
 
     private void loadAndApplyAttendance(CrewAttendance crewAttendance, String filePath,
                                         LocalDateTime todayLocalDateTime) {
         List<String> lines = FileDataLoader.loadLines(filePath);
 
-        for (String line : lines.subList(1, lines.size())) {
-            String[] items = splitItems(line);
-            validateSize(items);
+        lines.stream()
+                .skip(1)
+                .map(this::parseAttendanceData)
+                .filter(data -> isValidAttendance(data, crewAttendance, todayLocalDateTime))
+                .forEach(data -> crewAttendance.addAttendance(data.dateTime));
+    }
 
-            String name = items[0];
-            LocalDateTime localDateTime = parseToDate(items[1]);
-            DateTime dateTime = DateTime.of(localDateTime);
+    private AttendanceData parseAttendanceData(String line) {
+        String[] items = splitItems(line);
+        validateSize(items);
+        return new AttendanceData(items[0], parseToDate(items[1]));
+    }
 
-            if (!crewAttendance.getCrew().getName().equals(name)) {
-                continue;
-            }
-
-            if (!dateTime.getDate().isAfter(new Date(todayLocalDateTime.toLocalDate())) &&
-                    !dateTime.getDate().isHoliday()) {
-                crewAttendance.addAttendance(dateTime);
-            }
-        }
+    private boolean isValidAttendance(AttendanceData data, CrewAttendance crewAttendance,
+                                      LocalDateTime todayLocalDateTime) {
+        return crewAttendance.getCrew().getName().equals(data.name) &&
+                !data.dateTime.getDate().isAfter(new Date(todayLocalDateTime.toLocalDate())) &&
+                !data.dateTime.getDate().isHoliday();
     }
 
     private String[] splitItems(final String input) {
@@ -113,6 +124,16 @@ public class DataInitializer {
             return LocalDateTime.parse(dateString, DEFAULT_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("잘못된 날짜 형식: " + dateString);
+        }
+    }
+
+    private static class AttendanceData {
+        private final String name;
+        private final DateTime dateTime;
+
+        AttendanceData(String name, LocalDateTime localDateTime) {
+            this.name = name;
+            this.dateTime = DateTime.of(localDateTime);
         }
     }
 }

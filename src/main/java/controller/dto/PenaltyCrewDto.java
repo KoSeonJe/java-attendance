@@ -13,7 +13,7 @@ public record PenaltyCrewDto(
         String penaltyName
 ) {
 
-    public static PenaltyCrewDto of(CrewAttendance crewAttendance) {
+    public static PenaltyCrewDto from(CrewAttendance crewAttendance) {
         List<AttendanceStatus> attendanceStatuses = crewAttendance.calculateAttendanceStatuses();
         Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(
                 attendanceStatuses);

@@ -21,7 +21,7 @@ public class CrewAttendanceRepository {
         this.crewAttendance.put(crewAttendance.getCrew(), crewAttendance);
     }
 
-    public CrewAttendance findByCrew(Crew crew) {
+    public CrewAttendance findByEqualsCrew(Crew crew) {
         if (crewAttendance.containsKey(crew)) {
             return crewAttendance.get(crew);
         }

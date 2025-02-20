@@ -1,4 +1,5 @@
 import controller.AttendanceController;
+import domain.CrewAttendanceRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import util.DataInitializer;
@@ -13,7 +14,8 @@ public class AttendanceApplication {
         OutputView outputView = new OutputView();
         DataInitializer dataInitializer = new DataInitializer();
         dataInitializer.initialize(today, "src/main/resources/attendances.csv");
-        AttendanceController controller = new AttendanceController(inputView, outputView);
+        AttendanceController controller = new AttendanceController(inputView, outputView,
+                CrewAttendanceRepository.getInstance());
         controller.run(today);
     }
 
