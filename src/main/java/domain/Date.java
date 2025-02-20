@@ -7,15 +7,14 @@ public class Date {
     private LocalDate localDate;
 
     public Date(LocalDate localDate) {
+        validateDate(localDate);
         this.localDate = localDate;
     }
 
-    public boolean isEqual(Date targetDate) {
-        return this.localDate.isEqual(targetDate.localDate);
-    }
-
-    public boolean isBefore(Date targetDate) {
-        return this.localDate.isBefore(targetDate.localDate);
+    private void validateDate(LocalDate localDate) {
+        if (localDate.getYear() != 2024 || localDate.getMonthValue() != 12) {
+            throw new IllegalArgumentException("2024년 12월이 아닌 날짜는 등록할 수 없습니다.");
+        }
     }
 
     public boolean isAfter(Date targetDate) {

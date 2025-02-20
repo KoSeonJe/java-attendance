@@ -6,7 +6,14 @@ public class Crew {
     private final String name;  // 이름은 중복될 수 없다.
 
     public Crew(String name) {
+        validateSize(name);
         this.name = name;
+    }
+
+    private void validateSize(String name) {
+        if (name.length() < 2 || name.length() > 4) {
+            throw new IllegalArgumentException("크루 이름은 2글자 이상 4글자 이하여야 합니다.");
+        }
     }
 
     public String getName() {
