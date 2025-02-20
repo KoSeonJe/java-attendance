@@ -1,5 +1,9 @@
 package domain;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public enum AttendanceStatus {
     ATTENDANCE("출석", 0),
     PERCEPTION("지각", 5),
@@ -41,6 +45,17 @@ public enum AttendanceStatus {
         }
 
         return ATTENDANCE;
+    }
+
+    public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(
+            List<AttendanceStatus> attendanceStatuses) {
+        Map<AttendanceStatus, Integer> attendanceStatusCount = new HashMap<>();
+        for (AttendanceStatus attendanceStatus : attendanceStatuses) {
+            attendanceStatusCount.put(attendanceStatus,
+                    attendanceStatusCount.getOrDefault(attendanceStatus, 0) + 1);
+        }
+
+        return attendanceStatusCount;
     }
 
     public boolean isAbsence() {

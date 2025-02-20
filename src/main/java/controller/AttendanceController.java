@@ -11,6 +11,7 @@ import domain.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import view.InputView;
 import view.OutputView;
 
@@ -65,14 +66,16 @@ public class AttendanceController {
                         afterAttendanceStatus);
             }
 
-//            if (menuOption == MenuOption.RECORD) {
-//                String nickName = inputView.readNickName();
-//
-//                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByName(nickName);
-//                List<LocalDateTime> dateTimes = crewAttendance.retrieveDateTimesUntilDate(localDateTime);
-//                AttendanceResults attendanceResults = AttendanceResults.from(dateTimes);
-//                outputView.printAttendanceResults(attendanceResults);
-//            }
+            if (menuOption == MenuOption.RECORD) {
+                String nickName = inputView.readNickName();
+                Crew crew = new Crew(nickName);
+                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(crew);
+
+                List<DateTime> dateTimes = crewAttendance.retrieveDateTimesUntilDate(
+                        new Date(localDateTime.toLocalDate()));
+
+                outputView.printTotalAttendanceStatus(dateTimes);
+            }
         }
     }
 }

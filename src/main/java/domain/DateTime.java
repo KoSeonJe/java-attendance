@@ -3,7 +3,7 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DateTime {
+public class DateTime implements Comparable<DateTime> {
     private final Date date;
     private final Time time;
 
@@ -37,5 +37,10 @@ public class DateTime {
     @Override
     public int hashCode() {
         return Objects.hash(date, time);
+    }
+
+    @Override
+    public int compareTo(DateTime o) {
+        return date.getDayValue() - (o.date.getDayValue());
     }
 }

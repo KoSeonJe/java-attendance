@@ -3,8 +3,13 @@ package view;
 import domain.AttendanceStatus;
 import domain.Date;
 import domain.DateTime;
+import domain.Penalty;
 import domain.Time;
 import domain.WorkDay;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class OutputView {
     public void printArriveResult(DateTime dateTime, AttendanceStatus attendanceStatus) {
@@ -31,7 +36,11 @@ public class OutputView {
                 convertTime(afterTime.getMinute()), afterAttendanceStatus.getName());
     }
 
-    private String convertTime(int time) {
+    private String convertTime(Integer time) {
+        if (time == null) {
+            return "--";
+        }
+
         String before = String.valueOf(time);
 
         if (before.length() < 2) {
@@ -39,5 +48,28 @@ public class OutputView {
         }
 
         return before;
+    }
+
+    public void printTotalAttendanceStatus(List<DateTime> dateTimes) {
+        dateTimes = new ArrayList<>(dateTimes);
+        Collections.sort(dateTimes);
+        List<AttendanceStatus> attendanceStatuses = new ArrayList<>();
+
+        dateTimes.forEach(dateTime -> {
+            AttendanceStatus attendanceStatus = AttendanceStatus.findByDateTime(dateTime);
+            attendanceStatuses.add(attendanceStatus);
+            printArriveResult(dateTime, attendanceStatus);
+        });
+
+        Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(
+                attendanceStatuses);
+        attendanceStatusCount.forEach((attendanceStatus, count) -> {
+            System.out.printf("%s: %d회\n", attendanceStatus.getName(), count);
+        });
+
+        Penalty penalty = Penalty.calculatePenalty(attendanceStatuses);
+        if (penalty != null) {
+            System.out.printf("%s 대상자입니다.\n", penalty.getName());
+        }
     }
 }
