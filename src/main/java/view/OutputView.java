@@ -1,5 +1,6 @@
 package view;
 
+import controller.dto.PenaltyCrewDto;
 import domain.AttendanceStatus;
 import domain.Date;
 import domain.DateTime;
@@ -71,5 +72,14 @@ public class OutputView {
         if (penalty != null) {
             System.out.printf("%s 대상자입니다.\n", penalty.getName());
         }
+    }
+
+    public void printPenaltyCrews(List<PenaltyCrewDto> penaltyCrewDtos) {
+        System.out.println("제적 위험자 조회 결과");
+        penaltyCrewDtos.forEach(penaltyCrewDto -> {
+            System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n",
+                    penaltyCrewDto.name(), penaltyCrewDto.absenceCount(),
+                    penaltyCrewDto.perceptionCount(), penaltyCrewDto.penaltyName());
+        });
     }
 }

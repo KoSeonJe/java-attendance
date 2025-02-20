@@ -20,7 +20,7 @@ public class CrewAttendance {
     }
 
     public DateTime retrieveDateTime(Date date) {
-        return attendance.retrieveDateTimesUntilDate(date).get(0);
+        return attendance.retrieveDateTime(date);
     }
 
     public List<DateTime> retrieveDateTimesUntilDate(Date date) {

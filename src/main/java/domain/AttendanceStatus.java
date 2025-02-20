@@ -49,10 +49,13 @@ public enum AttendanceStatus {
 
     public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(
             List<AttendanceStatus> attendanceStatuses) {
-        Map<AttendanceStatus, Integer> attendanceStatusCount = new HashMap<>();
+        Map<AttendanceStatus, Integer> attendanceStatusCount = new HashMap<>(Map.of(
+                ATTENDANCE, 0,
+                PERCEPTION, 0,
+                ABSENCE, 0
+        ));
         for (AttendanceStatus attendanceStatus : attendanceStatuses) {
-            attendanceStatusCount.put(attendanceStatus,
-                    attendanceStatusCount.getOrDefault(attendanceStatus, 0) + 1);
+            attendanceStatusCount.put(attendanceStatus, attendanceStatusCount.get(attendanceStatus) + 1);
         }
 
         return attendanceStatusCount;
