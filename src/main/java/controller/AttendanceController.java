@@ -2,6 +2,7 @@ package controller;
 
 import controller.dto.AttendanceRecodeDto;
 import controller.dto.AttendanceResultDto;
+import controller.dto.PenaltyCrewDto;
 import domain.AttendanceStatus;
 import domain.Crew;
 import domain.CrewAttendance;
@@ -83,32 +84,15 @@ public class AttendanceController {
 
                 outputView.printTotalAttendanceStatus(attendanceRecodeDtos, attendanceResultDto);
             }
-//
-//            if (menuOption == MenuOption.RISK) {
-//                List<CrewAttendance> crewAttendances = CrewAttendanceRepository.getInstance().findAll();
-//                List<PenaltyCrewDto> penaltyCrewDtos = crewAttendances.stream().
-//                        filter(crewAttendance -> {
-//                            List<AttendanceStatus> attendanceStatuses = crewAttendance.retrieveDateTimes().stream()
-//                                    .map(dateTime -> crewAttendance.calculateAttendanceStatus(dateTime.getDate()))
-//                                    .toList();
-//                            return Penalty.calculatePenalty(attendanceStatuses) != null;
-//                        })
-//                        .map(crewAttendance -> {
-//                            List<AttendanceStatus> attendanceStatuses = crewAttendance.retrieveDateTimes().stream()
-//                                    .map(dateTime -> crewAttendance.calculateAttendanceStatus(dateTime.getDate()))
-//                                    .toList();
-//
-//                            Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(
-//                                    attendanceStatuses);
-//                            String crewName = crewAttendance.getCrew().getName();
-//                            int absenceCount = attendanceStatusCount.get(AttendanceStatus.ABSENCE);
-//                            int perceptionCount = attendanceStatusCount.get(AttendanceStatus.PERCEPTION);
-//                            String penaltyName = Penalty.calculatePenalty(attendanceStatuses).getName();
-//                            return new PenaltyCrewDto(crewName, absenceCount, perceptionCount, penaltyName);
-//                        })
-//                        .toList();
-//                outputView.printPenaltyCrews(penaltyCrewDtos);
-//            }
+
+            if (menuOption == MenuOption.RISK) {
+                List<CrewAttendance> crewAttendances = CrewAttendanceRepository.getInstance().findAll();
+                List<PenaltyCrewDto> penaltyCrewDtos = crewAttendances.stream()
+                        .filter(CrewAttendance::isPenalty)
+                        .map(PenaltyCrewDto::of)
+                        .toList();
+                outputView.printPenaltyCrews(penaltyCrewDtos);
+            }
 
             if (menuOption == MenuOption.EXIT) {
                 break;

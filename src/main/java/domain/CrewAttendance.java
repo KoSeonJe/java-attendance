@@ -37,6 +37,14 @@ public class CrewAttendance {
                 .toList();
     }
 
+    public boolean isPenalty() {
+        return !calculatePenalty().equals(Penalty.NONE);
+    }
+    
+    public Penalty calculatePenalty() {
+        return Penalty.calculatePenalty(calculateAttendanceStatuses());
+    }
+
     public Attendance getAttendance() {
         return attendance;
     }
