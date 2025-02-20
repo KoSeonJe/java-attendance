@@ -2,7 +2,7 @@ package domain;
 
 import java.time.DayOfWeek;
 
-public enum Day {
+public enum WorkDay {
     MONDAY(DayOfWeek.MONDAY, "월", false, 13, 18),
     TUESDAY(DayOfWeek.TUESDAY, "화", false, 10, 18),
     WEDNESDAY(DayOfWeek.WEDNESDAY, "수", false, 10, 18),
@@ -17,7 +17,7 @@ public enum Day {
     private final Integer startHour;
     private final Integer endHour;
 
-    Day(DayOfWeek dayOfWeek, String dayOfWeekKorean, boolean isWeekend, Integer startHour, Integer endHour) {
+    WorkDay(DayOfWeek dayOfWeek, String dayOfWeekKorean, boolean isWeekend, Integer startHour, Integer endHour) {
         this.dayOfWeek = dayOfWeek;
         this.dayOfWeekKorean = dayOfWeekKorean;
         this.isWeekend = isWeekend;
@@ -25,8 +25,8 @@ public enum Day {
         this.endHour = endHour;
     }
 
-    public static Day findByDayOfWeek(DayOfWeek dayOfWeek) {
-        return Day.valueOf(dayOfWeek.name());
+    public static WorkDay findByDayOfWeek(DayOfWeek dayOfWeek) {
+        return WorkDay.valueOf(dayOfWeek.name());
     }
 
     public boolean isWeekend() {
@@ -37,11 +37,11 @@ public enum Day {
         return dayOfWeekKorean;
     }
 
-    public int getStartHour() {
+    public Integer getStartHour() {
         return startHour;
     }
 
-    public int getEndHour() {
+    public Integer getEndHour() {
         return endHour;
     }
 }

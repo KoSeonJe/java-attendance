@@ -1,53 +1,54 @@
 package domain;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Map;
 
 public class Attendance {
-    private final List<LocalDateTime> dateTimes;
+    private final Map<Date, Time> dateTimes;
 
-    public Attendance(List<LocalDateTime> dateTimes) {
-        this.dateTimes = new ArrayList<>(dateTimes);
+    public Attendance(Map<Date, Time> dateTimes) {
+        this.dateTimes = new HashMap<>(dateTimes);
     }
 
-    public void addAttendance(LocalDateTime dateTime) {
+    public void addDateTime(DateTime dateTime) {
         if (isAlreadyExists(dateTime)) {
             throw new IllegalArgumentException("해당 날짜의 출석 정보가 이미 존재합니다.");
         }
-        dateTimes.add(dateTime);
+        dateTimes.put(dateTime.getDate(), dateTime.getTime());
     }
 
-    private boolean isAlreadyExists(LocalDateTime dateTime) {
-        return dateTimes.stream().anyMatch(time -> isEqualsDate(dateTime, time));
+    public void updateDateTime(DateTime updateDateTime) {
+        if (!isAlreadyExists(updateDateTime)) {
+            throw new IllegalArgumentException("해당 날짜의 출석 정보가 없습니다.");
+        }
+        dateTimes.put(updateDateTime.getDate(), updateDateTime.getTime());
     }
 
-    public LocalDateTime updateAttendance(LocalDateTime updateDateTime) {
-        int index = IntStream.range(0, dateTimes.size())
-                .filter(i -> isEqualsDate(updateDateTime, dateTimes.get(i)))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 날짜의 출석 정보가 없습니다."));
-
-        LocalDateTime beforeTime = dateTimes.get(index);
-        dateTimes.set(index, updateDateTime);
-
-        return beforeTime;
+    private boolean isAlreadyExists(DateTime dateTime) {
+        Time time = dateTimes.get(dateTime.getDate());
+        return !time.isNull();
     }
 
-    private boolean isEqualsDate(LocalDateTime dateTime, LocalDateTime time) {
-        return time.getYear() == dateTime.getYear() &&
-                time.getMonth() == dateTime.getMonth() &&
-                time.getDayOfMonth() == dateTime.getDayOfMonth();
+    public DateTime retrieveDateTime(Date date) {
+        return new DateTime(date, dateTimes.get(date));
     }
 
-    public List<LocalDateTime> getDateTimesUntilDate(LocalDateTime dateTime) {
-        return dateTimes.stream()
-                .filter(time -> time.isBefore(dateTime) || time.isEqual(dateTime))
+    public List<DateTime> retrieveDateTimesUntilDate(Date untilDate) {
+        return dateTimes.keySet().stream()
+                .filter(date -> date.isBefore(untilDate) || date.isEqual(untilDate))
+                .map(date -> new DateTime(date, dateTimes.get(date)))
                 .toList();
     }
 
-    public List<LocalDateTime> getDateTimes() {
-        return new ArrayList<>(dateTimes);
+    public List<DateTime> retrieveDateTimes() {
+        return dateTimes.keySet().stream()
+                .map(date -> new DateTime(date, dateTimes.get(date)))
+                .toList();
+    }
+
+    public AttendanceStatus calculateAttendanceStatus(Date date) {
+        DateTime dateTime = new DateTime(date, dateTimes.get(date));
+        return AttendanceStatus.findByDateTime(dateTime);
     }
 }

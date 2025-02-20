@@ -1,14 +1,16 @@
 package controller;
 
-import domain.AttendanceResults;
 import domain.AttendanceStatus;
 import domain.Crew;
-import domain.CrewRepository;
-import domain.Day;
+import domain.CrewAttendance;
+import domain.CrewAttendanceRepository;
+import domain.Date;
+import domain.DateTime;
 import domain.MenuOption;
+import domain.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import view.InputView;
 import view.OutputView;
 
@@ -21,52 +23,56 @@ public class AttendanceController {
         this.outputView = outputView;
     }
 
-    public void run(LocalDateTime dateTime) {
+    public void run(LocalDateTime localDateTime) {
         while (true) {
-            MenuOption menuOption = inputView.readMenuOption(dateTime);
+            MenuOption menuOption = inputView.readMenuOption(localDateTime);
 
             if (menuOption == MenuOption.CHECK) {
                 String nickName = inputView.readNickName();
-                LocalTime arriveTime = inputView.readArriveTime();
-                Day today = Day.findByDayOfWeek(dateTime.getDayOfWeek());
-                AttendanceStatus attendanceStatus = AttendanceStatus.calculateDiscriminator(today, dateTime);
+                Crew crew = new Crew(nickName);
+                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(crew);
 
-                LocalDateTime attendanceDateTime = LocalDateTime.of(dateTime.toLocalDate(), arriveTime);
-                CrewRepository.getInstance().findByName(nickName).addAttendance(attendanceDateTime);
-                outputView.printArriveResult(dateTime, today.getDayOfWeekKorean(), attendanceStatus.getName());
+                LocalTime arriveTime = inputView.readArriveTime();
+                DateTime dateTime = new DateTime(new Date(localDateTime.toLocalDate()),
+                        new Time(arriveTime.getHour(), arriveTime.getMinute()));
+
+                crewAttendance.addAttendance(dateTime);
+                AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(dateTime.getDate());
+
+                outputView.printArriveResult(dateTime, attendanceStatus);
             }
 
             if (menuOption == MenuOption.EDIT) {
                 String updateNickName = inputView.readUpdateNickName();
+                Crew updateCrew = new Crew(updateNickName);
+                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByCrew(updateCrew);
+
                 int updateDate = inputView.readUpdateDate();
                 LocalTime updateArriveTime = inputView.readUpdateArriveTime();
-                Crew crew = CrewRepository.getInstance().findByName(updateNickName);
+                DateTime afterDateTime = new DateTime(
+                        new Date(LocalDate.of(localDateTime.getYear(), localDateTime.getMonth(), updateDate)),
+                        new Time(updateArriveTime.getHour(), updateArriveTime.getMinute()));
 
-                LocalDateTime updateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), updateDate,
-                        updateArriveTime.getHour(), updateArriveTime.getMinute());
-                LocalDateTime beforeTime = crew.updateAttendance(updateTime);
+                DateTime beforeDateTime = crewAttendance.retrieveDateTime(afterDateTime.getDate());
+                AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(
+                        beforeDateTime.getDate());
 
-                Day updateDay = Day.findByDayOfWeek(beforeTime.getDayOfWeek());
-                AttendanceStatus updateAttendanceStatus = AttendanceStatus.calculateDiscriminator(updateDay,
-                        updateTime);
+                crewAttendance.updateAttendance(afterDateTime);
+                AttendanceStatus afterAttendanceStatus = crewAttendance.calculateAttendanceStatus(
+                        afterDateTime.getDate());
 
-                Day beforeDay = Day.findByDayOfWeek(beforeTime.getDayOfWeek());
-                AttendanceStatus beforeAttendanceStatus = AttendanceStatus.calculateDiscriminator(beforeDay,
-                        beforeTime);
-
-                outputView.printUpdateResult(updateDay.getDayOfWeekKorean(), beforeTime, beforeAttendanceStatus,
-                        updateTime,
-                        updateAttendanceStatus);
+                outputView.printUpdateResult(beforeDateTime, beforeAttendanceStatus, afterDateTime,
+                        afterAttendanceStatus);
             }
 
-            if (menuOption == MenuOption.RECORD) {
-                String nickName = inputView.readNickName();
-
-                Crew crew = CrewRepository.getInstance().findByName(nickName);
-                List<LocalDateTime> dateTimes = crew.getDateTimesUntilDate(dateTime);
-                AttendanceResults attendanceResults = AttendanceResults.from(dateTimes);
-                outputView.printAttendanceResults(attendanceResults);
-            }
+//            if (menuOption == MenuOption.RECORD) {
+//                String nickName = inputView.readNickName();
+//
+//                CrewAttendance crewAttendance = CrewAttendanceRepository.getInstance().findByName(nickName);
+//                List<LocalDateTime> dateTimes = crewAttendance.retrieveDateTimesUntilDate(localDateTime);
+//                AttendanceResults attendanceResults = AttendanceResults.from(dateTimes);
+//                outputView.printAttendanceResults(attendanceResults);
+//            }
         }
     }
 }

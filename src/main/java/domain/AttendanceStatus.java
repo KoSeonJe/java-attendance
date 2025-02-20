@@ -1,7 +1,5 @@
 package domain;
 
-import java.time.LocalDateTime;
-
 public enum AttendanceStatus {
     ATTENDANCE("출석", 0),
     PERCEPTION("지각", 5),
@@ -15,33 +13,34 @@ public enum AttendanceStatus {
         this.limitTime = limitMinute;
     }
 
-    public static AttendanceStatus calculateDiscriminator(Day today, LocalDateTime localDateTime) {
-        if (today.isWeekend()) {
-            throw new IllegalArgumentException("주말에는 출석할 수 없습니다.");
-        }
+    public static AttendanceStatus findByDateTime(DateTime dateTime) {
+        Integer hour = dateTime.getTime().getHour();
+        Integer minute = dateTime.getTime().getMinute();
 
-        if (isOutsideCampusHours(localDateTime)) {
-            throw new IllegalArgumentException("캠퍼스 운영 시간이 아닙니다.");
-        }
-
-        int startHour = today.getStartHour();
-        int hour = localDateTime.getHour();
-        int minute = localDateTime.getMinute();
-
-        if (hour > startHour || (hour == startHour && minute >= ABSENCE.limitTime)) {
+        if (hour == null || minute == null) {
             return ABSENCE;
         }
 
-        if (hour == startHour && minute >= PERCEPTION.limitTime) {
+        if (hour < 8 || hour > 18) {
+            throw new IllegalArgumentException("캠퍼스 운영 시간이 아닙니다.");
+        }
+
+        WorkDay today = dateTime.getDate().getWorkDay();
+
+        if (today.isWeekend()) {
+            throw new IllegalArgumentException("주말에는 출석할 수 없습니다.");
+        }
+        Integer startHour = today.getStartHour();
+
+        if (hour > startHour || (hour.equals(startHour) && minute > ABSENCE.limitTime)) {
+            return ABSENCE;
+        }
+
+        if (hour.equals(startHour) && minute > PERCEPTION.limitTime) {
             return PERCEPTION;
         }
 
         return ATTENDANCE;
-    }
-
-    private static boolean isOutsideCampusHours(LocalDateTime localDateTime) {
-        int hour = localDateTime.getHour();
-        return hour < 8 || hour > 18;
     }
 
     public boolean isAbsence() {

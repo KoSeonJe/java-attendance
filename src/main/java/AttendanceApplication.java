@@ -1,37 +1,28 @@
 import controller.AttendanceController;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import util.DataInitializer;
 import view.InputView;
 import view.OutputView;
 
 public class AttendanceApplication {
     public static void main(String[] args) {
+        LocalDateTime today = parseDateTimeFromArgs(args);
+
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
         DataInitializer dataInitializer = new DataInitializer();
-        dataInitializer.initialize("src/main/resources/attendances.csv");
+        dataInitializer.initialize(today, "src/main/resources/attendances.csv");
         AttendanceController controller = new AttendanceController(inputView, outputView);
-
-        LocalDateTime dateTime = parseDateTimeFromArgs(args);
-        controller.run(dateTime);
+        controller.run(today);
     }
 
     private static LocalDateTime parseDateTimeFromArgs(String[] args) {
-        if (args.length < 1) {
-            System.out.println("사용법: java AttendanceApplication \"yyyy-MM-dd HH:mm\"");
-            System.out.println("예시: java AttendanceApplication \"2024-12-13 10:06\"");
-            System.exit(1);
-        }
-
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             return LocalDateTime.parse(args[0], formatter);
-        } catch (DateTimeParseException e) {
-            System.out.println("잘못된 날짜 형식입니다. \"yyyy-MM-dd HH:mm\" 형식으로 입력하세요.");
-            System.exit(1);
+        } catch (Exception e) {
+            return LocalDateTime.now();
         }
-        return null;
     }
 }
