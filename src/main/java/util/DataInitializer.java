@@ -89,7 +89,7 @@ public class DataInitializer {
                 continue;
             }
 
-            if (dateTime.getDate().isBefore(new Date(todayLocalDateTime.toLocalDate())) &&
+            if (!dateTime.getDate().isAfter(new Date(todayLocalDateTime.toLocalDate())) &&
                     !dateTime.getDate().isHoliday()) {
                 crewAttendance.addAttendance(dateTime);
             }

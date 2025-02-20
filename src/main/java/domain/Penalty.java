@@ -3,6 +3,7 @@ package domain;
 import java.util.List;
 
 public enum Penalty {
+    NONE("없음"),
     WARNING("경고"),
     INTERVIEW("면담"),
     WEEDING("제적");
@@ -43,7 +44,7 @@ public enum Penalty {
             return WARNING;
         }
 
-        return null;
+        return NONE;
     }
 
     public String getName() {

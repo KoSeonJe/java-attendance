@@ -1,30 +1,29 @@
 package view;
 
+import controller.dto.AttendanceRecodeDto;
+import controller.dto.AttendanceResultDto;
 import controller.dto.PenaltyCrewDto;
-import domain.AttendanceStatus;
 import domain.Date;
 import domain.DateTime;
 import domain.Penalty;
 import domain.Time;
 import domain.WorkDay;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class OutputView {
-    public void printArriveResult(DateTime dateTime, AttendanceStatus attendanceStatus) {
+    public void printArriveResult(DateTime dateTime, String attendanceStatusName) {
         Date date = dateTime.getDate();
         WorkDay workDay = date.getWorkDay();
         Time time = dateTime.getTime();
 
         System.out.printf("%s월 %s일 %s요일 %s:%s (%s)\n", date.getMonthValue(),
                 date.getDayValue(), workDay.getDayOfWeekKorean(),
-                convertTime(time.getHour()), convertTime(time.getMinute()), attendanceStatus.getName());
+                convertTime(time.getHour()), convertTime(time.getMinute()), attendanceStatusName);
     }
 
-    public void printUpdateResult(DateTime beforeDateTime, AttendanceStatus beforeAttendanceStatus,
-                                  DateTime afterDateTime, AttendanceStatus afterAttendanceStatus) {
+    public void printUpdateResult(DateTime beforeDateTime, String beforeAttendanceStatusName,
+                                  DateTime afterDateTime, String afterAttendanceStatusName) {
         Date date = beforeDateTime.getDate();
         WorkDay workDay = date.getWorkDay();
         Time beforeTime = beforeDateTime.getTime();
@@ -32,9 +31,9 @@ public class OutputView {
         System.out.printf("%s월 %s일 %s요일 %s:%s (%s) -> %s:%s (%s) 수정 완료!\n",
                 date.getMonthValue(), date.getDayValue(), workDay.getDayOfWeekKorean(),
                 convertTime(beforeTime.getHour()),
-                convertTime(beforeTime.getMinute()), beforeAttendanceStatus.getName(),
+                convertTime(beforeTime.getMinute()), beforeAttendanceStatusName,
                 convertTime(afterTime.getHour()),
-                convertTime(afterTime.getMinute()), afterAttendanceStatus.getName());
+                convertTime(afterTime.getMinute()), afterAttendanceStatusName);
     }
 
     private String convertTime(Integer time) {
@@ -51,26 +50,27 @@ public class OutputView {
         return before;
     }
 
-    public void printTotalAttendanceStatus(List<DateTime> dateTimes) {
-        dateTimes = new ArrayList<>(dateTimes);
-        Collections.sort(dateTimes);
-        List<AttendanceStatus> attendanceStatuses = new ArrayList<>();
+    public void printTotalAttendanceStatus(List<AttendanceRecodeDto> attendanceRecodeDto,
+                                           AttendanceResultDto attendanceResultDto) {
+        System.out.printf("이번 달 %s의 출석 기록입니다.\n", attendanceResultDto.name());
+        attendanceRecodeDto.forEach(attendanceRecode -> {
+            Date date = attendanceRecode.dateTime().getDate();
+            WorkDay workDay = date.getWorkDay();
+            Time time = attendanceRecode.dateTime().getTime();
 
-        dateTimes.forEach(dateTime -> {
-            AttendanceStatus attendanceStatus = AttendanceStatus.findByDateTime(dateTime);
-            attendanceStatuses.add(attendanceStatus);
-            printArriveResult(dateTime, attendanceStatus);
+            System.out.printf("%s월 %s일 %s요일 %s:%s (%s)\n", date.getMonthValue(),
+                    date.getDayValue(), workDay.getDayOfWeekKorean(),
+                    convertTime(time.getHour()), convertTime(time.getMinute()),
+                    attendanceRecode.attendanceStatusName());
         });
 
-        Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(
-                attendanceStatuses);
-        attendanceStatusCount.forEach((attendanceStatus, count) -> {
-            System.out.printf("%s: %d회\n", attendanceStatus.getName(), count);
-        });
+        System.out.println();
+        System.out.printf("출석: %d회\n", attendanceResultDto.attendanceCount());
+        System.out.printf("지각: %d회\n", attendanceResultDto.perceptionCount());
+        System.out.printf("결석: %d회\n", attendanceResultDto.absenceCount());
 
-        Penalty penalty = Penalty.calculatePenalty(attendanceStatuses);
-        if (penalty != null) {
-            System.out.printf("%s 대상자입니다.\n", penalty.getName());
+        if (!Objects.equals(attendanceResultDto.penaltyName(), Penalty.NONE.getName())) {
+            System.out.printf("%s 대상자입니다.\n", attendanceResultDto.penaltyName());
         }
     }
 

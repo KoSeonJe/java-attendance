@@ -34,10 +34,10 @@ public class Attendance {
         return new DateTime(date, dateTimes.get(date));
     }
 
-    public List<DateTime> retrieveDateTimesUntilDate(Date untilDate) {
+    public List<DateTime> retrieveDateTimesOrderByDate() {
         return dateTimes.keySet().stream()
-                .filter(date -> date.isBefore(untilDate) || date.isEqual(untilDate))
                 .map(date -> new DateTime(date, dateTimes.get(date)))
+                .sorted()
                 .toList();
     }
 
@@ -50,5 +50,13 @@ public class Attendance {
     public AttendanceStatus calculateAttendanceStatus(Date date) {
         DateTime dateTime = new DateTime(date, dateTimes.get(date));
         return AttendanceStatus.findByDateTime(dateTime);
+    }
+
+    public Map<AttendanceStatus, Integer> calculateAttendanceStatusCount() {
+        return AttendanceStatus.calculateAttendanceStatusCount(retrieveDateTimes().stream()
+                .map(dateTime -> new DateTime(dateTime.getDate(),
+                        dateTimes.get(dateTime.getDate())))
+                .map(AttendanceStatus::findByDateTime)
+                .toList());
     }
 }

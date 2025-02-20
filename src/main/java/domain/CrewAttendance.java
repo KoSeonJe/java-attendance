@@ -23,16 +23,18 @@ public class CrewAttendance {
         return attendance.retrieveDateTime(date);
     }
 
-    public List<DateTime> retrieveDateTimesUntilDate(Date date) {
-        return attendance.retrieveDateTimesUntilDate(date);
-    }
-
-    public List<DateTime> retrieveDateTimes() {
-        return attendance.retrieveDateTimes();
+    public List<DateTime> retrieveDateTimesOrderByDate() {
+        return attendance.retrieveDateTimesOrderByDate();
     }
 
     public AttendanceStatus calculateAttendanceStatus(Date date) {
         return attendance.calculateAttendanceStatus(date);
+    }
+
+    public List<AttendanceStatus> calculateAttendanceStatuses() {
+        return attendance.retrieveDateTimes().stream()
+                .map(datetime -> attendance.calculateAttendanceStatus(datetime.getDate()))
+                .toList();
     }
 
     public Attendance getAttendance() {
