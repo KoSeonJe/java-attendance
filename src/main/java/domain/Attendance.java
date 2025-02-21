@@ -27,7 +27,7 @@ public class Attendance {
 
     private boolean isAlreadyExists(DateTime dateTime) {
         Time time = dateTimes.get(dateTime.getDate());
-        return !time.isNull();
+        return time != null;
     }
 
     public DateTime retrieveDateTime(Date date) {

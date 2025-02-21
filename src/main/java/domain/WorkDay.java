@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.DayOfWeek;
+import java.util.Optional;
 
 public enum WorkDay {
     MONDAY(DayOfWeek.MONDAY, "월", false, 13, 18),
@@ -37,7 +38,10 @@ public enum WorkDay {
         return dayOfWeekKorean;
     }
 
-    public Integer getStartHour() {
+    public int retrieveWeekdaysStartHour() {
+        if (startHour == null) {
+            throw new IllegalArgumentException("주말에는 시작 시간이 존재하지 않습니다");
+        }
         return startHour;
     }
 

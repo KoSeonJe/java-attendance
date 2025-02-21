@@ -3,6 +3,7 @@ package domain;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class AttendanceTest {
     @Test
     void 출석을_한다() {
         // given
-        Map<Date, Time> dateTimes = Map.of(new Date(LocalDate.of(2024, 12, 2)), new Time(null, null));
+        Map<Date, Time> dateTimes = new HashMap<>();
         Attendance attendance = new Attendance(dateTimes);
 
         // when
@@ -80,9 +81,7 @@ class AttendanceTest {
     @Test
     void 출석이_없으면_수정하지_못한다() {
         // given
-        Map<Date, Time> dateTimes = Map.of(
-                new Date(LocalDate.of(2024, 12, 2)), new Time(null, null)
-        );
+        Map<Date, Time> dateTimes = new HashMap<>();
         Attendance attendance = new Attendance(dateTimes);
 
         // when & then

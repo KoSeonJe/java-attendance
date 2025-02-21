@@ -3,33 +3,29 @@ package domain;
 import java.util.Objects;
 
 public class Time {
-    private final Integer hour;
-    private final Integer minute;
+    private final int hour;
+    private final int minute;
 
-    public Time(Integer hour, Integer minute) {
+    public Time(int hour, int minute) {
         validateSize(hour, minute);
         this.hour = hour;
         this.minute = minute;
     }
 
-    private void validateSize(Integer hour, Integer minute) {
-        if (hour != null && (hour < 0 || hour > 23)) {
+    private void validateSize(int hour, int minute) {
+        if (hour < 0 || hour > 23) {
             throw new IllegalArgumentException("시간은 0 이상 23 이하여야 합니다.");
         }
-        if (minute != null && (minute < 0 || minute > 59)) {
+        if (minute < 0 || minute > 59) {
             throw new IllegalArgumentException("분은 0 이상 59 이하여야 합니다.");
         }
     }
 
-    public boolean isNull() {
-        return hour == null || minute == null;
-    }
-
-    public Integer getHour() {
+    public int getHour() {
         return hour;
     }
 
-    public Integer getMinute() {
+    public int getMinute() {
         return minute;
     }
 

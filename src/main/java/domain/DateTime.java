@@ -12,17 +12,21 @@ public class DateTime implements Comparable<DateTime> {
         this.time = time;
     }
 
-    public static DateTime of(LocalDateTime localDateTime) {
-        return new DateTime(new Date(localDateTime.toLocalDate()),
-                new Time(localDateTime.toLocalTime().getHour(), localDateTime.toLocalTime().getMinute()));
-    }
-
     public Date getDate() {
         return date;
     }
 
     public Time getTime() {
         return time;
+    }
+
+    public boolean isTimeNull() {
+        return time == null;
+    }
+
+    public static DateTime of(LocalDateTime localDateTime) {
+        return new DateTime(new Date(localDateTime.toLocalDate()),
+                new Time(localDateTime.toLocalTime().getHour(), localDateTime.toLocalTime().getMinute()));
     }
 
     @Override

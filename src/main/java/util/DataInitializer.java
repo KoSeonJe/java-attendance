@@ -66,7 +66,7 @@ public class DataInitializer {
     private void addNonHolidayDate(Map<Date, Time> dateTimes, LocalDate currentDate) {
         Date date = new Date(currentDate);
         if (!date.isHoliday()) {
-            dateTimes.put(date, new Time(null, null));
+            dateTimes.put(date, null);
         }
     }
 
