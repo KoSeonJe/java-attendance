@@ -1,9 +1,15 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Date {
+
+    private static final int REQUIREMENT_YEAR = 2024;
+    private static final int REQUIREMENT_MONTH = 12;
+    private static final List<Integer> HOLIDAY = List.of(25);
+
     private LocalDate localDate;
 
     public Date(LocalDate localDate) {
@@ -12,7 +18,7 @@ public class Date {
     }
 
     private void validateDate(LocalDate localDate) {
-        if (localDate.getYear() != 2024 || localDate.getMonthValue() != 12) {
+        if (localDate.getYear() != REQUIREMENT_YEAR || localDate.getMonthValue() != REQUIREMENT_MONTH) {
             throw new IllegalArgumentException("2024년 12월이 아닌 날짜는 등록할 수 없습니다.");
         }
     }
@@ -34,7 +40,7 @@ public class Date {
     }
 
     public boolean isHoliday() {
-        return getWorkDay().isWeekend() || getDayValue() == 25;  // TODO: 공휴일 로직 추가
+        return getWorkDay().isWeekend() || HOLIDAY.contains(getDayValue());  // TODO: 공휴일 로직 추가
     }
 
     @Override

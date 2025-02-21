@@ -9,6 +9,10 @@ public enum AttendanceStatus {
     PERCEPTION("지각", 5),
     ABSENCE("결석", 30);
 
+    private static final int CAMPUS_OPEN_TIME = 8;
+    private static final int CAMPUS_CLOSE_TIME = 18;
+    private static final int STATUS_DEFAULT_COUNT = 0;
+
     private final String name;
     private final int limitTime;
 
@@ -31,7 +35,7 @@ public enum AttendanceStatus {
 
     private static void validateTime(Time time) {
         int hour = time.getHour();
-        if (hour < 8 || hour > 18) {
+        if (hour < CAMPUS_OPEN_TIME || hour > CAMPUS_CLOSE_TIME) {
             throw new IllegalArgumentException("캠퍼스 운영 시간이 아닙니다.");
         }
     }
@@ -65,9 +69,9 @@ public enum AttendanceStatus {
 
     private static Map<AttendanceStatus, Integer> initializeAttendanceMap() {
         return new HashMap<>(Map.of(
-                ATTENDANCE, 0,
-                PERCEPTION, 0,
-                ABSENCE, 0
+                ATTENDANCE, STATUS_DEFAULT_COUNT,
+                PERCEPTION, STATUS_DEFAULT_COUNT,
+                ABSENCE, STATUS_DEFAULT_COUNT
         ));
     }
 

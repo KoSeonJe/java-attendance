@@ -3,6 +3,13 @@ package domain;
 import java.util.Objects;
 
 public class Time {
+
+    private static final int MAX_HOUR = 23;
+    private static final int MIN_HOUR = 0;
+    private static final int MAX_MINUTE = 59;
+    private static final int MIN_MINUTE = 0;
+
+
     private final int hour;
     private final int minute;
 
@@ -13,10 +20,10 @@ public class Time {
     }
 
     private void validateSize(int hour, int minute) {
-        if (hour < 0 || hour > 23) {
+        if (hour < MIN_HOUR || hour > MAX_HOUR) {
             throw new IllegalArgumentException("시간은 0 이상 23 이하여야 합니다.");
         }
-        if (minute < 0 || minute > 59) {
+        if (minute < MIN_MINUTE || minute > MAX_MINUTE) {
             throw new IllegalArgumentException("분은 0 이상 59 이하여야 합니다.");
         }
     }

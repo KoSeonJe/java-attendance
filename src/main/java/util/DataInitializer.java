@@ -24,16 +24,9 @@ public class DataInitializer {
     private static final LocalDate START_DATE = LocalDate.of(2024, 12, 2);
 
     public void initialize(LocalDateTime todayLocalDateTime, String filePath) {
-        validateDecember2024(todayLocalDateTime);
         Set<String> crewNames = extractCrewNames(filePath);
         Map<Date, Time> initialDateTimes = createInitialAttendanceMap(todayLocalDateTime);
         registerCrewData(crewNames, initialDateTimes, filePath, todayLocalDateTime);
-    }
-
-    private void validateDecember2024(LocalDateTime todayLocalDateTime) {
-        if (todayLocalDateTime.getYear() != 2024 || todayLocalDateTime.getMonthValue() != 12) {
-            throw new IllegalArgumentException("입력된 날짜는 2024년 12월이어야 합니다");
-        }
     }
 
     private Set<String> extractCrewNames(String filePath) {
