@@ -45,7 +45,7 @@ public class AttendanceController {
     }
 
     private boolean shouldContinue(MenuOption menuOption) {
-        return menuOption != MenuOption.EXIT;
+        return !menuOption.isExit();
     }
 
     private void executeMenu(MenuOption menuOption, LocalDateTime localDateTime) {
