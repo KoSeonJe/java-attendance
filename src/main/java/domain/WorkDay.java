@@ -4,22 +4,20 @@ import java.time.DayOfWeek;
 import java.util.Optional;
 
 public enum WorkDay {
-    MONDAY(DayOfWeek.MONDAY, "월", false, 13, 18),
-    TUESDAY(DayOfWeek.TUESDAY, "화", false, 10, 18),
-    WEDNESDAY(DayOfWeek.WEDNESDAY, "수", false, 10, 18),
-    THURSDAY(DayOfWeek.THURSDAY, "목", false, 10, 18),
-    FRIDAY(DayOfWeek.FRIDAY, "금", false, 10, 18),
-    SATURDAY(DayOfWeek.SATURDAY, "토", true, null, null),
-    SUNDAY(DayOfWeek.SUNDAY, "일", true, null, null);
+    MONDAY("월", false, 13, 18),
+    TUESDAY("화", false, 10, 18),
+    WEDNESDAY("수", false, 10, 18),
+    THURSDAY("목", false, 10, 18),
+    FRIDAY("금", false, 10, 18),
+    SATURDAY("토", true, null, null),
+    SUNDAY("일", true, null, null);
 
-    private final DayOfWeek dayOfWeek;
     private final String dayOfWeekKorean;
     private final boolean isWeekend;
     private final Integer startHour;
-    private final Integer endHour;
+    private final Integer endHour; // 사용하지 않지만 요구사항에 포함되어 남겨놓습니다.
 
-    WorkDay(DayOfWeek dayOfWeek, String dayOfWeekKorean, boolean isWeekend, Integer startHour, Integer endHour) {
-        this.dayOfWeek = dayOfWeek;
+    WorkDay(String dayOfWeekKorean, boolean isWeekend, Integer startHour, Integer endHour) {
         this.dayOfWeekKorean = dayOfWeekKorean;
         this.isWeekend = isWeekend;
         this.startHour = startHour;
@@ -43,9 +41,5 @@ public enum WorkDay {
             throw new IllegalArgumentException("주말에는 시작 시간이 존재하지 않습니다");
         }
         return startHour;
-    }
-
-    public Integer getEndHour() {
-        return endHour;
     }
 }
