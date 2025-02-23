@@ -28,8 +28,7 @@ public class RecordMenuExecutor implements MenuExecutor {
     @Override
     public void execute() {
         String nickName = inputView.readNickName();
-        Crew crew = new Crew(nickName);
-        CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsCrew(crew);
+        CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsNickName(nickName);
 
         List<AttendanceRecodeDto> attendanceRecodeDtos = crewAttendance.retrieveDateTimesOrderByDate()
                 .stream()

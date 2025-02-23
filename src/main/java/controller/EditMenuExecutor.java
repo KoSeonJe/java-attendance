@@ -36,8 +36,7 @@ public class EditMenuExecutor implements MenuExecutor {
     @Override
     public void execute() {
         String updateNickName = inputView.readUpdateNickName();
-        Crew updateCrew = new Crew(updateNickName);
-        CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsCrew(updateCrew);
+        CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsNickName(updateNickName);
 
         int updateDate = inputView.readUpdateDate();
         LocalTime updateArriveTime = inputView.readUpdateArriveTime();
