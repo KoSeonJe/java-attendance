@@ -10,7 +10,7 @@ public class Date {
     private static final int REQUIREMENT_MONTH = 12;
     private static final List<Integer> HOLIDAY = List.of(25);
 
-    private LocalDate localDate;
+    private final LocalDate localDate;
 
     public Date(LocalDate localDate) {
         validateDate(localDate);
