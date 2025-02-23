@@ -1,7 +1,8 @@
 package controller;
 
+import controller.dto.AfterAttendanceDto;
+import controller.dto.BeforeAttendanceDto;
 import domain.AttendanceStatus;
-import domain.Crew;
 import domain.CrewAttendance;
 import domain.CrewAttendanceRepository;
 import domain.Date;
@@ -38,18 +39,12 @@ public class EditMenuExecutor implements MenuExecutor {
         String updateNickName = inputView.readUpdateNickName();
         CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsNickName(updateNickName);
 
-        int updateDate = inputView.readUpdateDate();
-        LocalTime updateArriveTime = inputView.readUpdateArriveTime();
-        AttendanceDateTime afterAttendanceDateTime = createDateTime(updateDate, updateArriveTime);
+        AttendanceDateTime updatedDateTime = createDateTime(inputView.readUpdateDate(), inputView.readUpdateArriveTime());
+        BeforeAttendanceDto beforeAttendanceDto = BeforeAttendanceDto.of(updatedDateTime, crewAttendance);
+        crewAttendance.updateAttendance(updatedDateTime);
+        AfterAttendanceDto afterAttendanceDto = AfterAttendanceDto.of(updatedDateTime, crewAttendance);
 
-        AttendanceDateTime beforeAttendanceDateTime = crewAttendance.retrieveDateTime(afterAttendanceDateTime.getDate());
-        AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(beforeAttendanceDateTime.getDate());
-
-        crewAttendance.updateAttendance(afterAttendanceDateTime);
-        AttendanceStatus afterAttendanceStatus = crewAttendance.calculateAttendanceStatus(afterAttendanceDateTime.getDate());
-
-        outputView.printUpdateResult(beforeAttendanceDateTime, beforeAttendanceStatus.getName(),
-                afterAttendanceDateTime, afterAttendanceStatus.getName());
+        outputView.printUpdateResult(beforeAttendanceDto, afterAttendanceDto);
     }
 
     private AttendanceDateTime createDateTime(int day, LocalTime arriveTime) {

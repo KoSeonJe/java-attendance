@@ -1,7 +1,9 @@
 package view;
 
+import controller.dto.AfterAttendanceDto;
 import controller.dto.AttendanceRecodeDto;
 import controller.dto.AttendanceResultDto;
+import controller.dto.BeforeAttendanceDto;
 import controller.dto.PenaltyCrewDto;
 import domain.Date;
 import domain.AttendanceDateTime;
@@ -22,18 +24,17 @@ public class OutputView {
                 convertTime(time.getHour()), convertTime(time.getMinute()), attendanceStatusName);
     }
 
-    public void printUpdateResult(AttendanceDateTime beforeAttendanceDateTime, String beforeAttendanceStatusName,
-                                  AttendanceDateTime afterAttendanceDateTime, String afterAttendanceStatusName) {
-        Date date = beforeAttendanceDateTime.getDate();
+    public void printUpdateResult(BeforeAttendanceDto beforeAttendanceDto, AfterAttendanceDto afterAttendanceDto) {
+        Date date = beforeAttendanceDto.attendanceDateTime().getDate();
         WorkDay workDay = date.getWorkDay();
-        Time beforeTime = beforeAttendanceDateTime.getTime();
-        Time afterTime = afterAttendanceDateTime.getTime();
+        Time beforeTime = beforeAttendanceDto.attendanceDateTime().getTime();
+        Time afterTime = afterAttendanceDto.attendanceDateTime().getTime();
         System.out.printf("%s월 %s일 %s요일 %s:%s (%s) -> %s:%s (%s) 수정 완료!\n",
                 date.getMonthValue(), date.getDayValue(), workDay.getDayOfWeekKorean(),
                 convertTime(beforeTime.getHour()),
-                convertTime(beforeTime.getMinute()), beforeAttendanceStatusName,
+                convertTime(beforeTime.getMinute()), beforeAttendanceDto.attendanceStatus().getName(),
                 convertTime(afterTime.getHour()),
-                convertTime(afterTime.getMinute()), afterAttendanceStatusName);
+                convertTime(afterTime.getMinute()), afterAttendanceDto.attendanceStatus().getName());
     }
 
     private String convertTime(Integer time) {
