@@ -2,7 +2,7 @@ package util;
 
 import java.time.LocalDateTime;
 
-public class AttendanceApplicationTime implements ApplicationTime {
+public final class AttendanceApplicationTime implements ApplicationTime {
 
     private static final LocalDateTime APPLICATION_TIME = LocalDateTime.of(2024, 12, 13, 10, 5);
 

@@ -1,4 +1,5 @@
 import controller.AttendanceController;
+import controller.MenuExecutor;
 import domain.CrewAttendanceRepository;
 import java.time.LocalDateTime;
 import util.ApplicationTime;
@@ -14,7 +15,7 @@ public final class ApplicationConfig {
     }
 
     public AttendanceController attendanceController() {
-        return new AttendanceController(new InputView(), new OutputView(), crewAttendanceRepository(), applicationTime());
+        return new AttendanceController(new InputView(), new OutputView(), applicationTime());
     }
 
     private CrewAttendanceRepository crewAttendanceRepository() {
