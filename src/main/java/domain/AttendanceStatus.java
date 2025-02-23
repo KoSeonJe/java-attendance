@@ -50,8 +50,7 @@ public enum AttendanceStatus {
         return ATTENDANCE;
     }
 
-    public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(
-            List<AttendanceStatus> attendanceStatuses) {
+    public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(List<AttendanceStatus> attendanceStatuses) {
         Map<AttendanceStatus, Integer> attendanceStatusCount = initializeAttendanceMap();
         attendanceStatuses.forEach(status -> attendanceStatusCount.put(status, attendanceStatusCount.get(status) + 1));
         return attendanceStatusCount;

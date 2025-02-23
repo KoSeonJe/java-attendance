@@ -10,7 +10,7 @@ public record AfterAttendanceDto(
 ) {
 
     public static AfterAttendanceDto of(AttendanceDateTime updatedDateTime, CrewAttendance crewAttendance) {
-        AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(updatedDateTime.getDate());
+        AttendanceStatus attendanceStatus = crewAttendance.retrieveAttendanceStatus(updatedDateTime.getDate());
         return new AfterAttendanceDto(updatedDateTime, attendanceStatus);
     }
 }

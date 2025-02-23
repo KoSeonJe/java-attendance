@@ -35,7 +35,7 @@ public class RecordMenuExecutor implements MenuExecutor {
                 .map(AttendanceRecodeDto::from)
                 .toList();
 
-        AttendanceResultDto attendanceResultDto = AttendanceResultDto.of(nickName, crewAttendance.calculateAttendanceStatuses());
+        AttendanceResultDto attendanceResultDto = AttendanceResultDto.of(crewAttendance);
 
         outputView.printTotalAttendanceStatus(attendanceRecodeDtos, attendanceResultDto);
     }

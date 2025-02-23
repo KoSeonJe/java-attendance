@@ -38,7 +38,7 @@ public class CheckMenuExecutor implements MenuExecutor {
 
         AttendanceDateTime arriveAttendanceDateTime = createDateTime(applicationTime.getApplicationTime().toLocalDate(), inputView.readArriveTime());
         crewAttendance.addAttendance(arriveAttendanceDateTime);
-        AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(arriveAttendanceDateTime.getDate());
+        AttendanceStatus attendanceStatus = crewAttendance.retrieveAttendanceStatus(arriveAttendanceDateTime.getDate());
 
         outputView.printArriveResult(arriveAttendanceDateTime, attendanceStatus.getName());
     }

@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.List;
+import java.util.Map;
 
 public class CrewAttendance {
 
@@ -28,14 +29,12 @@ public class CrewAttendance {
         return attendance.retrieveDateTimesOrderByDate();
     }
 
-    public AttendanceStatus calculateAttendanceStatus(Date date) {
+    public AttendanceStatus retrieveAttendanceStatus(Date date) {
         return attendance.calculateAttendanceStatus(date);
     }
 
-    public List<AttendanceStatus> calculateAttendanceStatuses() {
-        return attendance.retrieveDateTimes().stream()
-                .map(datetime -> attendance.calculateAttendanceStatus(datetime.getDate()))
-                .toList();
+    public Map<AttendanceStatus, Integer> retrieveAttendanceStatusCount() {
+        return attendance.calculateAttendanceStatusCount();
     }
 
     public boolean isPenalty() {
@@ -43,11 +42,7 @@ public class CrewAttendance {
     }
 
     public Penalty retrievePenalty() {
-        return Penalty.calculatePenalty(calculateAttendanceStatuses());
-    }
-
-    public Attendance getAttendance() {
-        return attendance;
+        return Penalty.calculatePenalty(attendance.calculateAttendanceStatuses());
     }
 
     public Crew getCrew() {

@@ -23,7 +23,7 @@ class AttendanceTest {
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(crewAttendance.retrieveDateTimes().size())
+            softly.assertThat(crewAttendance.retrieveDateTimesOrderByDate().size())
                     .isEqualTo(dateTimes.size());
         });
     }
@@ -56,7 +56,7 @@ class AttendanceTest {
         attendance.addDateTime(new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(13, 4)));
 
         // then
-        Assertions.assertThat(attendance.retrieveDateTimes().get(0))
+        Assertions.assertThat(attendance.retrieveDateTimesOrderByDate().get(0))
                 .isEqualTo(new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(13, 4)));
     }
 
@@ -74,7 +74,7 @@ class AttendanceTest {
         );
 
         //when
-        Assertions.assertThat(attendance.retrieveDateTimes().getFirst())
+        Assertions.assertThat(attendance.retrieveDateTimesOrderByDate().getFirst())
                 .isEqualTo(new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5)));
     }
 

@@ -29,7 +29,7 @@ class CrewAttendanceRepositoryTest {
         crewAttendanceRepository.save(crewAttendance);
 
         // then
-        CrewAttendance savedCrewAttendance = crewAttendanceRepository.findByEqualsCrew(crew);
+        CrewAttendance savedCrewAttendance = crewAttendanceRepository.findByEqualsNickName("이름");
         Assertions.assertThat(crewAttendance)
                 .isEqualTo(savedCrewAttendance);
     }
@@ -46,7 +46,7 @@ class CrewAttendanceRepositoryTest {
         crewAttendanceRepository.save(crewAttendance);
 
         // when
-        CrewAttendance foundCrewAttendance = crewAttendanceRepository.findByEqualsCrew(crew);
+        CrewAttendance foundCrewAttendance = crewAttendanceRepository.findByEqualsNickName("이름");
 
         // then
         Assertions.assertThat(crewAttendance)
@@ -86,7 +86,7 @@ class CrewAttendanceRepositoryTest {
         CrewAttendanceRepository crewAttendanceRepository = CrewAttendanceRepository.getInstance();
 
         // when & then
-        Assertions.assertThatThrownBy(() -> crewAttendanceRepository.findByEqualsCrew(new Crew("이름")))
+        Assertions.assertThatThrownBy(() -> crewAttendanceRepository.findByEqualsNickName("이름"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 이름의 출석 정보가 없습니다.");
     }

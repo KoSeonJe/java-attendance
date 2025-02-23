@@ -30,11 +30,6 @@ public class CrewAttendanceRepository {
         throw new IllegalArgumentException("해당 이름의 출석 정보가 없습니다.");
     }
 
-    public Optional<CrewAttendance> findOptionalByCrew(Crew crew) {
-        return Optional.ofNullable(crewAttendance.get(crew));
-    }
-
-
     public List<CrewAttendance> findAll() {
         return crewAttendance.values().stream()
                 .toList();

@@ -11,7 +11,7 @@ public record BeforeAttendanceDto(
 
     public static BeforeAttendanceDto of(AttendanceDateTime attendanceDateTime, CrewAttendance crewAttendance) {
         AttendanceDateTime beforeAttendanceDateTime = crewAttendance.retrieveDateTime(attendanceDateTime.getDate());
-        AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(attendanceDateTime.getDate());
-        return new BeforeAttendanceDto(attendanceDateTime, beforeAttendanceStatus);
+        AttendanceStatus beforeAttendanceStatus = crewAttendance.retrieveAttendanceStatus(attendanceDateTime.getDate());
+        return new BeforeAttendanceDto(beforeAttendanceDateTime, beforeAttendanceStatus);
     }
 }
