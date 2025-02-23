@@ -13,43 +13,44 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DataInitializer {
 
     private static final DateTimeFormatter DEFAULT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static final LocalDate START_DATE = LocalDate.of(2024, 12, 2);
+    private static final LocalDate REQUIREMENT_START_DATE = LocalDate.of(2024, 12, 2);
+    private static final int FILE_HEADER_INDEX = 1;
+    private static final int CREW_NAME_INDEX = 0;
 
-    public void initialize(LocalDateTime todayLocalDateTime, String filePath) {
-        Set<String> crewNames = extractCrewNames(filePath);
-        Map<Date, Time> initialDateTimes = createInitialAttendanceMap(todayLocalDateTime);
-        registerCrewData(crewNames, initialDateTimes, filePath, todayLocalDateTime);
+    public final CrewAttendanceRepository crewAttendanceRepository;
+
+    public DataInitializer(CrewAttendanceRepository crewAttendanceRepository) {
+        this.crewAttendanceRepository = crewAttendanceRepository;
     }
 
-    private Set<String> extractCrewNames(String filePath) {
+    public void initialize(LocalDateTime applicationTime, String filePath) {
         List<String> lines = FileDataLoader.loadLines(filePath);
-        Set<String> crewNames = new HashSet<>();
 
-        lines.stream()
-                .skip(1)
-                .map(this::extractCrewName)
-                .forEach(crewNames::add);
-
-        return crewNames;
+        Set<String> crewNames = extractCrewNames(lines);
+        Map<Date, Time> initialDateTimes = createInitialAttendanceMap(applicationTime);
+        registerCrewData(crewNames, initialDateTimes, lines, applicationTime);
     }
 
-    private String extractCrewName(String line) {
-        return splitItems(line)[0];
+    private Set<String> extractCrewNames(List<String> lines) {
+        return lines.stream()
+                .skip(FILE_HEADER_INDEX)
+                .map(line -> splitItems(line)[CREW_NAME_INDEX])
+                .collect(Collectors.toSet());
     }
 
-    private Map<Date, Time> createInitialAttendanceMap(LocalDateTime todayLocalDateTime) {
+    private Map<Date, Time> createInitialAttendanceMap(LocalDateTime applicationTime) {
         Map<Date, Time> dateTimes = new HashMap<>();
-        LocalDate currentDate = START_DATE;
+        LocalDate currentDate = REQUIREMENT_START_DATE;
 
-        while (!currentDate.isAfter(todayLocalDateTime.toLocalDate())) {
+        while (!currentDate.isAfter(applicationTime.toLocalDate())) {
             addNonHolidayDate(dateTimes, currentDate);
             currentDate = currentDate.plusDays(1);
         }
@@ -63,27 +64,29 @@ public class DataInitializer {
         }
     }
 
-    private void registerCrewData(Set<String> crewNames, Map<Date, Time> initialDateTimes,
-                                  String filePath, LocalDateTime todayLocalDateTime) {
-        CrewAttendanceRepository crewAttendanceRepository = CrewAttendanceRepository.getInstance();
-
+    private void registerCrewData(
+            Set<String> crewNames,
+            Map<Date, Time> initialDateTimes,
+            List<String> lines,
+            LocalDateTime applicationTime
+    ) {
         crewNames.forEach(name -> {
-            Crew crew = new Crew(name);
-            CrewAttendance crewAttendance = new CrewAttendance(crew, new Attendance(new HashMap<>(initialDateTimes)));
+            CrewAttendance crewAttendance = new CrewAttendance(new Crew(name), new Attendance(initialDateTimes));
 
-            loadAndApplyAttendance(crewAttendance, filePath, todayLocalDateTime);
+            loadAndApplyAttendance(crewAttendance, lines, applicationTime);
             crewAttendanceRepository.save(crewAttendance);
         });
     }
 
-    private void loadAndApplyAttendance(CrewAttendance crewAttendance, String filePath,
-                                        LocalDateTime todayLocalDateTime) {
-        List<String> lines = FileDataLoader.loadLines(filePath);
-
+    private void loadAndApplyAttendance(
+            CrewAttendance crewAttendance,
+            List<String> lines,
+            LocalDateTime applicationTime
+    ) {
         lines.stream()
-                .skip(1)
+                .skip(FILE_HEADER_INDEX)
                 .map(this::parseAttendanceData)
-                .filter(data -> isValidAttendance(data, crewAttendance, todayLocalDateTime))
+                .filter(data -> isValidAttendance(data, crewAttendance, applicationTime))
                 .forEach(data -> crewAttendance.addAttendance(data.dateTime));
     }
 
@@ -93,26 +96,29 @@ public class DataInitializer {
         return new AttendanceData(items[0], parseToDate(items[1]));
     }
 
-    private boolean isValidAttendance(AttendanceData data, CrewAttendance crewAttendance,
-                                      LocalDateTime todayLocalDateTime) {
+    private boolean isValidAttendance(
+            AttendanceData data,
+            CrewAttendance crewAttendance,
+            LocalDateTime applicationTime
+    ) {
         return crewAttendance.getCrew().getName().equals(data.name) &&
-                !data.dateTime.getDate().isAfter(new Date(todayLocalDateTime.toLocalDate())) &&
+                !data.dateTime.getDate().isAfter(new Date(applicationTime.toLocalDate())) &&
                 !data.dateTime.getDate().isHoliday();
     }
 
-    private String[] splitItems(final String input) {
+    private String[] splitItems(String input) {
         return Arrays.stream(input.split(",", -1))
                 .map(String::trim)
                 .toArray(String[]::new);
     }
 
-    private void validateSize(final String[] inputs) {
+    private void validateSize(String[] inputs) {
         if (inputs.length != 2) {
             throw new IllegalArgumentException("잘못된 데이터 형식: " + Arrays.toString(inputs));
         }
     }
 
-    private LocalDateTime parseToDate(final String dateString) {
+    private LocalDateTime parseToDate(String dateString) {
         try {
             return LocalDateTime.parse(dateString, DEFAULT_FORMATTER);
         } catch (DateTimeParseException e) {

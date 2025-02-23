@@ -9,13 +9,12 @@ import view.OutputView;
 public class AttendanceApplication {
     public static void main(String[] args) {
         LocalDateTime applicationTime = ApplicationConfig.applicationTime;
+        ApplicationConfig applicationConfig = new ApplicationConfig();
 
-        InputView inputView = new InputView();
-        OutputView outputView = new OutputView();
-        DataInitializer dataInitializer = new DataInitializer();
+        DataInitializer dataInitializer = applicationConfig.dataInitializer();
         dataInitializer.initialize(applicationTime, "src/main/resources/attendances.csv");
-        AttendanceController controller = new AttendanceController(inputView, outputView,
-                CrewAttendanceRepository.getInstance());
+
+        AttendanceController controller = applicationConfig.attendanceController();
         controller.run(applicationTime);
     }
 }
