@@ -40,7 +40,7 @@ public class Date {
     }
 
     public boolean isHoliday() {
-        return getWorkDay().isWeekend() || HOLIDAY.contains(getDayValue());  // TODO: 공휴일 로직 추가
+        return getWorkDay().isWeekend() || HOLIDAY.contains(getDayValue());
     }
 
     @Override
