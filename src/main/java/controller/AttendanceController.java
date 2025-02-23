@@ -1,20 +1,6 @@
 package controller;
 
-import controller.dto.AttendanceRecodeDto;
-import controller.dto.AttendanceResultDto;
-import controller.dto.PenaltyCrewDto;
-import domain.AttendanceStatus;
-import domain.Crew;
-import domain.CrewAttendance;
-import domain.CrewAttendanceRepository;
-import domain.Date;
-import domain.DateTime;
 import domain.MenuOption;
-import domain.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 import util.ApplicationTime;
 import view.InputView;
 import view.OutputView;

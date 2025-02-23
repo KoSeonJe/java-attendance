@@ -5,7 +5,7 @@ import domain.Crew;
 import domain.CrewAttendance;
 import domain.CrewAttendanceRepository;
 import domain.Date;
-import domain.DateTime;
+import domain.AttendanceDateTime;
 import domain.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,21 +41,21 @@ public class EditMenuExecutor implements MenuExecutor {
 
         int updateDate = inputView.readUpdateDate();
         LocalTime updateArriveTime = inputView.readUpdateArriveTime();
-        DateTime afterDateTime = createDateTime(updateDate, updateArriveTime);
+        AttendanceDateTime afterAttendanceDateTime = createDateTime(updateDate, updateArriveTime);
 
-        DateTime beforeDateTime = crewAttendance.retrieveDateTime(afterDateTime.getDate());
-        AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(beforeDateTime.getDate());
+        AttendanceDateTime beforeAttendanceDateTime = crewAttendance.retrieveDateTime(afterAttendanceDateTime.getDate());
+        AttendanceStatus beforeAttendanceStatus = crewAttendance.calculateAttendanceStatus(beforeAttendanceDateTime.getDate());
 
-        crewAttendance.updateAttendance(afterDateTime);
-        AttendanceStatus afterAttendanceStatus = crewAttendance.calculateAttendanceStatus(afterDateTime.getDate());
+        crewAttendance.updateAttendance(afterAttendanceDateTime);
+        AttendanceStatus afterAttendanceStatus = crewAttendance.calculateAttendanceStatus(afterAttendanceDateTime.getDate());
 
-        outputView.printUpdateResult(beforeDateTime, beforeAttendanceStatus.getName(),
-                afterDateTime, afterAttendanceStatus.getName());
+        outputView.printUpdateResult(beforeAttendanceDateTime, beforeAttendanceStatus.getName(),
+                afterAttendanceDateTime, afterAttendanceStatus.getName());
     }
 
-    private DateTime createDateTime(int day, LocalTime arriveTime) {
+    private AttendanceDateTime createDateTime(int day, LocalTime arriveTime) {
         LocalDateTime time = applicationTime.getApplicationTime();
-        return new DateTime(new Date(LocalDate.of(time.getYear(), time.getMonth(), day)),
+        return new AttendanceDateTime(new Date(LocalDate.of(time.getYear(), time.getMonth(), day)),
                 new Time(arriveTime.getHour(), arriveTime.getMinute()));
     }
 }

@@ -38,7 +38,7 @@ class AttendanceTest {
         Attendance crewAttendance = new Attendance(dateTimes);
 
         // when & then
-        Assertions.assertThatThrownBy(() -> crewAttendance.addDateTime(new DateTime(
+        Assertions.assertThatThrownBy(() -> crewAttendance.addDateTime(new AttendanceDateTime(
                         new Date(LocalDate.of(2024, 12, 2)),
                         new Time(13, 4)
                 )))
@@ -53,11 +53,11 @@ class AttendanceTest {
         Attendance attendance = new Attendance(dateTimes);
 
         // when
-        attendance.addDateTime(new DateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(13, 4)));
+        attendance.addDateTime(new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(13, 4)));
 
         // then
         Assertions.assertThat(attendance.retrieveDateTimes().get(0))
-                .isEqualTo(new DateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(13, 4)));
+                .isEqualTo(new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(13, 4)));
     }
 
     @Test
@@ -70,12 +70,12 @@ class AttendanceTest {
 
         //given
         attendance.updateDateTime(
-                new DateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5))
+                new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5))
         );
 
         //when
         Assertions.assertThat(attendance.retrieveDateTimes().getFirst())
-                .isEqualTo(new DateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5)));
+                .isEqualTo(new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5)));
     }
 
     @Test
@@ -86,7 +86,7 @@ class AttendanceTest {
 
         // when & then
         Assertions.assertThatThrownBy(() -> attendance.updateDateTime(
-                        new DateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5)
+                        new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 2)), new Time(10, 5)
                         )))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 날짜의 출석 정보가 없습니다.");

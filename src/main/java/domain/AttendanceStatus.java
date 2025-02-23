@@ -21,8 +21,8 @@ public enum AttendanceStatus {
         this.limitTime = limitMinute;
     }
 
-    public static AttendanceStatus findByDateTime(DateTime dateTime) {
-        if (dateTime.isTimeNull()) {
+    public static AttendanceStatus findByDateTime(AttendanceDateTime attendanceDateTime) {
+        if (attendanceDateTime.isTimeNull()) {
             return ABSENCE;
         }
         Time time = dateTime.getTime();

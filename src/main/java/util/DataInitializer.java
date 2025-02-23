@@ -5,7 +5,7 @@ import domain.Crew;
 import domain.CrewAttendance;
 import domain.CrewAttendanceRepository;
 import domain.Date;
-import domain.DateTime;
+import domain.AttendanceDateTime;
 import domain.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -87,7 +87,7 @@ public class DataInitializer {
                 .skip(FILE_HEADER_INDEX)
                 .map(this::parseAttendanceData)
                 .filter(data -> isValidAttendance(data, crewAttendance))
-                .forEach(data -> crewAttendance.addAttendance(data.dateTime));
+                .forEach(data -> crewAttendance.addAttendance(data.attendanceDateTime));
     }
 
     private AttendanceData parseAttendanceData(String line) {
@@ -101,8 +101,8 @@ public class DataInitializer {
             CrewAttendance crewAttendance
     ) {
         return crewAttendance.getCrew().getName().equals(data.name) &&
-                !data.dateTime.getDate().isAfter(new Date(applicationTime.getApplicationTime().toLocalDate())) &&
-                !data.dateTime.getDate().isHoliday();
+                !data.attendanceDateTime.getDate().isAfter(new Date(applicationTime.getApplicationTime().toLocalDate())) &&
+                !data.attendanceDateTime.getDate().isHoliday();
     }
 
     private String[] splitItems(String input) {
@@ -127,11 +127,11 @@ public class DataInitializer {
 
     private static class AttendanceData {
         private final String name;
-        private final DateTime dateTime;
+        private final AttendanceDateTime attendanceDateTime;
 
         AttendanceData(String name, LocalDateTime localDateTime) {
             this.name = name;
-            this.dateTime = DateTime.of(localDateTime);
+            this.attendanceDateTime = AttendanceDateTime.of(localDateTime);
         }
     }
 }

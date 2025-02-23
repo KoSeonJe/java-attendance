@@ -1,13 +1,13 @@
 package controller.dto;
 
 import domain.AttendanceStatus;
-import domain.DateTime;
+import domain.AttendanceDateTime;
 
 public record AttendanceRecodeDto(
-        DateTime dateTime,
+        AttendanceDateTime attendanceDateTime,
         String attendanceStatusName
 ) {
-    public static AttendanceRecodeDto from(DateTime dateTime) {
-        return new AttendanceRecodeDto(dateTime, AttendanceStatus.findByDateTime(dateTime).getName());
+    public static AttendanceRecodeDto from(AttendanceDateTime attendanceDateTime) {
+        return new AttendanceRecodeDto(attendanceDateTime, AttendanceStatus.findByDateTime(attendanceDateTime).getName());
     }
 }

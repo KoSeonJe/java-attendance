@@ -11,50 +11,50 @@ public class Attendance {
         this.dateTimes = new HashMap<>(dateTimes);
     }
 
-    public void addDateTime(DateTime dateTime) {
-        if (isAlreadyExists(dateTime)) {
+    public void addDateTime(AttendanceDateTime attendanceDateTime) {
+        if (isAlreadyExists(attendanceDateTime)) {
             throw new IllegalArgumentException("해당 날짜의 출석 정보가 이미 존재합니다.");
         }
-        dateTimes.put(dateTime.getDate(), dateTime.getTime());
+        dateTimes.put(attendanceDateTime.getDate(), attendanceDateTime.getTime());
     }
 
-    public void updateDateTime(DateTime updateDateTime) {
-        if (!isAlreadyExists(updateDateTime)) {
+    public void updateDateTime(AttendanceDateTime updateAttendanceDateTime) {
+        if (!isAlreadyExists(updateAttendanceDateTime)) {
             throw new IllegalArgumentException("해당 날짜의 출석 정보가 없습니다.");
         }
-        dateTimes.put(updateDateTime.getDate(), updateDateTime.getTime());
+        dateTimes.put(updateAttendanceDateTime.getDate(), updateAttendanceDateTime.getTime());
     }
 
-    private boolean isAlreadyExists(DateTime dateTime) {
-        Time time = dateTimes.get(dateTime.getDate());
+    private boolean isAlreadyExists(AttendanceDateTime attendanceDateTime) {
+        Time time = dateTimes.get(attendanceDateTime.getDate());
         return time != null;
     }
 
-    public DateTime retrieveDateTime(Date date) {
-        return new DateTime(date, dateTimes.get(date));
+    public AttendanceDateTime retrieveDateTime(Date date) {
+        return new AttendanceDateTime(date, dateTimes.get(date));
     }
 
-    public List<DateTime> retrieveDateTimesOrderByDate() {
+    public List<AttendanceDateTime> retrieveDateTimesOrderByDate() {
         return dateTimes.keySet().stream()
-                .map(date -> new DateTime(date, dateTimes.get(date)))
+                .map(date -> new AttendanceDateTime(date, dateTimes.get(date)))
                 .sorted()
                 .toList();
     }
 
-    public List<DateTime> retrieveDateTimes() {
+    public List<AttendanceDateTime> retrieveDateTimes() {
         return dateTimes.keySet().stream()
-                .map(date -> new DateTime(date, dateTimes.get(date)))
+                .map(date -> new AttendanceDateTime(date, dateTimes.get(date)))
                 .toList();
     }
 
     public AttendanceStatus calculateAttendanceStatus(Date date) {
-        DateTime dateTime = new DateTime(date, dateTimes.get(date));
-        return AttendanceStatus.findByDateTime(dateTime);
+        AttendanceDateTime attendanceDateTime = new AttendanceDateTime(date, dateTimes.get(date));
+        return AttendanceStatus.findByDateTime(attendanceDateTime);
     }
 
     public Map<AttendanceStatus, Integer> calculateAttendanceStatusCount() {
         return AttendanceStatus.calculateAttendanceStatusCount(retrieveDateTimes().stream()
-                .map(dateTime -> new DateTime(dateTime.getDate(),
+                .map(dateTime -> new AttendanceDateTime(dateTime.getDate(),
                         dateTimes.get(dateTime.getDate())))
                 .map(AttendanceStatus::findByDateTime)
                 .toList());

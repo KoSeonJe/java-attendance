@@ -11,19 +11,19 @@ public class CrewAttendance {
         this.attendance = attendance;
     }
 
-    public void addAttendance(DateTime dateTime) {
-        attendance.addDateTime(dateTime);
+    public void addAttendance(AttendanceDateTime attendanceDateTime) {
+        attendance.addDateTime(attendanceDateTime);
     }
 
-    public void updateAttendance(DateTime updateDateTime) {
-        attendance.updateDateTime(updateDateTime);
+    public void updateAttendance(AttendanceDateTime updateAttendanceDateTime) {
+        attendance.updateDateTime(updateAttendanceDateTime);
     }
 
-    public DateTime retrieveDateTime(Date date) {
+    public AttendanceDateTime retrieveDateTime(Date date) {
         return attendance.retrieveDateTime(date);
     }
 
-    public List<DateTime> retrieveDateTimesOrderByDate() {
+    public List<AttendanceDateTime> retrieveDateTimesOrderByDate() {
         return attendance.retrieveDateTimesOrderByDate();
     }
 

@@ -1,16 +1,14 @@
 package controller;
 
 import domain.AttendanceStatus;
-import domain.Crew;
 import domain.CrewAttendance;
 import domain.CrewAttendanceRepository;
 import domain.Date;
-import domain.DateTime;
+import domain.AttendanceDateTime;
 import domain.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import util.ApplicationTime;
-import util.AttendanceApplicationTime;
 import view.InputView;
 import view.OutputView;
 
@@ -36,20 +34,17 @@ public class CheckMenuExecutor implements MenuExecutor {
     @Override
     public void execute() {
         String nickName = inputView.readNickName();
-        Crew crew = new Crew(nickName);
-        CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsCrew(crew);
+        CrewAttendance crewAttendance = crewAttendanceRepository.findByEqualsNickName(nickName);
 
-        LocalTime arriveTime = inputView.readArriveTime();
-        DateTime dateTime = createDateTime(applicationTime.getApplicationTime().toLocalDate(), arriveTime);
-        AttendanceStatus.findByDateTime(dateTime);
-        crewAttendance.addAttendance(dateTime);
-        AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(dateTime.getDate());
+        AttendanceDateTime arriveAttendanceDateTime = createDateTime(applicationTime.getApplicationTime().toLocalDate(), inputView.readArriveTime());
+        AttendanceStatus.findByDateTime(arriveAttendanceDateTime);
+        crewAttendance.addAttendance(arriveAttendanceDateTime);
+        AttendanceStatus attendanceStatus = crewAttendance.calculateAttendanceStatus(arriveAttendanceDateTime.getDate());
 
-        outputView.printArriveResult(dateTime, attendanceStatus.getName());
+        outputView.printArriveResult(arriveAttendanceDateTime, attendanceStatus.getName());
     }
 
-    private DateTime createDateTime(LocalDate localDate, LocalTime arriveTime) {
-        return new DateTime(new Date(localDate),
-                new Time(arriveTime.getHour(), arriveTime.getMinute()));
+    private AttendanceDateTime createDateTime(LocalDate localDate, LocalTime arriveTime) {
+        return new AttendanceDateTime(new Date(localDate), new Time(arriveTime.getHour(), arriveTime.getMinute()));
     }
 }

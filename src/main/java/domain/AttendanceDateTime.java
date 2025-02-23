@@ -3,7 +3,11 @@ package domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DateTime implements Comparable<DateTime> {
+public class AttendanceDateTime implements Comparable<AttendanceDateTime> {
+
+    private static final int CAMPUS_OPEN_TIME = 8;
+    private static final int CAMPUS_CLOSE_TIME = 18;
+
     private final Date date;
     private final Time time;
 
@@ -24,8 +28,8 @@ public class DateTime implements Comparable<DateTime> {
         return time == null;
     }
 
-    public static DateTime of(LocalDateTime localDateTime) {
-        return new DateTime(new Date(localDateTime.toLocalDate()),
+    public static AttendanceDateTime of(LocalDateTime localDateTime) {
+        return new AttendanceDateTime(new Date(localDateTime.toLocalDate()),
                 new Time(localDateTime.toLocalTime().getHour(), localDateTime.toLocalTime().getMinute()));
     }
 
@@ -34,8 +38,8 @@ public class DateTime implements Comparable<DateTime> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DateTime dateTime = (DateTime) o;
-        return Objects.equals(date, dateTime.date) && Objects.equals(time, dateTime.time);
+        AttendanceDateTime attendanceDateTime = (AttendanceDateTime) o;
+        return Objects.equals(date, attendanceDateTime.date) && Objects.equals(time, attendanceDateTime.time);
     }
 
     @Override
@@ -44,7 +48,7 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     @Override
-    public int compareTo(DateTime o) {
+    public int compareTo(AttendanceDateTime o) {
         return date.getDayValue() - (o.date.getDayValue());
     }
 }
