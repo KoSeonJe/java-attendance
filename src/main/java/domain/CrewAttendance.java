@@ -3,6 +3,7 @@ package domain;
 import java.util.List;
 
 public class CrewAttendance {
+
     private final Crew crew;
     private final Attendance attendance;
 
@@ -40,7 +41,7 @@ public class CrewAttendance {
     public boolean isPenalty() {
         return !retrievePenalty().equals(Penalty.NONE);
     }
-    
+
     public Penalty retrievePenalty() {
         return Penalty.calculatePenalty(calculateAttendanceStatuses());
     }

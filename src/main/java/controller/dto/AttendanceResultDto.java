@@ -12,9 +12,9 @@ public record AttendanceResultDto(
         int perceptionCount,
         String penaltyName
 ) {
+
     public static AttendanceResultDto of(String name, List<AttendanceStatus> attendanceStatuses) {
-        Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(
-                attendanceStatuses);
+        Map<AttendanceStatus, Integer> attendanceStatusCount = AttendanceStatus.calculateAttendanceStatusCount(attendanceStatuses);
         return new AttendanceResultDto(
                 name,
                 attendanceStatusCount.get(AttendanceStatus.ATTENDANCE),

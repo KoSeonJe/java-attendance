@@ -101,7 +101,8 @@ public class DataInitializer {
             CrewAttendance crewAttendance
     ) {
         return crewAttendance.getCrew().getName().equals(data.name) &&
-                !data.attendanceDateTime.getDate().isAfter(new Date(applicationTime.getApplicationTime().toLocalDate())) &&
+                !data.attendanceDateTime.getDate().isAfter(new Date(applicationTime.getApplicationTime().toLocalDate()))
+                &&
                 !data.attendanceDateTime.getDate().isHoliday();
     }
 
@@ -126,6 +127,7 @@ public class DataInitializer {
     }
 
     private static class AttendanceData {
+
         private final String name;
         private final AttendanceDateTime attendanceDateTime;
 

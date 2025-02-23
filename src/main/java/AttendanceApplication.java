@@ -7,6 +7,7 @@ import view.InputView;
 import view.OutputView;
 
 public class AttendanceApplication {
+
     public static void main(String[] args) {
         ApplicationConfig applicationConfig = new ApplicationConfig();
 

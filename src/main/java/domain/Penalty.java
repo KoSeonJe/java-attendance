@@ -13,7 +13,6 @@ public enum Penalty {
     private static final int RESET_COUNT = 0;
     private static final int CONVERT_COUNT = 3;
 
-
     private final String name;
     private final int penaltyCount;
 

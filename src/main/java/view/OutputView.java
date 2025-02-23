@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class OutputView {
+
     public void printArriveResult(AttendanceDateTime attendanceDateTime, String attendanceStatusName) {
         Date date = attendanceDateTime.getDate();
         WorkDay workDay = date.getWorkDay();
@@ -52,7 +53,7 @@ public class OutputView {
     }
 
     public void printTotalAttendanceStatus(List<AttendanceRecodeDto> attendanceRecodeDto,
-                                           AttendanceResultDto attendanceResultDto) {
+            AttendanceResultDto attendanceResultDto) {
         System.out.printf("이번 달 %s의 출석 기록입니다.\n", attendanceResultDto.name());
         attendanceRecodeDto.forEach(attendanceRecode -> {
             Date date = attendanceRecode.attendanceDateTime().getDate();

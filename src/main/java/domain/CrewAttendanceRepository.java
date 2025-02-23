@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CrewAttendanceRepository {
+
     private static final CrewAttendanceRepository INSTANCE = new CrewAttendanceRepository();
 
     private final Map<Crew, CrewAttendance> crewAttendance = new HashMap<>();

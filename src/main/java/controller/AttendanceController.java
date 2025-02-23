@@ -6,6 +6,7 @@ import view.InputView;
 import view.OutputView;
 
 public class AttendanceController {
+
     private final InputView inputView;
     private final OutputView outputView;
     private final ApplicationTime applicationTime;

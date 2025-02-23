@@ -7,6 +7,7 @@ public record AttendanceRecodeDto(
         AttendanceDateTime attendanceDateTime,
         String attendanceStatusName
 ) {
+
     public static AttendanceRecodeDto from(AttendanceDateTime attendanceDateTime) {
         return new AttendanceRecodeDto(attendanceDateTime, AttendanceStatus.findByDateTime(attendanceDateTime).getName());
     }

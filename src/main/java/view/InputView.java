@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class InputView {
+
     private static final Scanner scanner = new Scanner(System.in);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 

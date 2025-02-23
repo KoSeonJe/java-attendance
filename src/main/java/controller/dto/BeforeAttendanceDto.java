@@ -3,7 +3,6 @@ package controller.dto;
 import domain.AttendanceDateTime;
 import domain.AttendanceStatus;
 import domain.CrewAttendance;
-import java.time.LocalDate;
 
 public record BeforeAttendanceDto(
         AttendanceDateTime attendanceDateTime,

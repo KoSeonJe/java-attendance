@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Attendance {
+
     private final Map<Date, Time> dateTimes;
 
     public Attendance(Map<Date, Time> dateTimes) {
