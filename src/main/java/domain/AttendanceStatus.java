@@ -9,8 +9,6 @@ public enum AttendanceStatus {
     PERCEPTION("지각", 5),
     ABSENCE("결석", 30);
 
-    private static final int CAMPUS_OPEN_TIME = 8;
-    private static final int CAMPUS_CLOSE_TIME = 18;
     private static final int STATUS_DEFAULT_COUNT = 0;
 
     private final String name;
@@ -25,19 +23,11 @@ public enum AttendanceStatus {
         if (attendanceDateTime.isTimeNull()) {
             return ABSENCE;
         }
-        Time time = dateTime.getTime();
-        validateTime(time);
-        WorkDay today = dateTime.getDate().getWorkDay();
+        Time time = attendanceDateTime.getTime();
+        WorkDay today = attendanceDateTime.getDate().getWorkDay();
         validateWorkDay(today);
 
         return determineAttendanceStatus(today, time);
-    }
-
-    private static void validateTime(Time time) {
-        int hour = time.getHour();
-        if (hour < CAMPUS_OPEN_TIME || hour > CAMPUS_CLOSE_TIME) {
-            throw new IllegalArgumentException("캠퍼스 운영 시간이 아닙니다.");
-        }
     }
 
     private static void validateWorkDay(WorkDay workDay) {
