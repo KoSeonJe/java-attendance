@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import util.ApplicationTime;
 import view.InputView;
 import view.OutputView;
 
@@ -22,22 +23,28 @@ public class AttendanceController {
     private final InputView inputView;
     private final OutputView outputView;
     private final CrewAttendanceRepository crewAttendanceRepository;
+    private final ApplicationTime applicationTime;
 
-    public AttendanceController(InputView inputView, OutputView outputView,
-                                CrewAttendanceRepository crewAttendanceRepository) {
+    public AttendanceController(
+            InputView inputView,
+            OutputView outputView,
+            CrewAttendanceRepository crewAttendanceRepository,
+            ApplicationTime applicationTime
+    ) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.crewAttendanceRepository = crewAttendanceRepository;
+        this.applicationTime = applicationTime;
     }
 
-    public void run(LocalDateTime localDateTime) {
+    public void run() {
         boolean isRunning = true;
 
         while (isRunning) {
             try {
-                MenuOption menuOption = inputView.readMenuOption(localDateTime);
+                MenuOption menuOption = inputView.readMenuOption(applicationTime.getApplicationTime());
                 isRunning = shouldContinue(menuOption);
-                executeMenu(menuOption, localDateTime);
+                executeMenu(menuOption);
             } catch (IllegalArgumentException e) {
                 outputView.printMessage(e.getMessage());
             }
@@ -48,13 +55,13 @@ public class AttendanceController {
         return !menuOption.isExit();
     }
 
-    private void executeMenu(MenuOption menuOption, LocalDateTime localDateTime) {
+    private void executeMenu(MenuOption menuOption) {
         if (menuOption == MenuOption.CHECK) {
-            handleCheckAttendance(localDateTime);
+            handleCheckAttendance(applicationTime.getApplicationTime());
             return;
         }
         if (menuOption == MenuOption.EDIT) {
-            handleEditAttendance(localDateTime);
+            handleEditAttendance(applicationTime.getApplicationTime());
             return;
         }
         if (menuOption == MenuOption.RECORD) {

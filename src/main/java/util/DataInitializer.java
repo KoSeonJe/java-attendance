@@ -25,18 +25,20 @@ public class DataInitializer {
     private static final int FILE_HEADER_INDEX = 1;
     private static final int CREW_NAME_INDEX = 0;
 
-    public final CrewAttendanceRepository crewAttendanceRepository;
+    private final CrewAttendanceRepository crewAttendanceRepository;
+    private final ApplicationTime applicationTime;
 
-    public DataInitializer(CrewAttendanceRepository crewAttendanceRepository) {
+    public DataInitializer(ApplicationTime applicationTime, CrewAttendanceRepository crewAttendanceRepository) {
         this.crewAttendanceRepository = crewAttendanceRepository;
+        this.applicationTime = applicationTime;
     }
 
-    public void initialize(LocalDateTime applicationTime, String filePath) {
+    public void initialize(String filePath) {
         List<String> lines = FileDataLoader.loadLines(filePath);
 
         Set<String> crewNames = extractCrewNames(lines);
-        Map<Date, Time> initialDateTimes = createInitialAttendanceMap(applicationTime);
-        registerCrewData(crewNames, initialDateTimes, lines, applicationTime);
+        Map<Date, Time> initialDateTimes = createInitialAttendanceMap();
+        registerCrewData(crewNames, initialDateTimes, lines);
     }
 
     private Set<String> extractCrewNames(List<String> lines) {
@@ -46,11 +48,11 @@ public class DataInitializer {
                 .collect(Collectors.toSet());
     }
 
-    private Map<Date, Time> createInitialAttendanceMap(LocalDateTime applicationTime) {
+    private Map<Date, Time> createInitialAttendanceMap() {
         Map<Date, Time> dateTimes = new HashMap<>();
         LocalDate currentDate = REQUIREMENT_START_DATE;
 
-        while (!currentDate.isAfter(applicationTime.toLocalDate())) {
+        while (!currentDate.isAfter(applicationTime.getApplicationTime().toLocalDate())) {
             addNonHolidayDate(dateTimes, currentDate);
             currentDate = currentDate.plusDays(1);
         }
@@ -67,26 +69,24 @@ public class DataInitializer {
     private void registerCrewData(
             Set<String> crewNames,
             Map<Date, Time> initialDateTimes,
-            List<String> lines,
-            LocalDateTime applicationTime
+            List<String> lines
     ) {
         crewNames.forEach(name -> {
             CrewAttendance crewAttendance = new CrewAttendance(new Crew(name), new Attendance(initialDateTimes));
 
-            loadAndApplyAttendance(crewAttendance, lines, applicationTime);
+            loadAndApplyAttendance(crewAttendance, lines);
             crewAttendanceRepository.save(crewAttendance);
         });
     }
 
     private void loadAndApplyAttendance(
             CrewAttendance crewAttendance,
-            List<String> lines,
-            LocalDateTime applicationTime
+            List<String> lines
     ) {
         lines.stream()
                 .skip(FILE_HEADER_INDEX)
                 .map(this::parseAttendanceData)
-                .filter(data -> isValidAttendance(data, crewAttendance, applicationTime))
+                .filter(data -> isValidAttendance(data, crewAttendance))
                 .forEach(data -> crewAttendance.addAttendance(data.dateTime));
     }
 
@@ -98,11 +98,10 @@ public class DataInitializer {
 
     private boolean isValidAttendance(
             AttendanceData data,
-            CrewAttendance crewAttendance,
-            LocalDateTime applicationTime
+            CrewAttendance crewAttendance
     ) {
         return crewAttendance.getCrew().getName().equals(data.name) &&
-                !data.dateTime.getDate().isAfter(new Date(applicationTime.toLocalDate())) &&
+                !data.dateTime.getDate().isAfter(new Date(applicationTime.getApplicationTime().toLocalDate())) &&
                 !data.dateTime.getDate().isHoliday();
     }
 
