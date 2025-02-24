@@ -38,20 +38,6 @@ public class OutputView {
                 convertTime(afterTime.getMinute()), afterAttendanceDto.attendanceStatus().getName());
     }
 
-    private String convertTime(Integer time) {
-        if (time == null) {
-            return "--";
-        }
-
-        String before = String.valueOf(time);
-
-        if (before.length() < 2) {
-            return "0" + before;
-        }
-
-        return before;
-    }
-
     public void printTotalAttendanceStatus(List<AttendanceRecodeDto> attendanceRecodeDto,
             AttendanceResultDto attendanceResultDto) {
         System.out.printf("이번 달 %s의 출석 기록입니다.\n", attendanceResultDto.name());
@@ -87,5 +73,19 @@ public class OutputView {
 
     public void printMessage(String message) {
         System.out.println(message);
+    }
+
+    private String convertTime(Integer time) {
+        if (time == null) {
+            return "--";
+        }
+
+        String before = String.valueOf(time);
+
+        if (before.length() < 2) {
+            return "0" + before;
+        }
+
+        return before;
     }
 }
