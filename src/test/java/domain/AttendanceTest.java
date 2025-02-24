@@ -180,7 +180,7 @@ class AttendanceTest {
     }
 
     @Test
-    void 각_출석_상태의_횟수를_조회할_수_있다() {
+    void 각_출석_상태의_횟수를_계산할_수_있다() {
         // given
         Date attendanceDate = new Date(LocalDate.of(2024, 12, 2));
         Time attendanceTime = new Time(13, 8);
@@ -193,7 +193,7 @@ class AttendanceTest {
         Attendance attendance = new Attendance(dateTimes);
 
         //when
-        Map<AttendanceStatus, Integer> attendanceStatusCount = attendance.retrieveAttendanceStatusCount();
+        Map<AttendanceStatus, Integer> attendanceStatusCount = attendance.calculateAttendanceStatusCount();
 
         //then
         assertSoftly(softly -> {

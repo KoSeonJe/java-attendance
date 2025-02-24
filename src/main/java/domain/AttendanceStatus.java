@@ -9,8 +9,6 @@ public enum AttendanceStatus {
     PERCEPTION("지각", 5),
     ABSENCE("결석", 30);
 
-    private static final int STATUS_DEFAULT_COUNT = 0;
-
     private final String name;
     private final int limitTime;
 
@@ -26,12 +24,6 @@ public enum AttendanceStatus {
         WorkDay today = attendanceDateTime.getDate().getWorkDay();
         Time time = attendanceDateTime.getTime();
         return determineAttendanceStatus(today, time);
-    }
-
-    public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(List<AttendanceStatus> attendanceStatuses) {
-        Map<AttendanceStatus, Integer> attendanceStatusCount = initializeAttendanceMap();
-        attendanceStatuses.forEach(status -> attendanceStatusCount.put(status, attendanceStatusCount.get(status) + 1));
-        return attendanceStatusCount;
     }
 
     public boolean isAbsence() {
@@ -58,13 +50,5 @@ public enum AttendanceStatus {
             return PERCEPTION;
         }
         return ATTENDANCE;
-    }
-
-    private static Map<AttendanceStatus, Integer> initializeAttendanceMap() {
-        return new HashMap<>(Map.of(
-                ATTENDANCE, STATUS_DEFAULT_COUNT,
-                PERCEPTION, STATUS_DEFAULT_COUNT,
-                ABSENCE, STATUS_DEFAULT_COUNT
-        ));
     }
 }

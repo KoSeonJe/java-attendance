@@ -34,7 +34,7 @@ public class CrewAttendance {
     }
 
     public Map<AttendanceStatus, Integer> retrieveAttendanceStatusCount() {
-        return attendance.retrieveAttendanceStatusCount();
+        return attendance.calculateAttendanceStatusCount();
     }
 
     public boolean isPenalty() {

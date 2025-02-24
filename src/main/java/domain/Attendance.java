@@ -1,10 +1,15 @@
 package domain;
 
+import static domain.AttendanceStatus.ABSENCE;
+import static domain.AttendanceStatus.ATTENDANCE;
+import static domain.AttendanceStatus.PERCEPTION;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Attendance {
+
+    private static final int STATUS_DEFAULT_COUNT = 0;
 
     private final Map<Date, Time> dateTimes;
 
@@ -53,10 +58,22 @@ public class Attendance {
                 .toList();
     }
 
-    public Map<AttendanceStatus, Integer> retrieveAttendanceStatusCount() {
-        return AttendanceStatus.calculateAttendanceStatusCount(retrieveDateTimesOrderByDate().stream()
+    public Map<AttendanceStatus, Integer> calculateAttendanceStatusCount() {
+        Map<AttendanceStatus, Integer> attendanceStatusCount = initializeAttendanceMap();
+        List<AttendanceStatus> attendanceStatuses = retrieveDateTimesOrderByDate().stream()
                 .map(dateTime -> new AttendanceDateTime(dateTime.getDate(), dateTimes.get(dateTime.getDate())))
                 .map(AttendanceStatus::findByDateTime)
-                .toList());
+                .toList();
+        attendanceStatuses.forEach(status -> attendanceStatusCount.put(status, attendanceStatusCount.get(status) + 1));
+
+        return attendanceStatusCount;
+    }
+
+    private static Map<AttendanceStatus, Integer> initializeAttendanceMap() {
+        return new HashMap<>(Map.of(
+                ATTENDANCE, STATUS_DEFAULT_COUNT,
+                PERCEPTION, STATUS_DEFAULT_COUNT,
+                ABSENCE, STATUS_DEFAULT_COUNT
+        ));
     }
 }

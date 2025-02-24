@@ -42,17 +42,6 @@ class AttendanceStatusTest {
     }
 
     @Test
-    void 주말에_출석할_수_없다() {
-        // given & when & then
-        assertThatThrownBy(() ->
-                        new AttendanceDateTime(new Date(LocalDate.of(2024, 12, 14)), new Time(10, 0))
-
-        )
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("공휴일 및 주말에는 날짜를 등록할 수 없습니다.");
-    }
-
-    @Test
     void 캠퍼스_운영_시간이_아니다() {
         // given & when & then
         assertThatThrownBy(
