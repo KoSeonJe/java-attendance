@@ -20,19 +20,19 @@ public enum AttendanceStatus {
     }
 
     public static AttendanceStatus findByDateTime(AttendanceDateTime attendanceDateTime) {
+        WorkDay today = attendanceDateTime.getDate().getWorkDay();
+        validateWorkDay(today);
+
         if (attendanceDateTime.isTimeNull()) {
             return ABSENCE;
         }
         Time time = attendanceDateTime.getTime();
-        WorkDay today = attendanceDateTime.getDate().getWorkDay();
-        validateWorkDay(today);
-
         return determineAttendanceStatus(today, time);
     }
 
     private static void validateWorkDay(WorkDay workDay) {
         if (workDay.isWeekend()) {
-            throw new IllegalArgumentException("주말에는 출석할 수 없습니다.");
+            throw new IllegalArgumentException("주말에는 출석기록이 존재하지 않습니다.");
         }
     }
 

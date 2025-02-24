@@ -42,27 +42,21 @@ public class Attendance {
                 .toList();
     }
 
-    public AttendanceStatus calculateAttendanceStatus(Date date) {
+    public AttendanceStatus retrieveAttendanceStatus(Date date) {
         AttendanceDateTime attendanceDateTime = new AttendanceDateTime(date, dateTimes.get(date));
         return AttendanceStatus.findByDateTime(attendanceDateTime);
     }
 
-    public List<AttendanceStatus> calculateAttendanceStatuses() {
-        return retrieveDateTimes().stream()
-                .map(datetime -> calculateAttendanceStatus(datetime.getDate()))
+    public List<AttendanceStatus> retrieveAttendanceStatuses() {
+        return retrieveDateTimesOrderByDate().stream()
+                .map(datetime -> retrieveAttendanceStatus(datetime.getDate()))
                 .toList();
     }
 
-    public Map<AttendanceStatus, Integer> calculateAttendanceStatusCount() {
-        return AttendanceStatus.calculateAttendanceStatusCount(retrieveDateTimes().stream()
+    public Map<AttendanceStatus, Integer> retrieveAttendanceStatusCount() {
+        return AttendanceStatus.calculateAttendanceStatusCount(retrieveDateTimesOrderByDate().stream()
                 .map(dateTime -> new AttendanceDateTime(dateTime.getDate(), dateTimes.get(dateTime.getDate())))
                 .map(AttendanceStatus::findByDateTime)
                 .toList());
-    }
-
-    private List<AttendanceDateTime> retrieveDateTimes() {
-        return dateTimes.keySet().stream()
-                .map(date -> new AttendanceDateTime(date, dateTimes.get(date)))
-                .toList();
     }
 }

@@ -30,11 +30,11 @@ public class CrewAttendance {
     }
 
     public AttendanceStatus retrieveAttendanceStatus(Date date) {
-        return attendance.calculateAttendanceStatus(date);
+        return attendance.retrieveAttendanceStatus(date);
     }
 
     public Map<AttendanceStatus, Integer> retrieveAttendanceStatusCount() {
-        return attendance.calculateAttendanceStatusCount();
+        return attendance.retrieveAttendanceStatusCount();
     }
 
     public boolean isPenalty() {
@@ -42,7 +42,7 @@ public class CrewAttendance {
     }
 
     public Penalty retrievePenalty() {
-        return Penalty.calculatePenalty(attendance.calculateAttendanceStatuses());
+        return Penalty.calculatePenalty(attendance.retrieveAttendanceStatuses());
     }
 
     public Crew getCrew() {
