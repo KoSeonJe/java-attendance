@@ -5,14 +5,10 @@ import java.util.Objects;
 
 public class AttendanceDateTime implements Comparable<AttendanceDateTime> {
 
-    private static final int CAMPUS_OPEN_TIME = 8;
-    private static final int CAMPUS_CLOSE_TIME = 18;
-
     private final Date date;
     private final Time time;
 
     public AttendanceDateTime(Date date, Time time) {
-        validateTime(time);
         this.date = date;
         this.time = time;
     }
@@ -32,13 +28,6 @@ public class AttendanceDateTime implements Comparable<AttendanceDateTime> {
     public static AttendanceDateTime of(LocalDateTime localDateTime) {
         return new AttendanceDateTime(new Date(localDateTime.toLocalDate()),
                 new Time(localDateTime.toLocalTime().getHour(), localDateTime.toLocalTime().getMinute()));
-    }
-
-    private static void validateTime(Time time) {
-        int hour = time.getHour();
-        if (hour < CAMPUS_OPEN_TIME || hour > CAMPUS_CLOSE_TIME) {
-            throw new IllegalArgumentException("캠퍼스 운영 시간이 아닙니다.");
-        }
     }
 
     @Override

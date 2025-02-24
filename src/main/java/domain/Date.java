@@ -38,15 +38,6 @@ public class Date {
         return getWorkDay().isWeekend() || HOLIDAY.contains(getDayValue());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Date date = (Date) o;
-        return Objects.equals(localDate, date.localDate);
-    }
-
     private void validateHoliday(LocalDate localDate) {
         WorkDay workDay = WorkDay.findByDayOfWeek(localDate.getDayOfWeek());
         if (workDay.isWeekend() || HOLIDAY.contains(localDate.getDayOfMonth())) {
@@ -58,6 +49,15 @@ public class Date {
         if (localDate.getYear() != REQUIREMENT_YEAR || localDate.getMonthValue() != REQUIREMENT_MONTH) {
             throw new IllegalArgumentException("2024년 12월이 아닌 날짜는 등록할 수 없습니다.");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Date date = (Date) o;
+        return Objects.equals(localDate, date.localDate);
     }
 
     @Override
