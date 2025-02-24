@@ -7,6 +7,7 @@ import domain.CrewAttendanceRepository;
 import domain.Date;
 import domain.AttendanceDateTime;
 import domain.Time;
+import domain.WorkDay;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -60,9 +61,8 @@ public class DataInitializer {
     }
 
     private void addNonHolidayDate(Map<Date, Time> dateTimes, LocalDate currentDate) {
-        Date date = new Date(currentDate);
-        if (!date.isHoliday()) {
-            dateTimes.put(date, null);
+        if (!WorkDay.isHoliday(currentDate)) {
+            dateTimes.put(new Date(currentDate), null);
         }
     }
 
@@ -103,7 +103,7 @@ public class DataInitializer {
         return crewAttendance.getCrew().getName().equals(data.name) &&
                 !data.attendanceDateTime.getDate().isAfter(new Date(applicationTime.getApplicationTime().toLocalDate()))
                 &&
-                !data.attendanceDateTime.getDate().isHoliday();
+                !WorkDay.isHoliday(data.attendanceDateTime.getDate().toLocalDate());
     }
 
     private String[] splitItems(String input) {

@@ -1,6 +1,8 @@
 package domain;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.List;
 
 public enum WorkDay {
     MONDAY("월", false, 13, 18),
@@ -10,6 +12,8 @@ public enum WorkDay {
     FRIDAY("금", false, 10, 18),
     SATURDAY("토", true, null, null),
     SUNDAY("일", true, null, null);
+
+    private static final List<Integer> HOLIDAY = List.of(25);
 
     private final String dayOfWeekKorean;
     private final boolean isWeekend;
@@ -25,6 +29,11 @@ public enum WorkDay {
 
     public static WorkDay findByDayOfWeek(DayOfWeek dayOfWeek) {
         return WorkDay.valueOf(dayOfWeek.name());
+    }
+
+    public static boolean isHoliday(LocalDate localDate) {
+        WorkDay workDay = findByDayOfWeek(localDate.getDayOfWeek());
+        return workDay.isWeekend() || HOLIDAY.contains(localDate.getDayOfMonth());
     }
 
     public boolean isWeekend() {

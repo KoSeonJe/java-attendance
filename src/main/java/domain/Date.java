@@ -8,7 +8,6 @@ public class Date {
 
     private static final int REQUIREMENT_YEAR = 2024;
     private static final int REQUIREMENT_MONTH = 12;
-    private static final List<Integer> HOLIDAY = List.of(25);
 
     private final LocalDate localDate;
 
@@ -34,13 +33,13 @@ public class Date {
         return WorkDay.findByDayOfWeek(localDate.getDayOfWeek());
     }
 
-    public boolean isHoliday() {
-        return getWorkDay().isWeekend() || HOLIDAY.contains(getDayValue());
+    public LocalDate toLocalDate() {
+        return localDate;
     }
 
     private void validateHoliday(LocalDate localDate) {
         WorkDay workDay = WorkDay.findByDayOfWeek(localDate.getDayOfWeek());
-        if (workDay.isWeekend() || HOLIDAY.contains(localDate.getDayOfMonth())) {
+        if (workDay.isWeekend() || WorkDay.isHoliday(localDate)) {
             throw new IllegalArgumentException("공휴일 및 주말에는 날짜를 등록할 수 없습니다.");
         }
     }
