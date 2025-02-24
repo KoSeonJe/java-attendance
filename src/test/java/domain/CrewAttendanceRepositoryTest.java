@@ -66,7 +66,7 @@ class CrewAttendanceRepositoryTest {
         Crew crew2 = new Crew("이름2");
         CrewAttendance crewAttendance2 = new CrewAttendance(
                 crew2,
-                new Attendance(Map.of(new Date(LocalDate.of(2024, 12, 14)), new Time(10, 0)))
+                new Attendance(Map.of(new Date(LocalDate.of(2024, 12, 12)), new Time(10, 0)))
         );
 
         crewAttendanceRepository.save(crewAttendance);

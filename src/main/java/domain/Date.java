@@ -13,14 +13,9 @@ public class Date {
     private final LocalDate localDate;
 
     public Date(LocalDate localDate) {
-        validateDate(localDate);
+        validateRequirementDate(localDate);
+        validateHoliday(localDate);
         this.localDate = localDate;
-    }
-
-    private void validateDate(LocalDate localDate) {
-        if (localDate.getYear() != REQUIREMENT_YEAR || localDate.getMonthValue() != REQUIREMENT_MONTH) {
-            throw new IllegalArgumentException("2024년 12월이 아닌 날짜는 등록할 수 없습니다.");
-        }
     }
 
     public boolean isAfter(Date targetDate) {
@@ -50,6 +45,19 @@ public class Date {
         }
         Date date = (Date) o;
         return Objects.equals(localDate, date.localDate);
+    }
+
+    private void validateHoliday(LocalDate localDate) {
+        WorkDay workDay = WorkDay.findByDayOfWeek(localDate.getDayOfWeek());
+        if (workDay.isWeekend() || HOLIDAY.contains(localDate.getDayOfMonth())) {
+            throw new IllegalArgumentException("공휴일 및 주말에는 날짜를 등록할 수 없습니다.");
+        }
+    }
+
+    private void validateRequirementDate(LocalDate localDate) {
+        if (localDate.getYear() != REQUIREMENT_YEAR || localDate.getMonthValue() != REQUIREMENT_MONTH) {
+            throw new IllegalArgumentException("2024년 12월이 아닌 날짜는 등록할 수 없습니다.");
+        }
     }
 
     @Override
