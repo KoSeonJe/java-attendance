@@ -37,19 +37,12 @@ public enum WorkDay {
 
     public int retrieveWeekdaysStartHour() {
         validateWeekend();
-        validateStartHour();
         return startHour;
     }
 
     private void validateWeekend() {
         if (isWeekend) {
             throw new IllegalArgumentException("주말은 등교시간이 없습니다.");
-        }
-    }
-
-    private void validateStartHour() {
-        if (startHour == null) {
-            throw new IllegalArgumentException("시작 시간이 존재하지 않습니다.");
         }
     }
 }
