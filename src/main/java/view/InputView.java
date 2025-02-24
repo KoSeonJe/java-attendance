@@ -35,10 +35,6 @@ public class InputView {
         return parseToTime(arriveTime);
     }
 
-    private String readInput() {
-        return scanner.nextLine();
-    }
-
     public String readUpdateNickName() {
         System.out.println("출석을 수정하려는 크루의 닉네임을 입력해 주세요.");
         return readInput();
@@ -69,5 +65,9 @@ public class InputView {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("잘못된 숫자 형식입니다. 숫자로 다시 입력해 주세요.");
         }
+    }
+
+    private String readInput() {
+        return scanner.nextLine();
     }
 }

@@ -28,6 +28,24 @@ public enum AttendanceStatus {
         return determineAttendanceStatus(today, time);
     }
 
+    public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(List<AttendanceStatus> attendanceStatuses) {
+        Map<AttendanceStatus, Integer> attendanceStatusCount = initializeAttendanceMap();
+        attendanceStatuses.forEach(status -> attendanceStatusCount.put(status, attendanceStatusCount.get(status) + 1));
+        return attendanceStatusCount;
+    }
+
+    public boolean isAbsence() {
+        return this == ABSENCE;
+    }
+
+    public boolean isPerception() {
+        return this == PERCEPTION;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     private static AttendanceStatus determineAttendanceStatus(WorkDay today, Time time) {
         int startHour = today.retrieveWeekdaysStartHour();
         int hour = time.getHour();
@@ -42,29 +60,11 @@ public enum AttendanceStatus {
         return ATTENDANCE;
     }
 
-    public static Map<AttendanceStatus, Integer> calculateAttendanceStatusCount(List<AttendanceStatus> attendanceStatuses) {
-        Map<AttendanceStatus, Integer> attendanceStatusCount = initializeAttendanceMap();
-        attendanceStatuses.forEach(status -> attendanceStatusCount.put(status, attendanceStatusCount.get(status) + 1));
-        return attendanceStatusCount;
-    }
-
     private static Map<AttendanceStatus, Integer> initializeAttendanceMap() {
         return new HashMap<>(Map.of(
                 ATTENDANCE, STATUS_DEFAULT_COUNT,
                 PERCEPTION, STATUS_DEFAULT_COUNT,
                 ABSENCE, STATUS_DEFAULT_COUNT
         ));
-    }
-
-    public boolean isAbsence() {
-        return this == ABSENCE;
-    }
-
-    public boolean isPerception() {
-        return this == PERCEPTION;
-    }
-
-    public String getName() {
-        return name;
     }
 }

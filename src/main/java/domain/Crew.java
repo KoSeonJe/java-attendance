@@ -14,14 +14,14 @@ public class Crew {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     private void validateSize(String name) {
         if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("크루 이름은 2글자 이상 4글자 이하여야 합니다.");
         }
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override

@@ -21,6 +21,14 @@ public enum Penalty {
         this.penaltyCount = penaltyCount;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getPenaltyCount() {
+        return penaltyCount;
+    }
+
     public static Penalty calculatePenalty(List<AttendanceStatus> attendanceStatuses) {
         int absenceCount = countTotalAbsences(attendanceStatuses);
         return determinePenalty(absenceCount);
@@ -67,13 +75,5 @@ public enum Penalty {
             return WARNING;
         }
         return NONE;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPenaltyCount() {
-        return penaltyCount;
     }
 }
