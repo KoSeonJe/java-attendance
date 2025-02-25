@@ -18,4 +18,17 @@ public class AttendanceStatusTest {
         // then
         assertThat(attendanceStatus).isEqualTo(AttendanceStatus.LATE);
     }
+
+    @DisplayName("해당 요일의 시작 시간으로부터 30분 초과는 결석으로 간주한다")
+    @Test
+    void isAbsenceByTime() {
+        // given
+        AttendanceTime attendanceTime = AttendanceTime.create(10, 40);
+        int dayStartHour = 10;
+        // when
+        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(dayStartHour, attendanceTime);
+
+        // then
+        assertThat(attendanceStatus).isEqualTo(AttendanceStatus.ABSENCE);
+    }
 }

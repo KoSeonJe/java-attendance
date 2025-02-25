@@ -3,6 +3,8 @@ import static org.assertj.core.api.Assertions.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class AttendanceTimeTest {
 
@@ -110,7 +112,7 @@ public class AttendanceTimeTest {
 
     @DisplayName("입력한 시간이 출석 시간과 동일하다면 true를 반환한다")
     @Test
-    void isIsEqualHour() {
+    void isEqualHour() {
         // given
         int hour = 10;
         int minute = 3;
@@ -126,7 +128,7 @@ public class AttendanceTimeTest {
 
     @DisplayName("입력한 시간이 출석 시간과 동일하지 않다면 false를 반환한다")
     @Test
-    void isNotIsEqualHour() {
+    void isNotEqualHour() {
         // given
         int hour = 10;
         int minute = 3;
@@ -170,5 +172,38 @@ public class AttendanceTimeTest {
 
         //then
         assertThat(isNotAfterMinute).isFalse();
+    }
+
+    @DisplayName("출석 시간이 입력한 시간과 동일하거나 크다면 true를 반환한다")
+    @ParameterizedTest
+    @ValueSource(ints = {10, 11})
+    void isEqualOrAfterHour(int value) {
+        // given
+        int hour = value;
+        int minute = 3;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 10;
+
+        //when
+        boolean isEqualOrAfterHour = attendanceTime.isEqualOrAfterHour(compareHour);
+
+        //then
+        assertThat(isEqualOrAfterHour).isTrue();
+    }
+
+    @DisplayName("출석 시간이 입력한 시간보다 작다면 false를 반환한다")
+    @Test
+    void isNotEqualOrAfterHour() {
+        // given
+        int hour = 9;
+        int minute = 3;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 10;
+
+        //when
+        boolean isNotEqualOrAfterHour = attendanceTime.isEqualOrAfterHour(compareHour);
+
+        //then
+        assertThat(isNotEqualOrAfterHour).isFalse();
     }
 }
