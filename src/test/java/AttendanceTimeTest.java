@@ -1,6 +1,5 @@
 import static org.assertj.core.api.Assertions.*;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,7 +110,7 @@ public class AttendanceTimeTest {
 
     @DisplayName("입력한 시간이 출석 시간과 동일하다면 true를 반환한다")
     @Test
-    void isEqualsHour() {
+    void isIsEqualHour() {
         // given
         int hour = 10;
         int minute = 3;
@@ -119,7 +118,7 @@ public class AttendanceTimeTest {
         int compareHour = 10;
 
         //when
-        boolean isEqualsHour = attendanceTime.equalsHour(compareHour);
+        boolean isEqualsHour = attendanceTime.isEqualHour(compareHour);
 
         //then
         assertThat(isEqualsHour).isTrue();
@@ -127,7 +126,7 @@ public class AttendanceTimeTest {
 
     @DisplayName("입력한 시간이 출석 시간과 동일하지 않다면 false를 반환한다")
     @Test
-    void isNotEqualsHour() {
+    void isNotIsEqualHour() {
         // given
         int hour = 10;
         int minute = 3;
@@ -135,7 +134,7 @@ public class AttendanceTimeTest {
         int compareHour = 9;
 
         //when
-        boolean isNotEqualsHour = attendanceTime.equalsHour(compareHour);
+        boolean isNotEqualsHour = attendanceTime.isEqualHour(compareHour);
 
         //then
         assertThat(isNotEqualsHour).isFalse();

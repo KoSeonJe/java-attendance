@@ -36,7 +36,7 @@ public class AttendanceTime {
         }
     }
 
-    public boolean equalsHour(int hour) {
+    public boolean isEqualHour(int hour) {
         return this.hour == hour;
     }
 
