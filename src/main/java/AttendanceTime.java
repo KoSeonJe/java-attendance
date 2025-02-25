@@ -15,6 +15,11 @@ public class AttendanceTime {
         this.minute = minute;
     }
 
+    public void updateTime(int updateHour, int updateMinute) {
+        this.hour = updateHour;
+        this.minute = updateMinute;
+    }
+
     public static AttendanceTime create(int hour, int minute) {
         return new AttendanceTime(hour, minute);
     }
