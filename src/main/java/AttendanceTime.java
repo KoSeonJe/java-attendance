@@ -35,4 +35,12 @@ public class AttendanceTime {
             throw new IllegalArgumentException("[ERROR] 현재 운영시간이 아닙니다");
         }
     }
+
+    public boolean equalsHour(int hour) {
+        return this.hour == hour;
+    }
+
+    public boolean isAfterMinute(int minute) {
+        return this.minute > minute;
+    }
 }

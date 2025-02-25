@@ -108,4 +108,68 @@ public class AttendanceTimeTest {
                 () -> attendanceTime.updateTime(updateHour, updateMinute)
         ).withMessage("[ERROR] 현재 운영시간이 아닙니다");
     }
+
+    @DisplayName("입력한 시간이 출석 시간과 동일하다면 true를 반환한다")
+    @Test
+    void isEqualsHour() {
+        // given
+        int hour = 10;
+        int minute = 3;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 10;
+
+        //when
+        boolean isEqualsHour = attendanceTime.equalsHour(compareHour);
+
+        //then
+        assertThat(isEqualsHour).isTrue();
+    }
+
+    @DisplayName("입력한 시간이 출석 시간과 동일하지 않다면 false를 반환한다")
+    @Test
+    void isNotEqualsHour() {
+        // given
+        int hour = 10;
+        int minute = 3;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 9;
+
+        //when
+        boolean isNotEqualsHour = attendanceTime.equalsHour(compareHour);
+
+        //then
+        assertThat(isNotEqualsHour).isFalse();
+    }
+
+    @DisplayName("출석 분이 입력한 분 이후라면 true를 반환한다")
+    @Test
+    void isAfterMinute() {
+        // given
+        int hour = 10;
+        int minute = 5;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 2;
+
+        //when
+        boolean isAfterMinute = attendanceTime.isAfterMinute(compareHour);
+
+        //then
+        assertThat(isAfterMinute).isTrue();
+    }
+
+    @DisplayName("출석 분이 입력한 분 이후라면 false를 반환한다")
+    @Test
+    void isNotAfterMinute() {
+        // given
+        int hour = 10;
+        int minute = 5;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 7;
+
+        //when
+        boolean isNotAfterMinute = attendanceTime.isAfterMinute(compareHour);
+
+        //then
+        assertThat(isNotAfterMinute).isFalse();
+    }
 }
