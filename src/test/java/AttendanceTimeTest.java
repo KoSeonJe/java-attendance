@@ -14,10 +14,10 @@ public class AttendanceTimeTest {
         int hour = 10;
         int minute = 30;
 
-        // where
+        // when
         AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
 
-        // when
+        // then
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(attendanceTime)
                     .extracting("hour").isEqualTo(10);
@@ -26,4 +26,16 @@ public class AttendanceTimeTest {
         });
     }
 
+    @DisplayName("분의 범위를 벗어나면 예외를 발생시킨다")
+    @Test
+    void minuteOutOfRange() {
+        // given
+        int hour = 10;
+        int minute = 100;
+
+        // when & then
+        assertThatIllegalArgumentException().isThrownBy(
+                () -> AttendanceTime.create(hour, minute)
+        ).withMessage("[ERROR] 분의 범위를 벗어났습니다");
+    }
 }
