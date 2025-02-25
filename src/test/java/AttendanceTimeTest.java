@@ -38,4 +38,17 @@ public class AttendanceTimeTest {
                 () -> AttendanceTime.create(hour, minute)
         ).withMessage("[ERROR] 분의 범위를 벗어났습니다");
     }
+
+    @DisplayName("캠퍼스 운영시간외 출석을 하면 예외를 발생시킨다")
+    @Test
+    void OperationTimeOutOfRange() {
+        // given
+        int hour = 6;
+        int minute = 30;
+
+        // when & then
+        assertThatIllegalArgumentException().isThrownBy(
+                () -> AttendanceTime.create(hour, minute)
+        ).withMessage("[ERROR] 현재 운영시간이 아닙니다");
+    }
 }
