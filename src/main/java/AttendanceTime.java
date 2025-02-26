@@ -46,15 +46,15 @@ public class AttendanceTime {
         return this.minute > minute;
     }
 
-    public boolean isEqualOrAfterHour(int hour) {
-        return this.hour >= hour;
-    }
-
     public boolean isEqualAndBeforeMinute(int minute) {
         return this.minute <= minute;
     }
 
     public boolean isBeforeHour(int hour) {
         return this.hour < hour;
+    }
+
+    public boolean isAfterHour(int hour) {
+        return this.hour > hour;
     }
 }

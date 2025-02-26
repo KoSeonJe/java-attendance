@@ -4,6 +4,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class AttendanceTimeTest {
@@ -174,10 +175,26 @@ public class AttendanceTimeTest {
         assertThat(isAfterMinute).isFalse();
     }
 
-    @DisplayName("출석 시간이 입력한 시간과 동일하거나 크다면 true를 반환한다")
+    @DisplayName("출석 시간이 입력한 시간보다 크다면 true를 반환한다")
+    @Test
+    void isAfterHour() {
+        // given
+        int hour = 11;
+        int minute = 5;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 10;
+
+        //when
+        boolean isAfterHour = attendanceTime.isAfterHour(compareHour);
+
+        //then
+        assertThat(isAfterHour).isTrue();
+    }
+
+    @DisplayName("출석 시간이 입력한 시간보다 같거나 작다면 false를 반환한다")
     @ParameterizedTest
-    @ValueSource(ints = {10, 11})
-    void isEqualOrAfterHour(int value) {
+    @ValueSource(ints = {9, 10})
+    void isNotAfterHour(int value) {
         // given
         int hour = value;
         int minute = 3;
@@ -185,26 +202,10 @@ public class AttendanceTimeTest {
         int compareHour = 10;
 
         //when
-        boolean isEqualOrAfterHour = attendanceTime.isEqualOrAfterHour(compareHour);
+        boolean isAfterHour = attendanceTime.isAfterHour(compareHour);
 
         //then
-        assertThat(isEqualOrAfterHour).isTrue();
-    }
-
-    @DisplayName("출석 시간이 입력한 시간보다 작다면 false를 반환한다")
-    @Test
-    void isNotEqualOrAfterHour() {
-        // given
-        int hour = 9;
-        int minute = 3;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
-        int compareHour = 10;
-
-        //when
-        boolean isEqualOrAfterHour = attendanceTime.isEqualOrAfterHour(compareHour);
-
-        //then
-        assertThat(isEqualOrAfterHour).isFalse();
+        assertThat(isAfterHour).isFalse();
     }
 
     @DisplayName("출석 분이 입력한 분과 같거나 작으면 true를 반환한다")
