@@ -9,7 +9,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class AttendancesTest {
+public class AttendanceRecordsTest {
 
     @DisplayName("출석을 추가하였을 때 이미 출석한 기록이 있다면 예외를 발생시킨다")
     @Test
@@ -20,11 +20,11 @@ public class AttendancesTest {
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
         Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
 
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         // when && then
         assertThatThrownBy(
-                () -> attendances.add(Attendance.create(localDate, attendanceTime, attendanceStatus))
+                () -> attendanceRecords.add(Attendance.create(localDate, attendanceTime, attendanceStatus))
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 해당 날짜에 출석 기록이 이미 존재합니다");
     }
@@ -37,13 +37,13 @@ public class AttendancesTest {
         AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
         Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of()));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of()));
 
         // when
-        attendances.add(attendance);
+        attendanceRecords.add(attendance);
 
         // then
-        assertThat(attendances).extracting("attendances").asInstanceOf(InstanceOfAssertFactories.LIST)
+        assertThat(attendanceRecords).extracting("attendances").asInstanceOf(InstanceOfAssertFactories.LIST)
                 .contains(attendance);
     }
 
@@ -53,10 +53,10 @@ public class AttendancesTest {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = Attendance.create(localDate, null, null);
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         //when
-        Attendance foundAttendance = attendances.retrieveAttendanceByDate(localDate);
+        Attendance foundAttendance = attendanceRecords.retrieveAttendanceByDate(localDate);
 
         //then
         assertThat(foundAttendance).isSameAs(attendance);
@@ -68,11 +68,11 @@ public class AttendancesTest {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = Attendance.create(localDate, null, null);
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         LocalDate anotherDate = LocalDate.of(2024, 12, 12);
         //when && then
-        assertThatThrownBy(() -> attendances.updateAttendanceByDate(anotherDate, 0, 0, null))
+        assertThatThrownBy(() -> attendanceRecords.updateAttendanceByDate(anotherDate, 0, 0, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 입력한 날짜의 출석 기록이 없습니다.");
     }
@@ -83,14 +83,14 @@ public class AttendancesTest {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = Attendance.create(localDate, null, null);
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         int hour = 10;
         int minute = 0;
         AttendanceStatus updateAttendanceStatus = AttendanceStatus.ATTENDANCE;
 
         //when
-        attendances.updateAttendanceByDate(localDate, hour, minute, updateAttendanceStatus);
+        attendanceRecords.updateAttendanceByDate(localDate, hour, minute, updateAttendanceStatus);
 
         //then
         SoftAssertions.assertSoftly(softly -> {
@@ -106,7 +106,7 @@ public class AttendancesTest {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = Attendance.create(localDate, null, null);
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         int hour = 10;
         int minute = 0;
@@ -114,7 +114,7 @@ public class AttendancesTest {
 
         LocalDate anotherDate = LocalDate.of(2024, 12, 12);
         //when && then
-        assertThatThrownBy(() -> attendances.updateAttendanceByDate(anotherDate, hour, minute, updateAttendanceStatus))
+        assertThatThrownBy(() -> attendanceRecords.updateAttendanceByDate(anotherDate, hour, minute, updateAttendanceStatus))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 입력한 날짜의 출석 기록이 없습니다.");
     }
@@ -133,10 +133,10 @@ public class AttendancesTest {
         AttendanceStatus attendanceStatus2 = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime2);
         Attendance attendance2 = Attendance.create(localDate2, attendanceTime2, attendanceStatus2);
 
-        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance, attendance2)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance, attendance2)));
 
         // when
-        List<Attendance> result = attendances.retrieveAllAttendanceUntilDate(LocalDate.of(2024, 12, 13));
+        List<Attendance> result = attendanceRecords.retrieveAllAttendanceUntilDate(LocalDate.of(2024, 12, 13));
 
         // then
         assertThat(result).contains(attendance2);

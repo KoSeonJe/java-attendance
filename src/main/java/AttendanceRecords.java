@@ -1,11 +1,11 @@
 import java.time.LocalDate;
 import java.util.List;
 
-public class Attendances {
+public class AttendanceRecords {
 
     private final List<Attendance> attendances;
 
-    private Attendances(List<Attendance> attendances) {
+    private AttendanceRecords(List<Attendance> attendances) {
         this.attendances = attendances;
     }
 
@@ -30,8 +30,8 @@ public class Attendances {
 
     }
 
-    public static Attendances create(List<Attendance> attendances) {
-        return new Attendances(attendances);
+    public static AttendanceRecords create(List<Attendance> attendances) {
+        return new AttendanceRecords(attendances);
     }
 
     private void validateAlreadyExistByDate(Attendance attendance) {
