@@ -12,11 +12,16 @@ public class Attendance {
         this.attendanceStatus = attendanceStatus;
     }
 
+    public void updateAttendance(int updateHour, int updateMinute, AttendanceStatus attendanceStatus) {
+        attendanceTime.updateTime(updateHour, updateMinute);
+        this.attendanceStatus = attendanceStatus;
+    }
+
     public static Attendance create(LocalDate attendanceDate, AttendanceTime attendanceTime, AttendanceStatus attendanceStatus) {
         return new Attendance(attendanceDate, attendanceTime, attendanceStatus);
     }
 
-    public void updateAttendanceTime(int updateHour, int updateMinute) {
-        attendanceTime.updateTime(updateHour, updateMinute);
+    public static Attendance createAbsenceAttendance(LocalDate attendanceDate) {
+        return new Attendance(attendanceDate, null, AttendanceStatus.ABSENCE);
     }
 }

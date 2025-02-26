@@ -1,15 +1,15 @@
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
 import java.time.LocalDate;
+import net.bytebuddy.asm.Advice.Local;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AttendanceTest {
 
-    @DisplayName("출석 시간을 수정한다")
+    @DisplayName("출석 시간과 출석 상태를 수정할 수 있다")
     @Test
-    void updateAttendanceTime() {
+    void updateAttendance() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
@@ -18,14 +18,31 @@ public class AttendanceTest {
 
         int updateHour = 10;
         int updateMinute = 0;
+        AttendanceStatus updateAttendanceStatus = AttendanceStatus.ATTENDANCE;
         //when
-        attendance.updateAttendanceTime(updateHour, updateMinute);
+        attendance.updateAttendance(updateHour, updateMinute, updateAttendanceStatus);
 
         // then
         assertSoftly(softly -> {
             softly.assertThat(attendance).extracting("attendanceTime").extracting("hour").isEqualTo(10);
             softly.assertThat(attendance).extracting("attendanceTime").extracting("minute").isEqualTo(0);
+            softly.assertThat(attendance).extracting("attendanceStatus").isEqualTo(AttendanceStatus.ATTENDANCE);
         });
     }
 
+    @DisplayName("출석 시간이 없고 결석 상태인 객체를 생성한다")
+    @Test
+    void createAbsenceAttendance() {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+
+        //when
+        Attendance attendance = Attendance.createAbsenceAttendance(localDate);
+
+        //then
+        assertSoftly(softly -> {
+            softly.assertThat(attendance).extracting("attendanceTime").isNull();
+            softly.assertThat(attendance).extracting("attendanceStatus").isEqualTo(AttendanceStatus.ABSENCE);
+        });
+    }
 }
