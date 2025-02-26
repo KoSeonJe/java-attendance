@@ -36,4 +36,8 @@ public class Attendance {
     public static Attendance createAbsenceAttendance(LocalDate attendanceDate) {
         return new Attendance(attendanceDate, null, AttendanceStatus.ABSENCE);
     }
+
+    public boolean isBefore(LocalDate date) {
+        return attendanceDate.isBefore(date);
+    }
 }

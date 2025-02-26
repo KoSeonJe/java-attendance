@@ -4,6 +4,8 @@ import static org.assertj.core.api.SoftAssertions.*;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class AttendanceTest {
 
@@ -105,5 +107,36 @@ public class AttendanceTest {
 
         //then
         assertThat(isEqualDate).isFalse();
+    }
+
+    @DisplayName("출석 날짜가 입력 날짜보다 작다면 true를 반환한다")
+    @Test
+    void isBefore() {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        LocalDate inputDate = LocalDate.of(2024, 12, 14);
+
+        // when
+        boolean isBefore = attendance.isBefore(inputDate);
+
+        //then
+        assertThat(isBefore).isTrue();
+    }
+
+    @DisplayName("출석 날짜가 입력 날짜보다 같거나 크다면 false를 반환한다")
+    @ParameterizedTest
+    @ValueSource(ints = {12, 13})
+    void isNotBefore(int value) {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        LocalDate inputDate = LocalDate.of(2024, 12, value);
+
+        // when
+        boolean isBefore = attendance.isBefore(inputDate);
+
+        //then
+        assertThat(isBefore).isFalse();
     }
 }

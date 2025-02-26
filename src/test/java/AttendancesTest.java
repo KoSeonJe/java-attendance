@@ -118,4 +118,28 @@ public class AttendancesTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 입력한 날짜의 출석 기록이 없습니다.");
     }
+
+    @DisplayName("입력 날짜의 전날까지 출석 기록 조회한다")
+    @Test
+    void retrieveAllAttendanceUntilDate() {
+        //given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
+        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
+        Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
+
+        LocalDate localDate2 = LocalDate.of(2024, 12, 12);
+        AttendanceTime attendanceTime2 = AttendanceTime.create(10, 12);
+        AttendanceStatus attendanceStatus2 = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime2);
+        Attendance attendance2 = Attendance.create(localDate2, attendanceTime2, attendanceStatus2);
+
+        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance, attendance2)));
+
+        // when
+        List<Attendance> result = attendances.retrieveAllAttendanceUntilDate(LocalDate.of(2024, 12, 13));
+
+        // then
+        assertThat(result).contains(attendance2);
+    }
+
 }
