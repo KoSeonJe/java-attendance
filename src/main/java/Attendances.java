@@ -32,4 +32,13 @@ public class Attendances {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void updateAttendanceByDate(LocalDate attendanceDate, int hour, int minute, AttendanceStatus updateAttendanceStatus) {
+        Attendance originAttendance = attendances.stream()
+                .filter(attendance -> attendance.isEqualDate(attendanceDate))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 입력한 날짜의 출석 기록이 없습니다."));
+        originAttendance.updateAttendance(hour, minute, updateAttendanceStatus);
+
+    }
 }

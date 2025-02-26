@@ -13,8 +13,12 @@ public class Attendance {
     }
 
     public void updateAttendance(int updateHour, int updateMinute, AttendanceStatus attendanceStatus) {
-        attendanceTime.updateTime(updateHour, updateMinute);
         this.attendanceStatus = attendanceStatus;
+        if (attendanceTime == null) {
+            this.attendanceTime = AttendanceTime.create(updateHour, updateMinute);
+            return;
+        }
+        attendanceTime.updateTime(updateHour, updateMinute);
     }
 
     public boolean isEqualDate(Attendance attendance) {

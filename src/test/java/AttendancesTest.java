@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +41,47 @@ public class AttendancesTest {
 
         //then
         assertThat(foundAttendance).isSameAs(attendance);
+    }
+
+    @DisplayName("원하는 날짜의 출석을 수정할 수 있다")
+    @Test
+    void updateByDate() {
+        //given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+
+        int hour = 10;
+        int minute = 0;
+        AttendanceStatus updateAttendanceStatus = AttendanceStatus.ATTENDANCE;
+
+        //when
+        attendances.updateAttendanceByDate(localDate, hour, minute, updateAttendanceStatus);
+
+        //then
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(attendance).extracting("attendanceTime").extracting("hour").isEqualTo(10);
+            softly.assertThat(attendance).extracting("attendanceTime").extracting("minute").isEqualTo(0);
+            softly.assertThat(attendance).extracting("attendanceStatus").isEqualTo(AttendanceStatus.ATTENDANCE);
+        });
+    }
+
+    @DisplayName("수정하고자 하는 날의 출석기록이 없다면 예외를 발생시킨다")
+    @Test
+    void updateException() {
+        //given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+
+        int hour = 10;
+        int minute = 0;
+        AttendanceStatus updateAttendanceStatus = AttendanceStatus.ATTENDANCE;
+
+        LocalDate anotherDate = LocalDate.of(2024, 12, 12);
+        //when && then
+        assertThatThrownBy(() -> attendances.updateAttendanceByDate(anotherDate, hour, minute, updateAttendanceStatus))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 입력한 날짜의 출석 기록이 없습니다.");
     }
 }

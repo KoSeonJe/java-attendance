@@ -2,14 +2,12 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
 import java.time.LocalDate;
-import net.bytebuddy.asm.Advice.Local;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AttendanceTest {
 
-    @DisplayName("출석 시간과 출석 상태를 수정할 수 있다")
+    @DisplayName("출석 시간과 출석 상태를 수정할 수 있다. 만약, 출석시간이 null이라면, 새로 생성한다")
     @Test
     void updateAttendance() {
         // given
