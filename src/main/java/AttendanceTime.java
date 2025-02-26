@@ -22,22 +22,6 @@ public class AttendanceTime {
         this.minute = updateMinute;
     }
 
-    public static AttendanceTime create(int hour, int minute) {
-        return new AttendanceTime(hour, minute);
-    }
-
-    private void validateMinuteRange(int minute) {
-        if (minute < MIN_MINUTE || minute > MAX_MINUTE) {
-            throw new IllegalArgumentException("[ERROR] 분의 범위를 벗어났습니다");
-        }
-    }
-
-    private void validateOperatingHour(int hour) {
-        if (hour < OPERATING_OPEN_HOUR || hour > OPERATING_CLOSE_HOUR) {
-            throw new IllegalArgumentException("[ERROR] 현재 운영시간이 아닙니다");
-        }
-    }
-
     public boolean isEqualHour(int hour) {
         return this.hour == hour;
     }
@@ -56,5 +40,21 @@ public class AttendanceTime {
 
     public boolean isAfterHour(int hour) {
         return this.hour > hour;
+    }
+
+    public static AttendanceTime create(int hour, int minute) {
+        return new AttendanceTime(hour, minute);
+    }
+
+    private void validateMinuteRange(int minute) {
+        if (minute < MIN_MINUTE || minute > MAX_MINUTE) {
+            throw new IllegalArgumentException("[ERROR] 분의 범위를 벗어났습니다");
+        }
+    }
+
+    private void validateOperatingHour(int hour) {
+        if (hour < OPERATING_OPEN_HOUR || hour > OPERATING_CLOSE_HOUR) {
+            throw new IllegalArgumentException("[ERROR] 현재 운영시간이 아닙니다");
+        }
     }
 }
