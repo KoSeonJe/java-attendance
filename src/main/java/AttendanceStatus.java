@@ -18,12 +18,8 @@ public enum AttendanceStatus {
         if (isAttendance(dayStartHour, attendanceTime)) {
             return ATTENDANCE;
         }
-        return null;
-    }
 
-    private static boolean isAttendance(int dayStartHour, AttendanceTime attendanceTime) {
-        return (attendanceTime.isEqualHour(dayStartHour) && attendanceTime.isEqualAndBeforeMinute(LATE_LIMIT_MINUTE))
-                || attendanceTime.isBeforeHour(dayStartHour);
+        throw new IllegalArgumentException("[ERROR] 출석 상태를 판단하지 못했습니다");
     }
 
     private static boolean isAbsence(int dayStartHour, AttendanceTime attendanceTime) {
@@ -33,5 +29,10 @@ public enum AttendanceStatus {
 
     private static boolean isLate(int dayStartHour, AttendanceTime attendanceTime) {
         return attendanceTime.isEqualHour(dayStartHour) && attendanceTime.isAfterMinute(LATE_LIMIT_MINUTE);
+    }
+
+    private static boolean isAttendance(int dayStartHour, AttendanceTime attendanceTime) {
+        return (attendanceTime.isEqualHour(dayStartHour) && attendanceTime.isEqualAndBeforeMinute(LATE_LIMIT_MINUTE))
+                || attendanceTime.isBeforeHour(dayStartHour);
     }
 }
