@@ -16,6 +16,8 @@ public class AttendanceTime {
     }
 
     public void updateTime(int updateHour, int updateMinute) {
+        validateMinuteRange(updateMinute);
+        validateOperatingHour(updateHour);
         this.hour = updateHour;
         this.minute = updateMinute;
     }
@@ -46,5 +48,13 @@ public class AttendanceTime {
 
     public boolean isEqualOrAfterHour(int hour) {
         return this.hour >= hour;
+    }
+
+    public boolean isEqualAndBeforeMinute(int minute) {
+        return this.minute <= minute;
+    }
+
+    public boolean isBeforeHour(int hour) {
+        return this.hour < hour;
     }
 }

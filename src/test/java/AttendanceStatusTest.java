@@ -3,10 +3,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class AttendanceStatusTest {
 
-    @DisplayName("해당 요일의 시작 시간으로부터 5분 초과는 지각으로 간주한다")
+    @DisplayName("시작 시간으로부터 5분 초과는 지각으로 간주한다")
     @Test
     void isLateByTime() {
         // given
@@ -19,7 +22,7 @@ public class AttendanceStatusTest {
         assertThat(attendanceStatus).isEqualTo(AttendanceStatus.LATE);
     }
 
-    @DisplayName("해당 요일의 시작 시간으로부터 30분 초과는 결석으로 간주한다")
+    @DisplayName("시작 시간으로부터 30분 초과는 결석으로 간주한다")
     @Test
     void isAbsenceByTime() {
         // given
@@ -30,5 +33,22 @@ public class AttendanceStatusTest {
 
         // then
         assertThat(attendanceStatus).isEqualTo(AttendanceStatus.ABSENCE);
+    }
+
+    @DisplayName("시작시간이며 5분이하 혹은 시작시간보다 출석시간이 작다면 출석으로 간주한다")
+    @ParameterizedTest
+    @CsvSource({
+            "10, 3",
+            "9, 40"
+    })
+    void isAttendanceByTime(int hour, int minute) {
+        // given
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int dayStartHour = 10;
+        // when
+        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(dayStartHour, attendanceTime);
+
+        // then
+        assertThat(attendanceStatus).isEqualTo(AttendanceStatus.ATTENDANCE);
     }
 }

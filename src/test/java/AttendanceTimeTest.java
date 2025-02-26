@@ -136,10 +136,10 @@ public class AttendanceTimeTest {
         int compareHour = 9;
 
         //when
-        boolean isNotEqualsHour = attendanceTime.isEqualHour(compareHour);
+        boolean isEqualsHour = attendanceTime.isEqualHour(compareHour);
 
         //then
-        assertThat(isNotEqualsHour).isFalse();
+        assertThat(isEqualsHour).isFalse();
     }
 
     @DisplayName("출석 분이 입력한 분 이후라면 true를 반환한다")
@@ -149,29 +149,29 @@ public class AttendanceTimeTest {
         int hour = 10;
         int minute = 5;
         AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
-        int compareHour = 2;
+        int compareMinute = 2;
 
         //when
-        boolean isAfterMinute = attendanceTime.isAfterMinute(compareHour);
+        boolean isAfterMinute = attendanceTime.isAfterMinute(compareMinute);
 
         //then
         assertThat(isAfterMinute).isTrue();
     }
 
-    @DisplayName("출석 분이 입력한 분 이후라면 false를 반환한다")
+    @DisplayName("출석 분이 입력한 분보다 작다면 false를 반환한다")
     @Test
     void isNotAfterMinute() {
         // given
         int hour = 10;
         int minute = 5;
         AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
-        int compareHour = 7;
+        int compareMinute = 7;
 
         //when
-        boolean isNotAfterMinute = attendanceTime.isAfterMinute(compareHour);
+        boolean isAfterMinute = attendanceTime.isAfterMinute(compareMinute);
 
         //then
-        assertThat(isNotAfterMinute).isFalse();
+        assertThat(isAfterMinute).isFalse();
     }
 
     @DisplayName("출석 시간이 입력한 시간과 동일하거나 크다면 true를 반환한다")
@@ -201,9 +201,76 @@ public class AttendanceTimeTest {
         int compareHour = 10;
 
         //when
-        boolean isNotEqualOrAfterHour = attendanceTime.isEqualOrAfterHour(compareHour);
+        boolean isEqualOrAfterHour = attendanceTime.isEqualOrAfterHour(compareHour);
 
         //then
-        assertThat(isNotEqualOrAfterHour).isFalse();
+        assertThat(isEqualOrAfterHour).isFalse();
+    }
+
+    @DisplayName("출석 분이 입력한 분과 같거나 작으면 true를 반환한다")
+    @ParameterizedTest
+    @ValueSource(ints = {9, 10})
+    void isEqualAndBeforeMinute(int value) {
+        // given
+        int hour = 10;
+        int minute = value;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareMinute = 10;
+
+        //when
+        boolean isEqualAndBeforeMinute = attendanceTime.isEqualAndBeforeMinute(compareMinute);
+
+        //then
+        assertThat(isEqualAndBeforeMinute).isTrue();
+    }
+
+    @DisplayName("출석 분이 입력한 분보다 크다면 false를 반환한다")
+    @Test
+    void isNotEqualAndBeforeMinute() {
+        // given
+        int hour = 10;
+        int minute = 10;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareMinute = 5;
+
+        //when
+        boolean isEqualAndBeforeMinute = attendanceTime.isEqualAndBeforeMinute(compareMinute);
+
+        //then
+        assertThat(isEqualAndBeforeMinute).isFalse();
+    }
+
+    @DisplayName("출석 시간이 입력 시간보다 작다면 true를 반환한다")
+    @Test
+    void isBeforeHour() {
+        // given
+        int hour = 9;
+        int minute = 3;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 10;
+
+        //when
+        boolean isBeforeHour = attendanceTime.isBeforeHour(compareHour);
+
+        //then
+        assertThat(isBeforeHour).isTrue();
+    }
+
+
+    @DisplayName("출석 시간이 입력 시간보다 같거나 크다면 false를 반환한다")
+    @ParameterizedTest
+    @ValueSource(ints = {10, 11})
+    void isBeforeHour(int value) {
+        // given
+        int hour = value;
+        int minute = 3;
+        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        int compareHour = 10;
+
+        //when
+        boolean isBeforeHour = attendanceTime.isBeforeHour(compareHour);
+
+        //then
+        assertThat(isBeforeHour).isFalse();
     }
 }

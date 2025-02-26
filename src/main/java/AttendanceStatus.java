@@ -14,7 +14,16 @@ public enum AttendanceStatus {
         if (isLate(dayStartHour, attendanceTime)) {
             return LATE;
         }
+
+        if (isAttendance(dayStartHour, attendanceTime)) {
+            return ATTENDANCE;
+        }
         return null;
+    }
+
+    private static boolean isAttendance(int dayStartHour, AttendanceTime attendanceTime) {
+        return (attendanceTime.isEqualHour(dayStartHour) && attendanceTime.isEqualAndBeforeMinute(LATE_LIMIT_MINUTE))
+                || attendanceTime.isBeforeHour(dayStartHour);
     }
 
     private static boolean isAbsence(int dayStartHour, AttendanceTime attendanceTime) {
