@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,24 @@ public class AttendancesTest {
                 () -> attendances.add(Attendance.create(localDate, attendanceTime, attendanceStatus))
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 해당 날짜에 출석 기록이 이미 존재합니다");
+    }
+
+    @DisplayName("출석을 추가할 수 있다")
+    @Test
+    void add() {
+        //given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
+        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
+        Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
+        Attendances attendances = Attendances.create(new ArrayList<>(List.of()));
+
+        // when
+        attendances.add(attendance);
+
+        // then
+        assertThat(attendances).extracting("attendances").asInstanceOf(InstanceOfAssertFactories.LIST)
+                .contains(attendance);
     }
 
     @DisplayName("원하는 날짜의 출석을 조회할 수 있다")
