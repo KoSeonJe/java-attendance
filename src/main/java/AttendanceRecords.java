@@ -21,6 +21,12 @@ public class AttendanceRecords {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 입력한 날짜의 출석 기록이 없습니다."));
     }
 
+    public List<Attendance> retrieveAllAttendanceUntilDate(LocalDate date) {
+        return attendances.stream()
+                .filter(attendance -> attendance.isBeforeDate(date))
+                .toList();
+    }
+
     public void updateAttendanceByDate(LocalDate attendanceDate, int hour, int minute, AttendanceStatus updateAttendanceStatus) {
         Attendance originAttendance = attendances.stream()
                 .filter(attendance -> attendance.isEqualDate(attendanceDate))
@@ -40,11 +46,5 @@ public class AttendanceRecords {
         if (alreadyExist) {
             throw new IllegalArgumentException("[ERROR] 해당 날짜에 출석 기록이 이미 존재합니다");
         }
-    }
-
-    public List<Attendance> retrieveAllAttendanceUntilDate(LocalDate date) {
-        return attendances.stream()
-                .filter(attendance -> attendance.isBeforeDate(date))
-                .toList();
     }
 }
