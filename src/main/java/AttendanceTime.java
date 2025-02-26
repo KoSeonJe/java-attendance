@@ -27,7 +27,7 @@ public class AttendanceTime {
     }
 
     private void validateMinuteRange(int minute) {
-        if (minute < MIN_MINUTE || minute > 59) {
+        if (minute < MIN_MINUTE || minute > MAX_MINUTE) {
             throw new IllegalArgumentException("[ERROR] 분의 범위를 벗어났습니다");
         }
     }

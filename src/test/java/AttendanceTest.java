@@ -1,7 +1,9 @@
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
 import java.time.LocalDate;
 import net.bytebuddy.asm.Advice.Local;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,5 +46,37 @@ public class AttendanceTest {
             softly.assertThat(attendance).extracting("attendanceTime").isNull();
             softly.assertThat(attendance).extracting("attendanceStatus").isEqualTo(AttendanceStatus.ABSENCE);
         });
+    }
+
+    @DisplayName("출석 날짜와 입력 날짜가 같다면 true를 반환한다")
+    @Test
+    void isEqualDate() {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance2 = Attendance.create(localDate, null, null);
+
+        //when
+        boolean isEqualDate = attendance.isEqualDate(attendance2);
+
+        //then
+        assertThat(isEqualDate).isTrue();
+    }
+
+    @DisplayName("출석 날짜와 입력 날짜가 다르다면 false를 반환한다")
+    @Test
+    void isNotEqualDate() {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        LocalDate anotherDate = LocalDate.of(2024, 12, 14);
+
+        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance2 = Attendance.create(anotherDate, null, null);
+
+        //when
+        boolean isEqualDate = attendance.isEqualDate(attendance2);
+
+        //then
+        assertThat(isEqualDate).isFalse();
     }
 }
