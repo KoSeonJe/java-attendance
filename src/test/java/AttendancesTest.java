@@ -43,6 +43,21 @@ public class AttendancesTest {
         assertThat(foundAttendance).isSameAs(attendance);
     }
 
+    @DisplayName("조회하고자 하는 날의 출석기록이 없다면 예외를 발생시킨다")
+    @Test
+    void retrieveException() {
+        //given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+
+        LocalDate anotherDate = LocalDate.of(2024, 12, 12);
+        //when && then
+        assertThatThrownBy(() -> attendances.updateAttendanceByDate(anotherDate, 0, 0, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 입력한 날짜의 출석 기록이 없습니다.");
+    }
+
     @DisplayName("원하는 날짜의 출석을 수정할 수 있다")
     @Test
     void updateByDate() {
