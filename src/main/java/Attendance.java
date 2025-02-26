@@ -21,6 +21,10 @@ public class Attendance {
         return this.attendanceDate == attendance.attendanceDate;
     }
 
+    public boolean isEqualDate(LocalDate attendanceDate) {
+        return this.attendanceDate == attendanceDate;
+    }
+
     public static Attendance create(LocalDate attendanceDate, AttendanceTime attendanceTime, AttendanceStatus attendanceStatus) {
         return new Attendance(attendanceDate, attendanceTime, attendanceStatus);
     }

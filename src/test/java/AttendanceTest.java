@@ -48,9 +48,9 @@ public class AttendanceTest {
         });
     }
 
-    @DisplayName("출석 날짜와 입력 날짜가 같다면 true를 반환한다")
+    @DisplayName("출석 날짜와 입력객체 날짜가 같다면 true를 반환한다")
     @Test
-    void isEqualDate() {
+    void isEqualDateByAttendance() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = Attendance.create(localDate, null, null);
@@ -63,9 +63,9 @@ public class AttendanceTest {
         assertThat(isEqualDate).isTrue();
     }
 
-    @DisplayName("출석 날짜와 입력 날짜가 다르다면 false를 반환한다")
+    @DisplayName("출석 날짜와 입력객체 날짜가 다르다면 false를 반환한다")
     @Test
-    void isNotEqualDate() {
+    void isNotEqualDateByAttendance() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         LocalDate anotherDate = LocalDate.of(2024, 12, 14);
@@ -75,6 +75,35 @@ public class AttendanceTest {
 
         //when
         boolean isEqualDate = attendance.isEqualDate(attendance2);
+
+        //then
+        assertThat(isEqualDate).isFalse();
+    }
+
+    @DisplayName("출석 날짜와 입력 날짜가 같다면 true를 반환한다")
+    @Test
+    void isEqualDateByDate() {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+
+        //when
+        boolean isEqualDate = attendance.isEqualDate(localDate);
+
+        //then
+        assertThat(isEqualDate).isTrue();
+    }
+
+    @DisplayName("출석 날짜와 입력 날짜가 다르다면 true를 반환한다")
+    @Test
+    void isNotEqualDateByDate() {
+        // given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+
+        LocalDate anotherDate = LocalDate.of(2024, 12, 14);
+        //when
+        boolean isEqualDate = attendance.isEqualDate(anotherDate);
 
         //then
         assertThat(isEqualDate).isFalse();

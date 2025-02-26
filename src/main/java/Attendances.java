@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 
 public class Attendances {
@@ -23,5 +24,12 @@ public class Attendances {
         if (alreadyExist) {
             throw new IllegalArgumentException("[ERROR] 해당 날짜에 출석 기록이 이미 존재합니다");
         }
+    }
+
+    public Attendance retrieveAttendanceByDate(LocalDate attendanceDate) {
+        return attendances.stream()
+                .filter(attendance -> attendance.isEqualDate(attendanceDate))
+                .findFirst()
+                .orElse(null);
     }
 }

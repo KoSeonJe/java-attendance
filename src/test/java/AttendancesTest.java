@@ -1,3 +1,4 @@
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
@@ -24,5 +25,20 @@ public class AttendancesTest {
                 () -> attendances.add(Attendance.create(localDate, attendanceTime, attendanceStatus))
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 해당 날짜에 출석 기록이 이미 존재합니다");
+    }
+
+    @DisplayName("원하는 날짜의 출석을 조회할 수 있다")
+    @Test
+    void retrieveByDate() {
+        //given
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendances attendances = Attendances.create(new ArrayList<>(List.of(attendance)));
+
+        //when
+        Attendance foundAttendance = attendances.retrieveAttendanceByDate(localDate);
+
+        //then
+        assertThat(foundAttendance).isSameAs(attendance);
     }
 }
