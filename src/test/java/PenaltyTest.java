@@ -17,9 +17,9 @@ public class PenaltyTest {
         Assertions.assertThat(penalty).isEqualTo(Penalty.WEEDING);
     }
 
-    @DisplayName("결석 3회 이상이면 경고이다")
+    @DisplayName("결석 3회 이상이면 면담이다")
     @Test
-    void isWarning() {
+    void isInterview() {
         //given
         int absenceCount = 4;
 
@@ -28,5 +28,18 @@ public class PenaltyTest {
 
         //then
         Assertions.assertThat(penalty).isEqualTo(Penalty.INTERVIEW);
+    }
+
+    @DisplayName("결석 2회 이상이면 경고이다")
+    @Test
+    void isWarning() {
+        //given
+        int absenceCount = 2;
+
+        //when
+        Penalty penalty = Penalty.judge(absenceCount);
+
+        //then
+        Assertions.assertThat(penalty).isEqualTo(Penalty.WARNING);
     }
 }
