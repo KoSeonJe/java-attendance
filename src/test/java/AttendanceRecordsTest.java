@@ -16,15 +16,12 @@ public class AttendanceRecordsTest {
     void validateExistByDate() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
-        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
-        Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
-
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         // when && then
         assertThatThrownBy(
-                () -> attendanceRecords.add(Attendance.create(localDate, attendanceTime, attendanceStatus))
+                () -> attendanceRecords.add(Attendance.create(localDate, null, null))
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 해당 날짜에 출석 기록이 이미 존재합니다");
     }
@@ -34,9 +31,7 @@ public class AttendanceRecordsTest {
     void add() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
-        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
-        Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of()));
 
         // when
@@ -52,7 +47,7 @@ public class AttendanceRecordsTest {
     void retrieveByDate() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         //when
@@ -67,7 +62,7 @@ public class AttendanceRecordsTest {
     void retrieveException() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         LocalDate anotherDate = LocalDate.of(2024, 12, 12);
@@ -82,7 +77,7 @@ public class AttendanceRecordsTest {
     void updateByDate() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         int hour = 10;
@@ -105,7 +100,7 @@ public class AttendanceRecordsTest {
     void updateException() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
 
         int hour = 10;
@@ -124,22 +119,17 @@ public class AttendanceRecordsTest {
     void retrieveAllAttendanceUntilDate() {
         //given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
-        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
-        Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
 
         LocalDate localDate2 = LocalDate.of(2024, 12, 12);
-        AttendanceTime attendanceTime2 = AttendanceTime.create(10, 12);
-        AttendanceStatus attendanceStatus2 = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime2);
-        Attendance attendance2 = Attendance.create(localDate2, attendanceTime2, attendanceStatus2);
+        Attendance attendance2 = AttendanceFixture.createAttendance(localDate2, 10, 0);
 
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance, attendance2)));
 
         // when
-        List<Attendance> result = attendanceRecords.retrieveAllAttendanceUntilDate(LocalDate.of(2024, 12, 13));
+        List<Attendance> result = attendanceRecords.retrieveAllAttendanceUntilDate(localDate);
 
         // then
         assertThat(result).contains(attendance2);
     }
-
 }

@@ -16,12 +16,10 @@ public class CrewAttendanceTest {
         LocalDate date = LocalDate.of(2024, 12, 10);
         LocalDate date2 = LocalDate.of(2024, 12, 11);
         LocalDate date3 = LocalDate.of(2024, 12, 12);
-        AttendanceTime time = AttendanceTime.create(10, 0);
-        AttendanceStatus attendanceStatus = AttendanceStatus.ATTENDANCE;
 
-        Attendance attendance1 = Attendance.create(date, time, attendanceStatus);
-        Attendance attendance2 = Attendance.create(date2, time, attendanceStatus);
-        Attendance attendance3 = Attendance.create(date3, time, attendanceStatus);
+        Attendance attendance1 = AttendanceFixture.createAttendance(date, 10, 0);
+        Attendance attendance2 = AttendanceFixture.createAttendance(date2, 10, 0);
+        Attendance attendance3 = AttendanceFixture.createAttendance(date3, 10, 0);
 
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(
                 List.of(attendance1, attendance2, attendance3)

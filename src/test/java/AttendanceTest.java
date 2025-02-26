@@ -14,9 +14,7 @@ public class AttendanceTest {
     void updateAttendance() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        AttendanceTime attendanceTime = AttendanceTime.create(10, 12);
-        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(10, attendanceTime);
-        Attendance attendance = Attendance.create(localDate, attendanceTime, attendanceStatus);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 10);
 
         int updateHour = 10;
         int updateMinute = 0;
@@ -53,8 +51,8 @@ public class AttendanceTest {
     void isEqualDateByAttendance() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
-        Attendance attendance2 = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
+        Attendance attendance2 = AttendanceFixture.createAttendance(localDate, 10, 0);
 
         //when
         boolean isEqualDate = attendance.isEqualDate(attendance2);
@@ -70,8 +68,8 @@ public class AttendanceTest {
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         LocalDate anotherDate = LocalDate.of(2024, 12, 14);
 
-        Attendance attendance = Attendance.create(localDate, null, null);
-        Attendance attendance2 = Attendance.create(anotherDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
+        Attendance attendance2 = AttendanceFixture.createAttendance(anotherDate, 10, 0);
 
         //when
         boolean isEqualDate = attendance.isEqualDate(attendance2);
@@ -85,7 +83,7 @@ public class AttendanceTest {
     void isEqualDateByDate() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
 
         //when
         boolean isEqualDate = attendance.isEqualDate(localDate);
@@ -99,7 +97,7 @@ public class AttendanceTest {
     void isNotEqualDateByDate() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
 
         LocalDate anotherDate = LocalDate.of(2024, 12, 14);
         //when
@@ -114,7 +112,7 @@ public class AttendanceTest {
     void isBeforeDate() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         LocalDate inputDate = LocalDate.of(2024, 12, 14);
 
         // when
@@ -130,7 +128,7 @@ public class AttendanceTest {
     void isNotBefore(int value) {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = Attendance.create(localDate, null, null);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
         LocalDate inputDate = LocalDate.of(2024, 12, value);
 
         // when
