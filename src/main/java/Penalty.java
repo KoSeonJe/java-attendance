@@ -1,7 +1,8 @@
 public enum Penalty {
     WARNING,
     INTERVIEW,
-    WEEDING;
+    WEEDING,
+    NONE;
 
     private static final int WEEDING_LIMIT_COUNT = 5;
     private static final int INTERVIEW_LIMIT_COUNT = 3;
@@ -21,6 +22,6 @@ public enum Penalty {
             return WARNING;
         }
 
-        return null;
+        return NONE;
     }
 }

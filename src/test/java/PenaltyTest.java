@@ -1,6 +1,8 @@
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class PenaltyTest {
 
@@ -41,5 +43,19 @@ public class PenaltyTest {
 
         //then
         Assertions.assertThat(penalty).isEqualTo(Penalty.WARNING);
+    }
+
+    @DisplayName("결석 1회 이하이면 아무것도 없다")
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1})
+    void isNone(int value) {
+        //given
+        int absenceCount = value;
+
+        //when
+        Penalty penalty = Penalty.judge(absenceCount);
+
+        //then
+        Assertions.assertThat(penalty).isEqualTo(Penalty.NONE);
     }
 }
