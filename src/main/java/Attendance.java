@@ -29,15 +29,15 @@ public class Attendance {
         return this.attendanceDate == attendanceDate;
     }
 
+    public boolean isBeforeDate(LocalDate date) {
+        return attendanceDate.isBefore(date);
+    }
+
     public static Attendance create(LocalDate attendanceDate, AttendanceTime attendanceTime, AttendanceStatus attendanceStatus) {
         return new Attendance(attendanceDate, attendanceTime, attendanceStatus);
     }
 
     public static Attendance createAbsenceAttendance(LocalDate attendanceDate) {
         return new Attendance(attendanceDate, null, AttendanceStatus.ABSENCE);
-    }
-
-    public boolean isBefore(LocalDate date) {
-        return attendanceDate.isBefore(date);
     }
 }

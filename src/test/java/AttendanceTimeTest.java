@@ -243,7 +243,7 @@ public class AttendanceTimeTest {
 
     @DisplayName("출석 시간이 입력 시간보다 작다면 true를 반환한다")
     @Test
-    void isBeforeHour() {
+    void isBeforeDateHour() {
         // given
         int hour = 9;
         int minute = 3;
@@ -261,7 +261,7 @@ public class AttendanceTimeTest {
     @DisplayName("출석 시간이 입력 시간보다 같거나 크다면 false를 반환한다")
     @ParameterizedTest
     @ValueSource(ints = {10, 11})
-    void isBeforeHour(int value) {
+    void isBeforeDateHour(int value) {
         // given
         int hour = value;
         int minute = 3;

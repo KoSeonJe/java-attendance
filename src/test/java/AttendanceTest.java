@@ -111,14 +111,14 @@ public class AttendanceTest {
 
     @DisplayName("출석 날짜가 입력 날짜보다 작다면 true를 반환한다")
     @Test
-    void isBefore() {
+    void isBeforeDate() {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = Attendance.create(localDate, null, null);
         LocalDate inputDate = LocalDate.of(2024, 12, 14);
 
         // when
-        boolean isBefore = attendance.isBefore(inputDate);
+        boolean isBefore = attendance.isBeforeDate(inputDate);
 
         //then
         assertThat(isBefore).isTrue();
@@ -134,7 +134,7 @@ public class AttendanceTest {
         LocalDate inputDate = LocalDate.of(2024, 12, value);
 
         // when
-        boolean isBefore = attendance.isBefore(inputDate);
+        boolean isBefore = attendance.isBeforeDate(inputDate);
 
         //then
         assertThat(isBefore).isFalse();

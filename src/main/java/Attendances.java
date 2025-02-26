@@ -44,7 +44,7 @@ public class Attendances {
 
     public List<Attendance> retrieveAllAttendanceUntilDate(LocalDate date) {
         return attendances.stream()
-                .filter(attendance -> attendance.isBefore(date))
+                .filter(attendance -> attendance.isBeforeDate(date))
                 .toList();
     }
 }
