@@ -33,4 +33,17 @@ public class SchoolDayTest {
         // then
         assertThat(isPossibleAttendance).isFalse();
     }
+
+    @DisplayName("입력 날짜가 공휴일일 경우 false를 반환한다")
+    @Test
+    void isNotPossibleAttendanceWithHoliday() {
+        // given
+        LocalDate holiday = LocalDate.of(2024, 12, 25);
+
+        // when
+        boolean isPossibleAttendance = SchoolDay.isPossibleAttendance(holiday);
+
+        // then
+        assertThat(isPossibleAttendance).isFalse();
+    }
 }

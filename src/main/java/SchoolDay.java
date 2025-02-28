@@ -30,12 +30,23 @@ public enum SchoolDay {
         return isPossibleAttendance;
     }
 
+    public int getStartHour() {
+        return startHour;
+    }
+
     public static boolean isPossibleAttendance(LocalDate date) {
+        if (isHoliday(date)) {
+            return false;
+        }
         return Arrays.stream(SchoolDay.values())
                 .filter(schoolDay -> equalDayOfWeek(schoolDay, date.getDayOfWeek()))
                 .map(SchoolDay::isPossibleAttendance)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
+    }
+
+    private static boolean isHoliday(LocalDate date) {
+        return HOLIDAY.contains(date.getDayOfMonth());
     }
 
     private static boolean equalDayOfWeek(SchoolDay schoolDay, DayOfWeek dayOfWeek) {
