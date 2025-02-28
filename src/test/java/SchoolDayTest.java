@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class SchoolDayTest {
 
@@ -58,5 +60,19 @@ public class SchoolDayTest {
 
         // then
         assertThat(startHour).isEqualTo(10);
+    }
+
+    @DisplayName("출석 시작 시각 조회시 입력 날짜가 공휴일 혹은 주말이라면 예외를 발생시킨다")
+    @ParameterizedTest
+    @ValueSource(ints = {14, 25})
+    void retrieveAttendanceEndHourWithHoliday(int notSchoolDate) {
+        // given
+        LocalDate holiday = LocalDate.of(2024, 12, notSchoolDate);
+
+        // when && then
+        assertThatThrownBy(
+                () -> SchoolDay.retrieveStartHourByDate(holiday)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 주말 혹은 공휴일에는 출석 시각을 조회할 수 없습니다");
     }
 }

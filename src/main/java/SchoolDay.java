@@ -35,6 +35,10 @@ public enum SchoolDay {
     }
 
     public static int retrieveStartHourByDate(LocalDate date) {
+        if (isNotSchoolDay(date)) {
+            throw new IllegalArgumentException("[ERROR] 주말 혹은 공휴일에는 출석 시각을 조회할 수 없습니다");
+        }
+
         return Arrays.stream(SchoolDay.values())
                 .filter(schoolDay -> equalDayOfWeek(schoolDay, date.getDayOfWeek()))
                 .map(SchoolDay::getStartHour)
@@ -51,6 +55,11 @@ public enum SchoolDay {
                 .map(SchoolDay::isPossibleAttendance)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
+    }
+
+    private static boolean isNotSchoolDay(LocalDate date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return isHoliday(date) || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
     }
 
     private static boolean isHoliday(LocalDate date) {
