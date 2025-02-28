@@ -10,12 +10,16 @@ public class AttendanceManager {
     }
 
     public void processAttendance(String crewName, LocalDate attendanceDate, AttendanceTime attendanceTime) {
+        validateAttendanceDay(attendanceDate);
         AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
         Attendance attendance = createAttendance(attendanceDate, attendanceTime);
         attendanceRecords.add(attendance);
     }
 
-
+    public List<Attendance> retrieveAllWithEmptyUntilDate(String crewName, LocalDate date) {
+        AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
+        return attendanceRecords.retrieveAllAttendanceUntilDate(date);
+    }
 
     private Attendance createAttendance(LocalDate attendanceDate, AttendanceTime attendanceTime) {
         int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
@@ -23,9 +27,9 @@ public class AttendanceManager {
         return Attendance.create(attendanceDate, attendanceTime, attendanceStatus);
     }
 
-    public List<Attendance> retrieveAllWithEmptyUntilDate(String crewName, LocalDate date) {
-        AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
-        List<Attendance> attendances = attendanceRecords.retrieveAllAttendanceUntilDate(date);
-        return attendances;
+    private static void validateAttendanceDay(LocalDate attendanceDate) {
+        if (SchoolDay.isNotSchoolDay(attendanceDate)) {
+            throw new IllegalArgumentException("[ERROR] 출석할 수 없는 날입니다.");
+        }
     }
 }

@@ -11,7 +11,7 @@ public class AttendanceManagerTest {
 
     @DisplayName("출석을 처리한다")
     @Test
-    void throwExceptionIfAttendingOnWeekendOrHoliday() {
+    void processAttendance() {
         // given
         String crewName = "웨이드";
         LocalDate attendanceDate = LocalDate.of(2024, 12, 13);
@@ -34,9 +34,30 @@ public class AttendanceManagerTest {
                 Attendance.create(attendanceDate, attendanceTime, AttendanceStatus.ATTENDANCE))).isTrue();
     }
 
+    @DisplayName("주말이나 공휴일에 출석할 시 예외를 발생시킨다")
+    @Test
+    void throwExceptionIfAttendingOnWeekendOrHoliday() {
+        // given
+        String crewName = "웨이드";
+        LocalDate attendanceDate = LocalDate.of(2024, 12, 14);
+        AttendanceTime attendanceTime = AttendanceTime.create(10, 0);
+
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of()));
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(
+                List.of(CrewAttendance.create(crewName, attendanceRecords))
+        );
+        AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
+
+        //when
+        assertThatThrownBy(
+                () -> attendanceManager.processAttendance(crewName, attendanceDate, attendanceTime)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 출석할 수 없는 날입니다.");
+    }
+
     @DisplayName("입력 날짜까지 모든 출석 기록을 조회한다")
     @Test
-    void retrieveAllAttendanceRecordsWithEmpty() {
+    void retrieveAllAttendanceRecords() {
         // given
         String crewName = "웨이드";
         LocalDate localDate1 = LocalDate.of(2024, 12, 10);

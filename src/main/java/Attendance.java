@@ -58,4 +58,8 @@ public class Attendance {
     public int hashCode() {
         return Objects.hash(attendanceDate, attendanceTime, attendanceStatus);
     }
+
+    public boolean isEqualDayOfMonth(int dayOfMonth) {
+        return this.attendanceDate.getDayOfMonth() == dayOfMonth;
+    }
 }

@@ -57,7 +57,7 @@ public enum SchoolDay {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
     }
 
-    private static boolean isNotSchoolDay(LocalDate date) {
+    public static boolean isNotSchoolDay(LocalDate date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return isHoliday(date) || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
     }
