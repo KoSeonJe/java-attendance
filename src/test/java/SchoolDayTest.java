@@ -46,4 +46,17 @@ public class SchoolDayTest {
         // then
         assertThat(isPossibleAttendance).isFalse();
     }
+
+    @DisplayName("입력 날짜의 출석 시작 시각을 조회할 수 있다")
+    @Test
+    void retrieveAttendanceStartHour() {
+        // given
+        LocalDate attendanceDate = LocalDate.of(2024, 12, 13);
+
+        // when
+        int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
+
+        // then
+        assertThat(startHour).isEqualTo(10);
+    }
 }

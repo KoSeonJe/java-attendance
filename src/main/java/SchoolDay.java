@@ -11,8 +11,8 @@ public enum SchoolDay {
     WEDNESDAY(true, 10, 18),
     THURSDAY(true, 10, 18),
     FRIDAY(true, 10, 18),
-    SATURDAY(false, 10, 18),
-    SUNDAY(false, 10, 18);
+    SATURDAY(false, -1, -1),
+    SUNDAY(false, -1, -1);
 
     private static final List<Integer> HOLIDAY = List.of(25);
 
@@ -32,6 +32,14 @@ public enum SchoolDay {
 
     public int getStartHour() {
         return startHour;
+    }
+
+    public static int retrieveStartHourByDate(LocalDate date) {
+        return Arrays.stream(SchoolDay.values())
+                .filter(schoolDay -> equalDayOfWeek(schoolDay, date.getDayOfWeek()))
+                .map(SchoolDay::getStartHour)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
     }
 
     public static boolean isPossibleAttendance(LocalDate date) {
