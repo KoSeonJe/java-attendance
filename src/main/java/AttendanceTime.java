@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class AttendanceTime {
 
     private static final int MIN_MINUTE = 0;
@@ -56,5 +58,21 @@ public class AttendanceTime {
         if (hour < OPERATING_OPEN_HOUR || hour > OPERATING_CLOSE_HOUR) {
             throw new IllegalArgumentException("[ERROR] 현재 운영시간이 아닙니다");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AttendanceTime that)) {
+            return false;
+        }
+        return hour == that.hour && minute == that.minute;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hour, minute);
     }
 }

@@ -1,5 +1,5 @@
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.Objects;
 
 public class Attendance {
 
@@ -40,5 +40,22 @@ public class Attendance {
 
     public static Attendance createAbsenceAttendance(LocalDate attendanceDate) {
         return new Attendance(attendanceDate, null, AttendanceStatus.ABSENCE);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Attendance that)) {
+            return false;
+        }
+        return Objects.equals(attendanceDate, that.attendanceDate) && Objects.equals(attendanceTime,
+                that.attendanceTime) && attendanceStatus == that.attendanceStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attendanceDate, attendanceTime, attendanceStatus);
     }
 }
