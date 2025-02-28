@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.List;
 
 public class AttendanceManager {
 
@@ -14,9 +15,17 @@ public class AttendanceManager {
         attendanceRecords.add(attendance);
     }
 
+
+
     private Attendance createAttendance(LocalDate attendanceDate, AttendanceTime attendanceTime) {
         int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(startHour, attendanceTime);
         return Attendance.create(attendanceDate, attendanceTime, attendanceStatus);
+    }
+
+    public List<Attendance> retrieveAllWithEmptyUntilDate(String crewName, LocalDate date) {
+        AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
+        List<Attendance> attendances = attendanceRecords.retrieveAllAttendanceUntilDate(date);
+        return attendances;
     }
 }
