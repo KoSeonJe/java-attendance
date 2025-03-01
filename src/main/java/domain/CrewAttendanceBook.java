@@ -13,6 +13,9 @@ public class CrewAttendanceBook {
     }
 
     public void createCrewAttendance(String crewName, Attendance attendance) {
+        if (existCrew(crewName)) {
+            throw new IllegalArgumentException("[ERROR] 이미 등록된 크루입니다");
+        }
         CrewAttendance crewAttendance = CrewAttendance.create(crewName, AttendanceRecords.create(List.of(attendance)));
         crewAttendances.add(crewAttendance);
     }

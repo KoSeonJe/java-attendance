@@ -55,6 +55,22 @@ public class CrewAttendanceBookTest {
         assertThat(crewAttendanceBook.existCrew(crewName)).isTrue();
     }
 
+    @DisplayName("이미 등록된 크루를 생성하려하면 예외를 발생시킨다")
+    @Test
+    void createExistCrewAttendance() {
+        // given
+        String crewName = "웨이드";
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
+        CrewAttendance crewAttendance = CrewAttendance.create(crewName, AttendanceRecords.create(List.of(attendance)));
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(List.of(crewAttendance));
+        // when & then
+        assertThatThrownBy(
+                () -> crewAttendanceBook.createCrewAttendance(crewName, attendance)
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 이미 등록된 크루입니다");
+    }
+
     @DisplayName("등록되지 않은 크루 닉네임이라면 예외를 발생시킨다")
     @Test
     void notExistingAttendance() {
