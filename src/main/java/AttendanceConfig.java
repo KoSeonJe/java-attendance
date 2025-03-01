@@ -7,13 +7,15 @@ import domain.AttendanceApplicationTime;
 import util.DataInitializer;
 import util.FileLoader;
 import util.StringParser;
+import view.ConsoleView;
 import view.InputView;
 import view.OutputView;
+import view.parser.InputParser;
 
 public final class AttendanceConfig {
 
     public AttendanceApplication attendanceApplication(CrewAttendanceBook initCrewAttendanceBook) {
-        return new AttendanceApplication(attendanceHandler(initCrewAttendanceBook));
+        return new AttendanceApplication(attendanceHandler(initCrewAttendanceBook), consoleView(), applicationTime());
     }
 
     public DataInitializer dataInitializer() {
@@ -21,10 +23,14 @@ public final class AttendanceConfig {
     }
 
     private AttendanceHandler attendanceHandler(CrewAttendanceBook initCrewAttendanceBook) {
-        return new AttendanceHandler(new InputView(), new OutputView(), initCrewAttendanceBook, applicationTime());
+        return new AttendanceHandler(consoleView(), initCrewAttendanceBook, applicationTime());
+    }
+
+    private ConsoleView consoleView() {
+        return ConsoleView.create(new InputView(), new OutputView(), new InputParser());
     }
 
     private ApplicationTime applicationTime() {
-        return new AttendanceApplicationTime();
+        return AttendanceApplicationTime.getInstance();
     }
 }
