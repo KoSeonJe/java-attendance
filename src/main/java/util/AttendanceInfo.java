@@ -1,10 +1,12 @@
 package util;
 
-import domain.Attendance;
+import domain.AttendanceTime;
+import java.time.LocalDate;
 
 public record AttendanceInfo(
         String crewName,
-        Attendance attendance
+        LocalDate attendanceDate,
+        AttendanceTime attendanceTime
 ) {
 
 }

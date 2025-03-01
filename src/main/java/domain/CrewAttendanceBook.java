@@ -12,7 +12,8 @@ public record CrewAttendanceBook(
         if (existCrew(crewName)) {
             throw new IllegalArgumentException("[ERROR] 이미 등록된 크루입니다");
         }
-        CrewAttendance crewAttendance = CrewAttendance.create(crewName, AttendanceRecords.create(List.of(attendance)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
+        CrewAttendance crewAttendance = CrewAttendance.create(crewName, attendanceRecords);
         crewAttendances.add(crewAttendance);
     }
 
