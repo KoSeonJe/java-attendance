@@ -4,13 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrewAttendanceBook {
-
-    private final List<CrewAttendance> crewAttendances;
-
-    private CrewAttendanceBook(List<CrewAttendance> crewAttendances) {
-        this.crewAttendances = crewAttendances;
-    }
+public record CrewAttendanceBook(
+        List<CrewAttendance> crewAttendances
+) {
 
     public void createCrewAttendance(String crewName, Attendance attendance) {
         if (existCrew(crewName)) {

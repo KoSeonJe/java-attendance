@@ -2,15 +2,10 @@ package domain;
 
 import java.util.Objects;
 
-public class CrewAttendance {
-
-    private String crewName;
-    private AttendanceRecords attendanceRecords;
-
-    private CrewAttendance(String crewName, AttendanceRecords attendanceRecords) {
-        this.crewName = crewName;
-        this.attendanceRecords = attendanceRecords;
-    }
+public record CrewAttendance(
+        String crewName,
+        AttendanceRecords attendanceRecords
+) {
 
     public AttendanceRecords getAttendanceRecords() {
         return attendanceRecords;

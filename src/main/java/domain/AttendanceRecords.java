@@ -6,13 +6,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AttendanceRecords {
-
-    private final List<Attendance> attendances;
-
-    private AttendanceRecords(List<Attendance> attendances) {
-        this.attendances = attendances;
-    }
+public record AttendanceRecords(
+        List<Attendance> attendances
+) {
 
     public void add(Attendance attendance) {
         validateAlreadyExistByDate(attendance);

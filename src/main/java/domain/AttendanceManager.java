@@ -3,13 +3,9 @@ package domain;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AttendanceManager {
-
-    private final CrewAttendanceBook crewAttendanceBook;
-
-    public AttendanceManager(CrewAttendanceBook crewAttendanceBook) {
-        this.crewAttendanceBook = crewAttendanceBook;
-    }
+public record AttendanceManager(
+        CrewAttendanceBook crewAttendanceBook
+) {
 
     public void processAttendance(String crewName, LocalDate attendanceDate, AttendanceTime attendanceTime) {
         validateAttendanceDay(attendanceDate);

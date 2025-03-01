@@ -3,9 +3,9 @@ package domain;
 import java.util.Arrays;
 import java.util.Map;
 
-public class AttendanceStatusCounter {
-
-    private final Map<AttendanceStatus, Integer> attendanceStatusCounter;
+public record AttendanceStatusCounter(
+        Map<AttendanceStatus, Integer> attendanceStatusCounter
+) {
 
     public AttendanceStatusCounter(Map<AttendanceStatus, Integer> attendanceStatusCounter) {
         this.attendanceStatusCounter = attendanceStatusCounter;
