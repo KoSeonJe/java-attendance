@@ -16,9 +16,15 @@ public class AttendanceManager {
         attendanceRecords.add(attendance);
     }
 
-    public List<Attendance> retrieveAllWithEmptyUntilDate(String crewName, LocalDate date) {
+    public List<Attendance> retrieveFilledAttendanceUntilDate(String crewName, LocalDate todayDate) {
         AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
-        return attendanceRecords.retrieveAllAttendanceUntilDate(date);
+
+        LocalDate oldestDayInBook = crewAttendanceBook.retrieveOldestDayInBook();
+        List<Attendance> filledAttendances = attendanceRecords.retrieveAllFilledNonExistingDay(oldestDayInBook, todayDate);
+
+        filledAttendances.removeIf(attendance -> SchoolDay.isNotSchoolDay(attendance.getAttendanceDate()));
+
+        return filledAttendances;
     }
 
     private Attendance createAttendance(LocalDate attendanceDate, AttendanceTime attendanceTime) {

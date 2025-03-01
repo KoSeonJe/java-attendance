@@ -60,14 +60,14 @@ public class AttendanceManagerTest {
     void retrieveAllAttendanceRecords() {
         // given
         String crewName = "웨이드";
-        LocalDate localDate1 = LocalDate.of(2024, 12, 10);
+        LocalDate oldest = LocalDate.of(2024, 12, 10);
         LocalDate localDate2 = LocalDate.of(2024, 12, 11);
-        LocalDate localDate3 = LocalDate.of(2024, 12, 12);
+        LocalDate today = LocalDate.of(2024, 12, 12);
 
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(
-                AttendanceFixture.createAttendance(localDate1, 10, 0),
+                AttendanceFixture.createAttendance(oldest, 10, 0),
                 AttendanceFixture.createAttendance(localDate2, 10, 0),
-                AttendanceFixture.createAttendance(localDate3, 10, 0)
+                AttendanceFixture.createAttendance(today, 10, 0)
         )));
         CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(
                 List.of(CrewAttendance.create(crewName, attendanceRecords))
@@ -75,9 +75,35 @@ public class AttendanceManagerTest {
         AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
 
         // when
-        List<Attendance> attendances = attendanceManager.retrieveAllWithEmptyUntilDate(crewName, localDate3);
+        List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, today);
 
         // then
         assertThat(attendances).hasSize(2);
+    }
+
+    @DisplayName("입력 날짜까지 출석 기록 조회시, 공휴일 및 주말을 제외하고 출석 기록이 없는 날짜에 결석 기록을 추가하여 반환한다")
+    @Test
+    void retrieveFilledAttendanceUntilDate() {
+        // given
+        String crewName = "웨이드";
+        LocalDate oldest = LocalDate.of(2024, 12, 10);
+        LocalDate localDate2 = LocalDate.of(2024, 12, 11);
+        LocalDate today = LocalDate.of(2024, 12, 17);
+
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(
+                AttendanceFixture.createAttendance(oldest, 10, 0),
+                AttendanceFixture.createAttendance(localDate2, 10, 0),
+                AttendanceFixture.createAttendance(today, 10, 0)
+        )));
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(
+                List.of(CrewAttendance.create(crewName, attendanceRecords))
+        );
+        AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
+
+        // when
+        List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, today);
+
+        // then
+        assertThat(attendances).hasSize(5);
     }
 }
