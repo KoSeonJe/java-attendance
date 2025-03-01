@@ -1,4 +1,12 @@
+import controller.AttendanceApplication;
+import controller.AttendanceHandler;
 import domain.CrewAttendanceBook;
+import util.ApplicationTime;
+import domain.AttendanceApplicationTime;
+import util.DataInitializer;
+import util.FileLoader;
+import view.InputView;
+import view.OutputView;
 
 public final class AttendanceConfig {
 
@@ -7,7 +15,7 @@ public final class AttendanceConfig {
     }
 
     public DataInitializer dataInitializer() {
-        return new DataInitializer();
+        return new DataInitializer(new FileLoader());
     }
 
     private AttendanceHandler attendanceHandler(CrewAttendanceBook initCrewAttendanceBook) {

@@ -1,4 +1,5 @@
-import domain.CrewAttendanceBook;
+import controller.AttendanceApplication;
+import util.DataInitializer;
 
 public class Applicaiton {
 
@@ -7,7 +8,7 @@ public class Applicaiton {
 
         DataInitializer dataInitializer = attendanceConfig.dataInitializer();
         AttendanceApplication attendanceApplication = attendanceConfig.attendanceApplication(
-                dataInitializer.initCrewAttendanceBook()
+                dataInitializer.initCrewAttendanceBook("src/main/resources/attendances.csv")
         );
 
         attendanceApplication.execute();

@@ -1,4 +1,4 @@
-import domain.CrewAttendanceBook;
+package controller;
 
 public class AttendanceApplication {
 
