@@ -1,25 +1,17 @@
 package controller;
 
-import domain.CrewAttendanceBook;
-import util.ApplicationTime;
-import view.ConsoleView;
-import view.InputView;
-import view.OutputView;
+import java.util.Map;
+import view.Menu;
 
 public class AttendanceHandler {
 
-    private final ConsoleView consoleView;
-    private final CrewAttendanceBook initCrewAttendanceBook;
-    private final ApplicationTime applicationTime;
+    private final Map<Menu, MenuExecutor> executors;
 
+    public AttendanceHandler(Map<Menu, MenuExecutor> executors) {
+        this.executors = executors;
+    }
 
-    public AttendanceHandler(
-            ConsoleView consoleView,
-            CrewAttendanceBook initCrewAttendanceBook,
-            ApplicationTime applicationTime
-    ) {
-        this.consoleView = consoleView;
-        this.initCrewAttendanceBook = initCrewAttendanceBook;
-        this.applicationTime = applicationTime;
+    public void handle(Menu menu) {
+        executors.get(menu).execute();
     }
 }

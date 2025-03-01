@@ -1,5 +1,6 @@
 package view;
 
+import java.time.LocalDateTime;
 import view.parser.InputParser;
 
 public final class ConsoleView {
@@ -14,6 +15,15 @@ public final class ConsoleView {
         this.inputView = inputView;
         this.outputView = outputView;
         this.inputParser = inputParser;
+    }
+
+    public Menu requestMenu(LocalDateTime applicationTime) {
+        String inputMenuSelector = inputView.inputMenuSelector(applicationTime);
+        return Menu.findBySelector(inputMenuSelector);
+    }
+
+    public void printMessage(String message) {
+        outputView.printMessage(message);
     }
 
     public static ConsoleView create(InputView inputView, OutputView outputView, InputParser inputParser) {
