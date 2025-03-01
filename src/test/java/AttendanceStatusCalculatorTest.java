@@ -1,0 +1,41 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+public class AttendanceStatusCalculatorTest {
+
+    @DisplayName("크루의 누적 출석, 지각 그리고 결석 횟수를 계산한다")
+    @Test
+    void calculateAttendanceStatusCount() {
+        // given
+        String crewName = "웨이드";
+        LocalDate localDate1 = LocalDate.of(2024, 12, 10);
+        LocalDate localDate2 = LocalDate.of(2024, 12, 11);
+        LocalDate localDate3 = LocalDate.of(2024, 12, 12);
+        LocalDate localDate4 = LocalDate.of(2024, 12, 13);
+        Attendance attendance = Attendance.createAbsenceAttendance(localDate4);
+        List<Attendance> attendances = new ArrayList<>(List.of(
+                AttendanceFixture.createAttendance(localDate1, 10, 0),
+                AttendanceFixture.createAttendance(localDate2, 10, 7),
+                AttendanceFixture.createAttendance(localDate3, 10, 31),
+                attendance
+        ));
+
+        AttendanceStatusCalculator calculator = new AttendanceStatusCalculator();
+        // when
+        Map<AttendanceStatus, Integer> result = calculator.calculateAllCount(attendances);
+
+        // then
+        SoftAssertions.assertSoftly(softly -> {
+            softly.assertThat(result.get(AttendanceStatus.ATTENDANCE)).isEqualTo(1);
+            softly.assertThat(result.get(AttendanceStatus.LATE)).isEqualTo(1);
+            softly.assertThat(result.get(AttendanceStatus.ABSENCE)).isEqualTo(2);
+        });
+    }
+}

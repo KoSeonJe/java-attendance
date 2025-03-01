@@ -17,6 +17,10 @@ public class Attendance {
         return attendanceDate;
     }
 
+    public AttendanceStatus getAttendanceStatus() {
+        return attendanceStatus;
+    }
+
     public void updateAttendance(int updateHour, int updateMinute, AttendanceStatus attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
         if (attendanceTime == null) {
