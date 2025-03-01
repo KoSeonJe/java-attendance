@@ -13,6 +13,34 @@ import org.junit.jupiter.api.Test;
 
 public class CrewAttendanceBookTest {
 
+    @DisplayName("해당 크루이름이 등록되어 있다면 true를 반환한다")
+    @Test
+    void existCrew() {
+        // given
+        String crewName = "웨이드";
+        CrewAttendance crewAttendance = CrewAttendance.create(crewName, AttendanceRecords.create(List.of()));
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(List.of(crewAttendance));
+        // when
+        boolean existCrew = crewAttendanceBook.existCrew(crewName);
+        // then
+        assertThat(existCrew).isTrue();
+    }
+
+    @DisplayName("해당 크루이름이 등록되어 있지 않다면 false를 반환한다")
+    @Test
+    void notExistCrew() {
+        // given
+        String crewName = "웨이드";
+        CrewAttendance crewAttendance = CrewAttendance.create(crewName, AttendanceRecords.create(List.of()));
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(List.of(crewAttendance));
+
+        String anotherName = "웨이드2";
+        // when
+        boolean existCrew = crewAttendanceBook.existCrew(anotherName);
+        // then
+        assertThat(existCrew).isFalse();
+    }
+
     @DisplayName("등록되지 않은 크루 닉네임이라면 예외를 발생시킨다")
     @Test
     void notExistingAttendance() {

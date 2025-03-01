@@ -11,6 +11,11 @@ public class CrewAttendanceBook {
         this.crewAttendances = crewAttendances;
     }
 
+    public boolean existCrew(String crewName) {
+        return crewAttendances.stream()
+                .anyMatch(crewAttendance -> crewAttendance.equalName(crewName));
+    }
+
     public AttendanceRecords retrieveAttendanceRecordsByName(String crewName) {
         return crewAttendances.stream()
                 .filter(crewAttendance -> crewAttendance.equalName(crewName))
