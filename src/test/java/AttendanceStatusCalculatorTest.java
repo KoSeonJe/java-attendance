@@ -29,13 +29,13 @@ public class AttendanceStatusCalculatorTest {
 
         AttendanceStatusCalculator calculator = new AttendanceStatusCalculator();
         // when
-        Map<AttendanceStatus, Integer> result = calculator.calculateAllCount(attendances);
+        AttendanceStatusCounter result = calculator.calculateAllCount(attendances);
 
         // then
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(result.get(AttendanceStatus.ATTENDANCE)).isEqualTo(1);
-            softly.assertThat(result.get(AttendanceStatus.LATE)).isEqualTo(1);
-            softly.assertThat(result.get(AttendanceStatus.ABSENCE)).isEqualTo(2);
+            softly.assertThat(result.retrieveAttendanceStatusCount(AttendanceStatus.ATTENDANCE)).isEqualTo(1);
+            softly.assertThat(result.retrieveAttendanceStatusCount(AttendanceStatus.LATE)).isEqualTo(1);
+            softly.assertThat(result.retrieveAttendanceStatusCount(AttendanceStatus.ABSENCE)).isEqualTo(2);
         });
     }
 }

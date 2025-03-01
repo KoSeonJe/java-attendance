@@ -24,4 +24,9 @@ public enum Penalty {
 
         return NONE;
     }
+
+    public static int calculateTotalAbsence(int late, int absence) {
+        int convertAbsence = late / 3;
+        return absence + convertAbsence;
+    }
 }

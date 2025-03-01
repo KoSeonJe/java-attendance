@@ -1,3 +1,6 @@
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,5 +60,19 @@ public class PenaltyTest {
 
         //then
         Assertions.assertThat(penalty).isEqualTo(Penalty.NONE);
+    }
+
+    @DisplayName("지각 3회당 결석 1번이다")
+    @Test
+    void convertLateToAbsence() {
+        // given
+        int late = 7;
+        int absence = 3;
+
+        // when
+        int totalAbsence = Penalty.calculateTotalAbsence(late, absence);
+
+        // then
+        assertThat(totalAbsence).isEqualTo(5);
     }
 }
