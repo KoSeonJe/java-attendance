@@ -12,10 +12,6 @@ public class CrewAttendance {
         this.attendanceRecords = attendanceRecords;
     }
 
-    public List<Attendance> retrieveAllByDate(LocalDate date) {
-        return attendanceRecords.retrieveAllAttendanceUntilDate(date);
-    }
-
     public AttendanceRecords getAttendanceRecords() {
         return attendanceRecords;
     }
