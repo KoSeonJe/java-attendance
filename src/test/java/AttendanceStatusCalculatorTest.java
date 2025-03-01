@@ -1,9 +1,12 @@
 import static org.assertj.core.api.Assertions.assertThat;
 
+import domain.Attendance;
+import domain.AttendanceStatus;
+import domain.AttendanceStatusCalculator;
+import domain.AttendanceStatusCounter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

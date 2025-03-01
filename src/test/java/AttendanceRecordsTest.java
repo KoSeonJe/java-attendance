@@ -1,6 +1,9 @@
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import domain.Attendance;
+import domain.AttendanceRecords;
+import domain.AttendanceStatus;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

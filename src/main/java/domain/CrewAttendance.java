@@ -1,5 +1,5 @@
-import java.time.LocalDate;
-import java.util.List;
+package domain;
+
 import java.util.Objects;
 
 public class CrewAttendance {

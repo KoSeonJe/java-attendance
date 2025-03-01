@@ -1,3 +1,6 @@
+import domain.Attendance;
+import domain.AttendanceStatus;
+import domain.AttendanceTime;
 import java.time.LocalDate;
 
 public class AttendanceFixture {

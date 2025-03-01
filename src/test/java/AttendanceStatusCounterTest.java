@@ -1,6 +1,7 @@
+import domain.AttendanceStatus;
+import domain.AttendanceStatusCounter;
 import java.util.HashMap;
 import java.util.Map;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,15 @@
 import static org.assertj.core.api.Assertions.*;
 
+import domain.Attendance;
+import domain.AttendanceManager;
+import domain.AttendanceRecords;
+import domain.AttendanceStatus;
+import domain.AttendanceTime;
+import domain.CrewAttendance;
+import domain.CrewAttendanceBook;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
