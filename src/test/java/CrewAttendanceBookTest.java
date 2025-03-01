@@ -41,6 +41,20 @@ public class CrewAttendanceBookTest {
         assertThat(existCrew).isFalse();
     }
 
+    @DisplayName("크루의 출석 기록을 새로 등록할 수 있다")
+    @Test
+    void createCrewAttendance() {
+        // given
+        String crewName = "웨이드";
+        LocalDate localDate = LocalDate.of(2024, 12, 13);
+        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.createEmpty();
+        // when
+        crewAttendanceBook.createCrewAttendance(crewName, attendance);
+        // then
+        assertThat(crewAttendanceBook.existCrew(crewName)).isTrue();
+    }
+
     @DisplayName("등록되지 않은 크루 닉네임이라면 예외를 발생시킨다")
     @Test
     void notExistingAttendance() {

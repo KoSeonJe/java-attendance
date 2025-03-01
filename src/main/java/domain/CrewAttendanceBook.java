@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CrewAttendanceBook {
@@ -9,6 +10,11 @@ public class CrewAttendanceBook {
 
     private CrewAttendanceBook(List<CrewAttendance> crewAttendances) {
         this.crewAttendances = crewAttendances;
+    }
+
+    public void createCrewAttendance(String crewName, Attendance attendance) {
+        CrewAttendance crewAttendance = CrewAttendance.create(crewName, AttendanceRecords.create(List.of(attendance)));
+        crewAttendances.add(crewAttendance);
     }
 
     public boolean existCrew(String crewName) {
@@ -33,5 +39,9 @@ public class CrewAttendanceBook {
 
     public static CrewAttendanceBook create(List<CrewAttendance> crewAttendances) {
         return new CrewAttendanceBook(crewAttendances);
+    }
+
+    public static CrewAttendanceBook createEmpty() {
+        return new CrewAttendanceBook(new ArrayList<>());
     }
 }
