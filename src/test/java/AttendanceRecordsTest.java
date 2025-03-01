@@ -109,7 +109,8 @@ public class AttendanceRecordsTest {
 
         LocalDate anotherDate = LocalDate.of(2024, 12, 12);
         //when && then
-        assertThatThrownBy(() -> attendanceRecords.updateAttendanceByDate(anotherDate, hour, minute, updateAttendanceStatus))
+        assertThatThrownBy(
+                () -> attendanceRecords.updateAttendanceByDate(anotherDate, hour, minute, updateAttendanceStatus))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 입력한 날짜의 출석 기록이 없습니다.");
     }
@@ -118,18 +119,78 @@ public class AttendanceRecordsTest {
     @Test
     void retrieveAllAttendanceUntilDate() {
         //given
-        LocalDate localDate = LocalDate.of(2024, 12, 13);
-        Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
+        LocalDate today = LocalDate.of(2024, 12, 13);
+        Attendance attendance = AttendanceFixture.createAttendance(today, 10, 0);
 
-        LocalDate localDate2 = LocalDate.of(2024, 12, 12);
-        Attendance attendance2 = AttendanceFixture.createAttendance(localDate2, 10, 0);
+        LocalDate oldest = LocalDate.of(2024, 12, 12);
+        Attendance attendance2 = AttendanceFixture.createAttendance(oldest, 10, 0);
 
-        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance, attendance2)));
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(
+                new ArrayList<>(List.of(attendance, attendance2)));
 
         // when
-        List<Attendance> result = attendanceRecords.retrieveAllAttendanceUntilDate(localDate);
+        List<Attendance> result = attendanceRecords.retrieveAllFilledNonExistingDay(oldest, today);
 
         // then
         assertThat(result).contains(attendance2);
     }
+
+    @DisplayName("가장 오래된 날짜부터 오늘 날짜까지 출석 기록이 없다면, 결석 기록으로 채워준다")
+    @Test
+    void retrieveAllFilledNonExistingDay() {
+        //given
+        LocalDate today = LocalDate.of(2024, 12, 13);
+        Attendance attendance = AttendanceFixture.createAttendance(today, 10, 0);
+
+        LocalDate oldest = LocalDate.of(2024, 12, 9);
+        Attendance attendance2 = AttendanceFixture.createAttendance(oldest, 10, 0);
+
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(
+                new ArrayList<>(List.of(attendance, attendance2)));
+
+        // when
+        List<Attendance> result = attendanceRecords.retrieveAllFilledNonExistingDay(oldest, today);
+
+        // then
+        assertThat(result.size()).isEqualTo(4);
+    }
+
+    @DisplayName("출석 중 가장 오래된 날짜를 조회한다")
+    @Test
+    void retrieveOldestDate() {
+        // given
+        LocalDate today = LocalDate.of(2024, 12, 13);
+        Attendance attendance = AttendanceFixture.createAttendance(today, 10, 0);
+
+        LocalDate date = LocalDate.of(2024, 12, 12);
+        Attendance attendance2 = AttendanceFixture.createAttendance(date, 10, 0);
+
+        LocalDate oldest = LocalDate.of(2024, 12, 11);
+        Attendance attendance3 = AttendanceFixture.createAttendance(oldest, 10, 0);
+
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(
+                List.of(attendance, attendance2, attendance3)
+        ));
+
+        // when
+        LocalDate oldestDate = attendanceRecords.retrieveOldestDate();
+
+        // then
+        assertThat(oldestDate).isEqualTo(oldest);
+    }
+
+    @DisplayName("오래된 날짜 조회 중 출석 기록이 없다면 예외를 발생시킨다")
+    @Test
+    void retrieveOldestDateNotExist() {
+        // given
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of()));
+
+        // when & then
+        assertThatThrownBy(
+                attendanceRecords::retrieveOldestDate
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 출석 기록이 없어 가장 오래된 날짜를 찾을 수 없습니다");
+    }
+
+
 }

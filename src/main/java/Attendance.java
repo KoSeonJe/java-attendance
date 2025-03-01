@@ -3,7 +3,7 @@ import java.util.Objects;
 
 public class Attendance {
 
-    private LocalDate attendanceDate;
+    private final LocalDate attendanceDate;
     private AttendanceTime attendanceTime;
     private AttendanceStatus attendanceStatus;
 
@@ -11,6 +11,10 @@ public class Attendance {
         this.attendanceDate = attendanceDate;
         this.attendanceTime = attendanceTime;
         this.attendanceStatus = attendanceStatus;
+    }
+
+    public LocalDate getAttendanceDate() {
+        return attendanceDate;
     }
 
     public void updateAttendance(int updateHour, int updateMinute, AttendanceStatus attendanceStatus) {
@@ -57,9 +61,5 @@ public class Attendance {
     @Override
     public int hashCode() {
         return Objects.hash(attendanceDate, attendanceTime, attendanceStatus);
-    }
-
-    public boolean isEqualDayOfMonth(int dayOfMonth) {
-        return this.attendanceDate.getDayOfMonth() == dayOfMonth;
     }
 }
