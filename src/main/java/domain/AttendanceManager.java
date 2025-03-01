@@ -9,6 +9,11 @@ public record AttendanceManager(
 
     public void processAttendance(String crewName, LocalDate attendanceDate, AttendanceTime attendanceTime) {
         validateAttendanceDay(attendanceDate);
+        if (!crewAttendanceBook.existCrew(crewName)) {
+            Attendance attendance = createAttendance(attendanceDate, attendanceTime);
+            crewAttendanceBook.createCrewAttendance(crewName, attendance);
+            return;
+        }
         AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
         Attendance attendance = createAttendance(attendanceDate, attendanceTime);
         attendanceRecords.add(attendance);

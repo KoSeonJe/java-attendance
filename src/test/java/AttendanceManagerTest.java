@@ -40,6 +40,24 @@ public class AttendanceManagerTest {
                 Attendance.create(attendanceDate, attendanceTime, AttendanceStatus.ATTENDANCE))).isTrue();
     }
 
+    @DisplayName("출석 처리시 등록되지 않은 크루원이라면 새로 추가한다")
+    @Test
+    void notExistCrew() {
+        // given
+        String crewName = "웨이드";
+        LocalDate attendanceDate = LocalDate.of(2024, 12, 13);
+        AttendanceTime attendanceTime = AttendanceTime.create(10, 0);
+
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.createEmpty();
+        AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
+
+        // when
+        attendanceManager.processAttendance(crewName, attendanceDate, attendanceTime);
+
+        // then
+        assertThat(crewAttendanceBook.existCrew(crewName)).isTrue();
+    }
+
     @DisplayName("주말이나 공휴일에 출석할 시 예외를 발생시킨다")
     @Test
     void throwExceptionIfAttendingOnWeekendOrHoliday() {
