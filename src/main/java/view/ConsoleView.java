@@ -1,8 +1,9 @@
 package view;
 
-import controller.AfterAttendanceInfo;
-import controller.BeforeAttendanceInfo;
+import controller.dto.AfterAttendanceInfo;
+import controller.dto.BeforeAttendanceInfo;
 import controller.dto.AttendanceResult;
+import controller.dto.CrewAttendanceRecord;
 import domain.AttendanceStatus;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -79,5 +80,12 @@ public final class ConsoleView {
             return consoleView;
         }
         return consoleView;
+    }
+
+    public void printCrewAttendanceRecord(CrewAttendanceRecord record) {
+        outputView.printIntroAttendanceRecord();
+        record.attendanceResults().forEach(this::printAttendanceResult);
+        outputView.printAttendancesCount(record.attendanceCount(), record.lateCount(), record.absenceCount());
+        outputView.printPenaltyStatus(outputParser.parsePenaltyToMessage(record.penalty()));
     }
 }

@@ -22,6 +22,9 @@ public class InputParser {
     }
 
     public String parseToTimeMessage(LocalTime time) {
+        if (time == null) {
+            return "--:--";
+        }
         int hour = time.getHour();
         int minute = time.getMinute();
 

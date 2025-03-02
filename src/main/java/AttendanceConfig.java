@@ -7,6 +7,7 @@ import controller.QuitExecutor;
 import controller.MenuExecutor;
 import controller.PenaltyRetrieveExecutor;
 import domain.AttendanceManager;
+import domain.AttendanceStatusCalculator;
 import domain.CrewAttendanceBook;
 import java.util.Map;
 import util.ApplicationDate;
@@ -47,7 +48,7 @@ public final class AttendanceConfig {
         return Map.of(
                 Menu.CHECK_ATTENDANCE, attendanceCheckExecutor(initCrewAttendanceBook),
                 Menu.UPDATE_ATTENDANCE, attendanceUpdateExecutor(initCrewAttendanceBook),
-                Menu.CREW_ATTENDANCE_RECORD, crewAttendanceRetrieveExecutor(),
+                Menu.CREW_ATTENDANCE_RECORD, crewAttendanceRetrieveExecutor(initCrewAttendanceBook),
                 Menu.PENALTY_RECORD, penaltyRetrieveExecutor(),
                 Menu.QUIT, quitExecutor()
         );
@@ -55,6 +56,10 @@ public final class AttendanceConfig {
 
     private AttendanceManager attendanceManager(CrewAttendanceBook crewAttendanceBook) {
         return new AttendanceManager(crewAttendanceBook);
+    }
+
+    private AttendanceStatusCalculator attendanceStatusCalculator() {
+        return new AttendanceStatusCalculator();
     }
 
     private MenuExecutor attendanceCheckExecutor(CrewAttendanceBook initCrewAttendanceBook) {
@@ -65,8 +70,8 @@ public final class AttendanceConfig {
         return new AttendanceUpdateExecutor(consoleView(), applicationTime(), attendanceManager(initCrewAttendanceBook));
     }
 
-    private MenuExecutor crewAttendanceRetrieveExecutor() {
-        return new CrewAttendanceRetrieveExecutor();
+    private MenuExecutor crewAttendanceRetrieveExecutor(CrewAttendanceBook initCrewAttendanceBook) {
+        return new CrewAttendanceRetrieveExecutor(consoleView(), applicationTime(), attendanceManager(initCrewAttendanceBook), attendanceStatusCalculator());
     }
 
     private MenuExecutor penaltyRetrieveExecutor() {

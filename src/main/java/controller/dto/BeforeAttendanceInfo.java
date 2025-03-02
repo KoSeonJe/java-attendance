@@ -1,6 +1,5 @@
-package controller;
+package controller.dto;
 
-import controller.dto.AttendanceResult;
 import domain.Attendance;
 import domain.AttendanceStatus;
 import domain.AttendanceTime;

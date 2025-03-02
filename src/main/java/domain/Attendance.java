@@ -3,7 +3,7 @@ package domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Attendance {
+public class Attendance implements Comparable<Attendance> {
 
     private final LocalDate attendanceDate;
     private AttendanceTime attendanceTime;
@@ -67,5 +67,10 @@ public class Attendance {
     @Override
     public int hashCode() {
         return Objects.hash(attendanceDate, attendanceTime, attendanceStatus);
+    }
+
+    @Override
+    public int compareTo(Attendance attendance) {
+        return this.attendanceDate.compareTo(attendance.attendanceDate);
     }
 }

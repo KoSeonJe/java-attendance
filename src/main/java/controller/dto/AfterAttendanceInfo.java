@@ -1,4 +1,4 @@
-package controller;
+package controller.dto;
 
 import domain.Attendance;
 import domain.AttendanceStatus;

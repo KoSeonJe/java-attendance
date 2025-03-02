@@ -1,5 +1,7 @@
 package controller;
 
+import controller.dto.AfterAttendanceInfo;
+import controller.dto.BeforeAttendanceInfo;
 import domain.Attendance;
 import domain.AttendanceManager;
 import domain.AttendanceTime;
