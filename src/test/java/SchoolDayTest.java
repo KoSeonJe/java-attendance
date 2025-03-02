@@ -2,6 +2,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import domain.SchoolDay;
 import java.time.LocalDate;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -73,5 +74,16 @@ public class SchoolDayTest {
                 () -> SchoolDay.retrieveStartHourByDate(holiday)
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 주말 혹은 공휴일에는 출석 시각을 조회할 수 없습니다");
+    }
+
+    @DisplayName("입력 날짜가 등교일이 아니라면 예외를 발생시킨다")
+    @Test
+    void validateSchoolDay() {
+        // given
+        LocalDate date = LocalDate.of(2024, 12, 14);
+        // when & then
+        Assertions.assertThatThrownBy(
+                () -> SchoolDay.validateSchoolDay(date)
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }

@@ -2,8 +2,10 @@ package domain;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public enum SchoolDay {
@@ -18,14 +20,12 @@ public enum SchoolDay {
 
     private static final List<Integer> HOLIDAY = List.of(25);
 
-    private boolean isPossibleAttendance;
-    private int startHour;
-    private int endHour;
+    private final boolean isPossibleAttendance;
+    private final int startHour;
 
     SchoolDay(boolean isPossibleAttendance, int startHour, int endHour) {
         this.isPossibleAttendance = isPossibleAttendance;
         this.startHour = startHour;
-        this.endHour = endHour;
     }
 
     public boolean isPossibleAttendance() {
@@ -48,6 +48,12 @@ public enum SchoolDay {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
     }
 
+    public static void validateSchoolDay(LocalDate date) {
+        if (!isPossibleAttendance(date)) {
+            throw new IllegalArgumentException(String.format("[ERROR] %s은(는) 등교일이 아닙니다.", customFormat(date)));
+        }
+    }
+
     public static boolean isPossibleAttendance(LocalDate date) {
         if (isHoliday(date)) {
             return false;
@@ -62,6 +68,14 @@ public enum SchoolDay {
     public static boolean isNotSchoolDay(LocalDate date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
         return isHoliday(date) || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
+    }
+
+    private static String customFormat(LocalDate date) {
+        return String.format("%d월 %d일 %s",
+                date.getMonthValue(),
+                date.getDayOfMonth(),
+                date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN)
+        );
     }
 
     private static boolean isHoliday(LocalDate date) {
