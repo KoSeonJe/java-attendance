@@ -66,4 +66,12 @@ public final class OutputView {
         }
         return "" + part;
     }
+
+    public void printPenaltyResultMessage() {
+        System.out.println("제적 위험자 조회 결과");
+    }
+
+    public void printPenaltyTarget(String nickName, int lateCount, int absenceCount, String penalty) {
+        System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n", nickName, absenceCount, lateCount, penalty);
+    }
 }

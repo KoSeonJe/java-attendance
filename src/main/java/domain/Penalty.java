@@ -31,4 +31,8 @@ public enum Penalty {
         int convertAbsence = late / 3;
         return absence + convertAbsence;
     }
+
+    public boolean isNone() {
+        return this == NONE;
+    }
 }

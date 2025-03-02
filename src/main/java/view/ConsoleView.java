@@ -5,8 +5,10 @@ import controller.dto.BeforeAttendanceInfo;
 import controller.dto.AttendanceResult;
 import controller.dto.CrewAttendanceRecord;
 import domain.AttendanceStatus;
+import domain.vo.PenaltyTarget;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import view.parser.InputParser;
 import view.parser.OutputParser;
 
@@ -87,5 +89,16 @@ public final class ConsoleView {
         record.attendanceResults().forEach(this::printAttendanceResult);
         outputView.printAttendancesCount(record.attendanceCount(), record.lateCount(), record.absenceCount());
         outputView.printPenaltyStatus(outputParser.parsePenaltyToMessage(record.penalty()));
+    }
+
+    public void printPenaltyTargets(List<PenaltyTarget> penaltyTargets) {
+        outputView.printPenaltyResultMessage();
+        penaltyTargets
+                .forEach(penaltyTarget -> outputView.printPenaltyTarget(
+                        penaltyTarget.nickName(),
+                        penaltyTarget.lateCount(),
+                        penaltyTarget.absenceCount(),
+                        outputParser.parsePenaltyToMessage(penaltyTarget.penalty())
+                ));
     }
 }

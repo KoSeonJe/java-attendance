@@ -1,7 +1,6 @@
 package view.parser;
 
 
-import domain.AttendanceTime;
 import java.time.LocalTime;
 
 public class InputParser {

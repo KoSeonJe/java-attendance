@@ -1,10 +1,7 @@
 package util;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import domain.AttendanceTime;
 import java.time.LocalDate;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +20,7 @@ class StringParserTest {
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(attendanceInfo.crewName()).isEqualTo("쿠키");
             softly.assertThat(attendanceInfo.attendanceDate()).isEqualTo(LocalDate.of(2024, 12, 13));
-            softly.assertThat(attendanceInfo.attendanceTime()).isEqualTo(AttendanceTime.create(10, 8));
+            softly.assertThat(attendanceInfo.attendanceTime()).isEqualTo(new AttendanceTime(10, 8));
         });
     }
 }
