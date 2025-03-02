@@ -9,9 +9,7 @@ public record CrewAttendanceBook(
 ) {
 
     public void createCrewAttendance(String crewName, Attendance attendance) {
-        if (existCrew(crewName)) {
-            throw new IllegalArgumentException("[ERROR] 이미 등록된 크루입니다");
-        }
+        validateExistingCrew(crewName);
         AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
         CrewAttendance crewAttendance = CrewAttendance.create(crewName, attendanceRecords);
         crewAttendances.add(crewAttendance);
@@ -43,5 +41,11 @@ public record CrewAttendanceBook(
 
     public static CrewAttendanceBook createEmpty() {
         return new CrewAttendanceBook(new ArrayList<>());
+    }
+
+    private void validateExistingCrew(String crewName) {
+        if (existCrew(crewName)) {
+            throw new IllegalArgumentException("[ERROR] 이미 등록된 크루입니다");
+        }
     }
 }

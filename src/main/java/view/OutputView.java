@@ -60,18 +60,18 @@ public final class OutputView {
         System.out.printf("%s 대상자입니다.\n", penalty);
     }
 
-    private String parseFullDay(int part) {
-        if (part < 10) {
-            return "0" + part;
-        }
-        return "" + part;
-    }
-
     public void printPenaltyResultMessage() {
         System.out.println("제적 위험자 조회 결과");
     }
 
     public void printPenaltyTarget(String nickName, int lateCount, int absenceCount, String penalty) {
         System.out.printf("- %s: 결석 %d회, 지각 %d회 (%s)\n", nickName, absenceCount, lateCount, penalty);
+    }
+
+    private String parseFullDay(int part) {
+        if (part < 10) {
+            return "0" + part;
+        }
+        return "" + part;
     }
 }

@@ -9,6 +9,7 @@ public enum Penalty {
     private static final int WEEDING_LIMIT_COUNT = 5;
     private static final int INTERVIEW_LIMIT_COUNT = 3;
     private static final int WARNING_LIMIT_COUNT = 2;
+    private static final int ABSENCE_UNIT = 3;
 
 
     public static Penalty judge(int absenceCount) {
@@ -28,7 +29,7 @@ public enum Penalty {
     }
 
     public static int calculateTotalAbsence(int late, int absence) {
-        int convertAbsence = late / 3;
+        int convertAbsence = late / ABSENCE_UNIT;
         return absence + convertAbsence;
     }
 

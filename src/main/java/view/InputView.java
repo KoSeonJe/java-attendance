@@ -34,10 +34,6 @@ public final class InputView {
         return readLine();
     }
 
-    private String readLine() {
-        return scanner.nextLine();
-    }
-
     public String inputDayOfMonth() {
         System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
         return readLine();
@@ -46,5 +42,9 @@ public final class InputView {
     public String inputUpdateTime() {
         System.out.println("언제로 변경하겠습니까?");
         return readLine();
+    }
+
+    private String readLine() {
+        return scanner.nextLine();
     }
 }

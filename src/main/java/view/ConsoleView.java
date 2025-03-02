@@ -76,14 +76,6 @@ public final class ConsoleView {
         outputView.printUpdateResult(date, beforeTime, beforeAttendanceStatus, afterTime, afterAttendanceStatus);
     }
 
-    public static ConsoleView create(InputView inputView, OutputView outputView, InputParser inputParser, OutputParser outputParser) {
-        if (consoleView == null) {
-            consoleView = new ConsoleView(inputView, outputView, inputParser, outputParser);
-            return consoleView;
-        }
-        return consoleView;
-    }
-
     public void printCrewAttendanceRecord(CrewAttendanceRecord record) {
         outputView.printIntroAttendanceRecord();
         record.attendanceResults().forEach(this::printAttendanceResult);
@@ -100,5 +92,13 @@ public final class ConsoleView {
                         penaltyTarget.absenceCount(),
                         outputParser.parsePenaltyToMessage(penaltyTarget.penalty())
                 ));
+    }
+
+    public static ConsoleView create(InputView inputView, OutputView outputView, InputParser inputParser, OutputParser outputParser) {
+        if (consoleView == null) {
+            consoleView = new ConsoleView(inputView, outputView, inputParser, outputParser);
+            return consoleView;
+        }
+        return consoleView;
     }
 }

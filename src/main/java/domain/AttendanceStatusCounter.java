@@ -7,6 +7,8 @@ public record AttendanceStatusCounter(
         Map<AttendanceStatus, Integer> attendanceStatusCounter
 ) {
 
+    private static final int DEFAULT_COUNT = 0;
+
     public AttendanceStatusCounter(Map<AttendanceStatus, Integer> attendanceStatusCounter) {
         this.attendanceStatusCounter = attendanceStatusCounter;
         initData();
@@ -22,6 +24,6 @@ public record AttendanceStatusCounter(
 
     private void initData() {
         Arrays.stream(AttendanceStatus.values())
-                .forEach(status -> attendanceStatusCounter.putIfAbsent(status, 0));
+                .forEach(status -> attendanceStatusCounter.putIfAbsent(status, DEFAULT_COUNT));
     }
 }
