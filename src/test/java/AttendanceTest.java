@@ -86,9 +86,10 @@ public class AttendanceTest {
         // given
         LocalDate localDate = LocalDate.of(2024, 12, 13);
         Attendance attendance = AttendanceFixture.createAttendance(localDate, 10, 0);
+        LocalDate localDate2 = LocalDate.of(2024, 12, 13);
 
         //when
-        boolean isEqualDate = attendance.isEqualDate(localDate);
+        boolean isEqualDate = attendance.isEqualDate(localDate2);
 
         //then
         assertThat(isEqualDate).isTrue();

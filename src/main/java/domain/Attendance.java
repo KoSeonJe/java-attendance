@@ -33,11 +33,11 @@ public class Attendance {
     }
 
     public boolean isEqualDate(Attendance attendance) {
-        return this.attendanceDate == attendance.attendanceDate;
+        return Objects.equals(this.attendanceDate, attendance.attendanceDate);
     }
 
     public boolean isEqualDate(LocalDate attendanceDate) {
-        return this.attendanceDate == attendanceDate;
+        return Objects.equals(this.attendanceDate, attendanceDate);
     }
 
     public boolean isBeforeDate(LocalDate date) {
