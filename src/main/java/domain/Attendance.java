@@ -19,17 +19,17 @@ public class Attendance {
         return attendanceDate;
     }
 
+    public AttendanceTime getAttendanceTime() {
+        return attendanceTime;
+    }
+
     public AttendanceStatus getAttendanceStatus() {
         return attendanceStatus;
     }
 
     public void updateAttendance(int updateHour, int updateMinute, AttendanceStatus attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
-        if (attendanceTime == null) {
-            this.attendanceTime = AttendanceTime.create(updateHour, updateMinute);
-            return;
-        }
-        attendanceTime.updateTime(updateHour, updateMinute);
+        this.attendanceTime = new AttendanceTime(updateHour, updateMinute);
     }
 
     public boolean isEqualDate(Attendance attendance) {

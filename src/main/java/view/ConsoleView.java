@@ -1,7 +1,12 @@
 package view;
 
-import java.time.LocalDateTime;
+import domain.Attendance;
+import domain.AttendanceStatus;
+import domain.AttendanceTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import view.parser.InputParser;
+import view.parser.OutputParser;
 
 public final class ConsoleView {
 
@@ -10,11 +15,13 @@ public final class ConsoleView {
     private final InputView inputView;
     private final OutputView outputView;
     private final InputParser inputParser;
+    private final OutputParser outputParser;
 
-    public ConsoleView(InputView inputView, OutputView outputView, InputParser inputParser) {
+    public ConsoleView(InputView inputView, OutputView outputView, InputParser inputParser, OutputParser outputParser) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.inputParser = inputParser;
+        this.outputParser = outputParser;
     }
 
     public Menu requestMenu(LocalDate applicationDate) {
@@ -26,9 +33,26 @@ public final class ConsoleView {
         outputView.printMessage(message);
     }
 
-    public static ConsoleView create(InputView inputView, OutputView outputView, InputParser inputParser) {
+    public String requestNickName() {
+        return inputView.inputNickName();
+    }
+
+    public LocalTime requestAttendanceTime() {
+        String rawInputAttendanceTime = inputView.inputAttendanceTime();
+        return inputParser.parseToLocalTime(rawInputAttendanceTime);
+    }
+
+    public void printAttendanceResult(Attendance attendance) {
+        LocalDate date = attendance.getAttendanceDate();
+        AttendanceTime time = attendance.getAttendanceTime();
+        AttendanceStatus attendanceStatus = attendance.getAttendanceStatus();
+
+        outputView.printAttendanceResult(date, inputParser.parseToTimeMessage(time), outputParser.parseAttendanceStatusToMessage(attendanceStatus));
+    }
+
+    public static ConsoleView create(InputView inputView, OutputView outputView, InputParser inputParser, OutputParser outputParser) {
         if (consoleView == null) {
-            consoleView = new ConsoleView(inputView, outputView, inputParser);
+            consoleView = new ConsoleView(inputView, outputView, inputParser, outputParser);
             return consoleView;
         }
         return consoleView;

@@ -8,7 +8,7 @@ public record AttendanceManager(
 ) {
 
     public void processAttendance(String crewName, LocalDate attendanceDate, AttendanceTime attendanceTime) {
-        validateAttendanceDay(attendanceDate);
+        SchoolDay.validateSchoolDay(attendanceDate);
         if (!crewAttendanceBook.existCrew(crewName)) {
             Attendance attendance = createAttendance(attendanceDate, attendanceTime);
             crewAttendanceBook.createCrewAttendance(crewName, attendance);
@@ -25,7 +25,7 @@ public record AttendanceManager(
         LocalDate oldestDayInBook = crewAttendanceBook.retrieveOldestDayInBook();
         List<Attendance> filledAttendances = attendanceRecords.retrieveAllFilledNonExistingDay(oldestDayInBook, todayDate);
 
-        filledAttendances.removeIf(attendance -> SchoolDay.isNotSchoolDay(attendance.getAttendanceDate()));
+        filledAttendances.removeIf(attendance -> !SchoolDay.isPossibleAttendance(attendance.getAttendanceDate()));
 
         return filledAttendances;
     }
@@ -34,11 +34,5 @@ public record AttendanceManager(
         int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(startHour, attendanceTime);
         return Attendance.create(attendanceDate, attendanceTime, attendanceStatus);
-    }
-
-    private static void validateAttendanceDay(LocalDate attendanceDate) {
-        if (SchoolDay.isNotSchoolDay(attendanceDate)) {
-            throw new IllegalArgumentException("[ERROR] 출석할 수 없는 날입니다.");
-        }
     }
 }

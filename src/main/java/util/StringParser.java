@@ -18,7 +18,7 @@ public class StringParser {
         int hour = Integer.parseInt(matcher.group(3));
         int minute = Integer.parseInt(matcher.group(4));
 
-        return new AttendanceInfo(crewName, attendanceDate, AttendanceTime.create(hour, minute));
+        return new AttendanceInfo(crewName, attendanceDate, new AttendanceTime(hour, minute));
     }
 
     private void validateMatches(Matcher matcher) {
