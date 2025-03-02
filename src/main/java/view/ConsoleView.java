@@ -1,8 +1,9 @@
 package view;
 
-import domain.Attendance;
+import controller.AfterAttendanceInfo;
+import controller.BeforeAttendanceInfo;
+import controller.dto.AttendanceResult;
 import domain.AttendanceStatus;
-import domain.AttendanceTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import view.parser.InputParser;
@@ -37,17 +38,39 @@ public final class ConsoleView {
         return inputView.inputNickName();
     }
 
+    public String requestNickNameForUpdate() {
+        return inputView.inputNickNameForUpdate();
+    }
+
     public LocalTime requestAttendanceTime() {
         String rawInputAttendanceTime = inputView.inputAttendanceTime();
         return inputParser.parseToLocalTime(rawInputAttendanceTime);
     }
 
-    public void printAttendanceResult(Attendance attendance) {
-        LocalDate date = attendance.getAttendanceDate();
-        AttendanceTime time = attendance.getAttendanceTime();
-        AttendanceStatus attendanceStatus = attendance.getAttendanceStatus();
+    public void printAttendanceResult(AttendanceResult attendanceResult) {
+        LocalDate date = attendanceResult.attendanceDate();
+        LocalTime time = attendanceResult.attendanceTime();
+        AttendanceStatus attendanceStatus = attendanceResult.attendanceStatus();
 
         outputView.printAttendanceResult(date, inputParser.parseToTimeMessage(time), outputParser.parseAttendanceStatusToMessage(attendanceStatus));
+    }
+
+    public LocalTime requestUpdateTime() {
+        String rawInputUpdateTime = inputView.inputUpdateTime();
+        return inputParser.parseToLocalTime(rawInputUpdateTime);
+    }
+
+    public int requestDayOfMonth() {
+        return inputParser.parseToInt(inputView.inputDayOfMonth());
+    }
+
+    public void printUpdateResult(BeforeAttendanceInfo beforeAttendanceInfo, AfterAttendanceInfo afterAttendanceInfo) {
+        LocalDate date = beforeAttendanceInfo.updateDate();
+        String beforeTime = inputParser.parseToTimeMessage(beforeAttendanceInfo.beforeTime());
+        String beforeAttendanceStatus = outputParser.parseAttendanceStatusToMessage(beforeAttendanceInfo.attendanceStatus());
+        String afterTime = inputParser.parseToTimeMessage(afterAttendanceInfo.updateTime());
+        String afterAttendanceStatus = outputParser.parseAttendanceStatusToMessage(afterAttendanceInfo.attendanceStatus());
+        outputView.printUpdateResult(date, beforeTime, beforeAttendanceStatus, afterTime, afterAttendanceStatus);
     }
 
     public static ConsoleView create(InputView inputView, OutputView outputView, InputParser inputParser, OutputParser outputParser) {

@@ -30,6 +30,17 @@ public record AttendanceManager(
         return filledAttendances;
     }
 
+    public Attendance retrieveAttendance(String crewName, LocalDate attendanceDate) {
+        AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
+        return attendanceRecords.retrieveAttendanceByDate(attendanceDate);
+    }
+
+    public void updateAttendanceTime(Attendance attendance, AttendanceTime attendanceTime) {
+        int startHour = SchoolDay.retrieveStartHourByDate(attendance.getAttendanceDate());
+        AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(startHour, attendanceTime);
+        attendance.updateAttendance(attendanceTime.hour(), attendanceTime.minute(), attendanceStatus);
+    }
+
     private Attendance createAttendance(LocalDate attendanceDate, AttendanceTime attendanceTime) {
         int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(startHour, attendanceTime);

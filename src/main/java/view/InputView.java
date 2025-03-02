@@ -24,12 +24,27 @@ public final class InputView {
         return readLine();
     }
 
+    public String inputAttendanceTime() {
+        System.out.println("등교 시간을 입력해 주세요.");
+        return readLine();
+    }
+
+    public String inputNickNameForUpdate() {
+        System.out.println("출석을 수정하려는 크루의 닉네임을 입력해 주세요.");
+        return readLine();
+    }
+
     private String readLine() {
         return scanner.nextLine();
     }
 
-    public String inputAttendanceTime() {
-        System.out.println("등교 시간을 입력해 주세요.");
+    public String inputDayOfMonth() {
+        System.out.println("수정하려는 날짜(일)를 입력해 주세요.");
+        return readLine();
+    }
+
+    public String inputUpdateTime() {
+        System.out.println("언제로 변경하겠습니까?");
         return readLine();
     }
 }

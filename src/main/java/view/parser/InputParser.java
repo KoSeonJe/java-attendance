@@ -21,9 +21,9 @@ public class InputParser {
         }
     }
 
-    public String parseToTimeMessage(AttendanceTime time) {
-        int hour = time.hour();
-        int minute = time.minute();
+    public String parseToTimeMessage(LocalTime time) {
+        int hour = time.getHour();
+        int minute = time.getMinute();
 
         return parseFullTime(hour) + ":" + parseFullTime(minute);
     }

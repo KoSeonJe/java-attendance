@@ -46,7 +46,7 @@ public final class AttendanceConfig {
     private Map<Menu, MenuExecutor> initExecutor(CrewAttendanceBook initCrewAttendanceBook) {
         return Map.of(
                 Menu.CHECK_ATTENDANCE, attendanceCheckExecutor(initCrewAttendanceBook),
-                Menu.UPDATE_ATTENDANCE, attendanceUpdateExecutor(),
+                Menu.UPDATE_ATTENDANCE, attendanceUpdateExecutor(initCrewAttendanceBook),
                 Menu.CREW_ATTENDANCE_RECORD, crewAttendanceRetrieveExecutor(),
                 Menu.PENALTY_RECORD, penaltyRetrieveExecutor(),
                 Menu.QUIT, quitExecutor()
@@ -61,8 +61,8 @@ public final class AttendanceConfig {
         return new AttendanceCheckExecutor(consoleView(), applicationTime(), attendanceManager(initCrewAttendanceBook));
     }
 
-    private MenuExecutor attendanceUpdateExecutor() {
-        return new AttendanceUpdateExecutor();
+    private MenuExecutor attendanceUpdateExecutor(CrewAttendanceBook initCrewAttendanceBook) {
+        return new AttendanceUpdateExecutor(consoleView(), applicationTime(), attendanceManager(initCrewAttendanceBook));
     }
 
     private MenuExecutor crewAttendanceRetrieveExecutor() {
