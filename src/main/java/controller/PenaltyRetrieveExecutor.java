@@ -4,8 +4,10 @@ import domain.Attendance;
 import domain.AttendanceManager;
 import domain.CrewAttendance;
 import domain.CrewPenaltyManager;
+import domain.PenaltyTargetComparator;
 import domain.vo.PenaltyTarget;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import util.ApplicationDate;
 import view.ConsoleView;
@@ -39,7 +41,8 @@ public class PenaltyRetrieveExecutor implements MenuExecutor {
                     List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, date);
                     return crewPenaltyManager.retrieveAllPenaltyTarget(crewName, attendances);
                 })
-                .filter(penaltyTarget -> !penaltyTarget.penalty().isNone())
+                .filter(penaltyTarget -> !penaltyTarget.isNone())
+                .sorted(new PenaltyTargetComparator())
                 .toList();
         consoleView.printPenaltyTargets(penaltyTargets);
     }

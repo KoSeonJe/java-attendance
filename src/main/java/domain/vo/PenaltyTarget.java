@@ -9,4 +9,7 @@ public record PenaltyTarget(
         Penalty penalty
 ) {
 
+    public boolean isNone() {
+        return penalty.isNone();
+    }
 }
