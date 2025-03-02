@@ -1,6 +1,6 @@
 package controller;
 
-import util.ApplicationTime;
+import util.ApplicationDate;
 import view.ConsoleView;
 import view.Menu;
 
@@ -8,23 +8,23 @@ public class AttendanceApplication {
 
     private final AttendanceHandler attendanceHandler;
     private final ConsoleView consoleView;
-    private final ApplicationTime applicationTime;
+    private final ApplicationDate applicationDate;
 
     public AttendanceApplication(
             AttendanceHandler attendanceHandler,
             ConsoleView consoleView,
-            ApplicationTime applicationTime
+            ApplicationDate applicationDate
     ) {
         this.attendanceHandler = attendanceHandler;
         this.consoleView = consoleView;
-        this.applicationTime = applicationTime;
+        this.applicationDate = applicationDate;
     }
 
     public void execute() {
         Menu menu = null;
         while (!Menu.isQuit(menu)) {
             try {
-                menu = consoleView.requestMenu(applicationTime.getApplicationTime());
+                menu = consoleView.requestMenu(applicationDate.getApplicationDate());
                 attendanceHandler.handle(menu);
             } catch (Exception e) {
                 consoleView.printMessage(e.getMessage());

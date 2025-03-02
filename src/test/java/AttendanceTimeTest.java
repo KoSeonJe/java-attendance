@@ -17,7 +17,7 @@ public class AttendanceTimeTest {
         int minute = 30;
 
         // when
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
 
         // then
         SoftAssertions.assertSoftly(softly -> {
@@ -37,7 +37,7 @@ public class AttendanceTimeTest {
 
         // when & then
         assertThatIllegalArgumentException().isThrownBy(
-                () -> AttendanceTime.create(hour, minute)
+                () -> new AttendanceTime(hour, minute)
         ).withMessage("[ERROR] 분의 범위를 벗어났습니다");
     }
 
@@ -50,64 +50,7 @@ public class AttendanceTimeTest {
 
         // when & then
         assertThatIllegalArgumentException().isThrownBy(
-                () -> AttendanceTime.create(hour, minute)
-        ).withMessage("[ERROR] 현재 운영시간이 아닙니다");
-    }
-
-    @DisplayName("출석시간과 분의 수정이 가능하다")
-    @Test
-    void updateTime() {
-        // given
-        int hour = 10;
-        int minute = 30;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
-
-        int updateHour = 9;
-        int updateMinute = 55;
-
-        // when
-        attendanceTime.updateTime(updateHour, updateMinute);
-
-        // then
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(attendanceTime)
-                    .extracting("hour").isEqualTo(9);
-            softly.assertThat(attendanceTime)
-                    .extracting("minute").isEqualTo(55);
-        });
-    }
-
-    @DisplayName("출석시간 수정시 분의 범위를 벗어나면 예외를 발생시킨다")
-    @Test
-    void updateMinuteOutOfRange() {
-        // given
-        int hour = 10;
-        int minute = 30;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
-
-        int updateHour = 9;
-        int updateMinute = 100;
-
-        // when & then
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> attendanceTime.updateTime(updateHour, updateMinute)
-        ).withMessage("[ERROR] 분의 범위를 벗어났습니다");
-    }
-
-    @DisplayName("출석시간 수정시 분의 범위를 벗어나면 예외를 발생시킨다")
-    @Test
-    void updateOperationTimeOutOfRange() {
-        // given
-        int hour = 10;
-        int minute = 30;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
-
-        int updateHour = 6;
-        int updateMinute = 30;
-
-        // when & then
-        assertThatIllegalArgumentException().isThrownBy(
-                () -> attendanceTime.updateTime(updateHour, updateMinute)
+                () -> new AttendanceTime(hour, minute)
         ).withMessage("[ERROR] 현재 운영시간이 아닙니다");
     }
 
@@ -117,7 +60,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 10;
         int minute = 3;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareHour = 10;
 
         //when
@@ -133,7 +76,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 10;
         int minute = 3;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareHour = 9;
 
         //when
@@ -149,7 +92,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 10;
         int minute = 5;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareMinute = 2;
 
         //when
@@ -165,7 +108,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 10;
         int minute = 5;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareMinute = 7;
 
         //when
@@ -181,7 +124,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 11;
         int minute = 5;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareHour = 10;
 
         //when
@@ -198,7 +141,7 @@ public class AttendanceTimeTest {
         // given
         int hour = value;
         int minute = 3;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareHour = 10;
 
         //when
@@ -215,7 +158,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 10;
         int minute = value;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareMinute = 10;
 
         //when
@@ -231,7 +174,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 10;
         int minute = 10;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareMinute = 5;
 
         //when
@@ -247,7 +190,7 @@ public class AttendanceTimeTest {
         // given
         int hour = 9;
         int minute = 3;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareHour = 10;
 
         //when
@@ -265,7 +208,7 @@ public class AttendanceTimeTest {
         // given
         int hour = value;
         int minute = 3;
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int compareHour = 10;
 
         //when

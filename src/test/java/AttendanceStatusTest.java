@@ -13,7 +13,7 @@ public class AttendanceStatusTest {
     @Test
     void isLateByTime() {
         // given
-        AttendanceTime attendanceTime = AttendanceTime.create(10, 10);
+        AttendanceTime attendanceTime = new AttendanceTime(10, 10);
         int dayStartHour = 10;
         // when
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(dayStartHour, attendanceTime);
@@ -26,7 +26,7 @@ public class AttendanceStatusTest {
     @Test
     void isAbsenceByTime() {
         // given
-        AttendanceTime attendanceTime = AttendanceTime.create(10, 40);
+        AttendanceTime attendanceTime = new AttendanceTime(10, 40);
         int dayStartHour = 10;
         // when
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(dayStartHour, attendanceTime);
@@ -43,7 +43,7 @@ public class AttendanceStatusTest {
     })
     void isAttendanceByTime(int hour, int minute) {
         // given
-        AttendanceTime attendanceTime = AttendanceTime.create(hour, minute);
+        AttendanceTime attendanceTime = new AttendanceTime(hour, minute);
         int dayStartHour = 10;
         // when
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(dayStartHour, attendanceTime);

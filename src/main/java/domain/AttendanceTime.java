@@ -2,28 +2,21 @@ package domain;
 
 import java.util.Objects;
 
-public class AttendanceTime {
+public record AttendanceTime(
+        int hour,
+        int minute
+) {
 
     private static final int MIN_MINUTE = 0;
     private static final int MAX_MINUTE = 59;
     private static final int OPERATING_OPEN_HOUR = 8;
     private static final int OPERATING_CLOSE_HOUR = 23;
 
-    private int hour;
-    private int minute;
-
-    private AttendanceTime(int hour, int minute) {
+    public AttendanceTime(int hour, int minute) {
         validateMinuteRange(minute);
         validateOperatingHour(hour);
         this.hour = hour;
         this.minute = minute;
-    }
-
-    public void updateTime(int updateHour, int updateMinute) {
-        validateMinuteRange(updateMinute);
-        validateOperatingHour(updateHour);
-        this.hour = updateHour;
-        this.minute = updateMinute;
     }
 
     public boolean isEqualHour(int hour) {
@@ -44,10 +37,6 @@ public class AttendanceTime {
 
     public boolean isAfterHour(int hour) {
         return this.hour > hour;
-    }
-
-    public static AttendanceTime create(int hour, int minute) {
-        return new AttendanceTime(hour, minute);
     }
 
     private void validateMinuteRange(int minute) {
