@@ -1,10 +1,9 @@
 package controller;
 
+import controller.dto.AttendanceResult;
 import domain.Attendance;
 import domain.AttendanceManager;
-import domain.AttendanceRecords;
 import domain.AttendanceTime;
-import domain.CrewAttendanceBook;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import util.ApplicationDate;
@@ -34,18 +33,12 @@ public class AttendanceCheckExecutor implements MenuExecutor{
 
         attendanceManager.processAttendance(nickName, date, attendanceTime);
 
-        Attendance attendance = retrieveAttendance(attendanceManager, nickName, date);
-        consoleView.printAttendanceResult(attendance);
+        Attendance attendance = attendanceManager.retrieveAttendance(nickName, date);
+        consoleView.printAttendanceResult(AttendanceResult.from(attendance));
     }
 
     private AttendanceTime requestAttendanceTime() {
         LocalTime inputTime = consoleView.requestAttendanceTime();
         return new AttendanceTime(inputTime.getHour(), inputTime.getMinute());
-    }
-
-    private Attendance retrieveAttendance(AttendanceManager attendanceManager, String nickName, LocalDate date) {
-        CrewAttendanceBook crewAttendanceBook = attendanceManager.crewAttendanceBook();
-        AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(nickName);
-        return attendanceRecords.retrieveAttendanceByDate(date);
     }
 }
