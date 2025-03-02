@@ -12,7 +12,7 @@ import domain.CrewAttendanceBook;
 import domain.CrewPenaltyManager;
 import java.util.Map;
 import util.ApplicationDate;
-import domain.AttendanceApplicationDate;
+import util.AttendanceApplicationDate;
 import util.DataInitializer;
 import util.FileLoader;
 import util.StringParser;

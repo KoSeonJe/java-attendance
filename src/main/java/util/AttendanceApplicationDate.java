@@ -1,8 +1,6 @@
-package domain;
+package util;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import util.ApplicationDate;
 
 public final class AttendanceApplicationDate implements ApplicationDate {
 

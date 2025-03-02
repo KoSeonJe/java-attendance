@@ -1,7 +1,6 @@
 package controller.dto;
 
 import domain.Attendance;
-import domain.AttendanceRecords;
 import domain.AttendanceStatus;
 import domain.AttendanceStatusCounter;
 import domain.Penalty;
