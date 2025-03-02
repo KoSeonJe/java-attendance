@@ -1,4 +1,5 @@
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.SoftAssertions.*;
 
 import domain.Attendance;
 import domain.AttendanceManager;
@@ -10,6 +11,7 @@ import domain.CrewAttendanceBook;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -129,5 +131,56 @@ public class AttendanceManagerTest {
 
         // then
         assertThat(attendances).hasSize(5);
+    }
+
+    @DisplayName("이름과 날짜로 출석을 조회할 수 있다")
+    @Test
+    void retrieveAttendance() {
+        // given
+        String crewName = "웨이드";
+        LocalDate oldest = LocalDate.of(2024, 12, 10);
+        LocalDate localDate2 = LocalDate.of(2024, 12, 11);
+        LocalDate today = LocalDate.of(2024, 12, 17);
+
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(
+                AttendanceFixture.createAttendance(oldest, 10, 0),
+                AttendanceFixture.createAttendance(localDate2, 10, 0),
+                AttendanceFixture.createAttendance(today, 10, 0)
+        )));
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(
+                List.of(CrewAttendance.create(crewName, attendanceRecords))
+        );
+        AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
+
+        // when
+        Attendance attendance = attendanceManager.retrieveAttendance(crewName, today);
+
+        // then
+        assertThat(attendance.isEqualDate(today)).isTrue();
+    }
+
+    @DisplayName("출석 시간을 수정할 수 있다")
+    @Test
+    void updateAttendanceTime() {
+        // given
+        String crewName = "웨이드";
+        LocalDate today = LocalDate.of(2024, 12, 17);
+        Attendance attendance = AttendanceFixture.createAttendance(today, 10, 0);
+        AttendanceRecords attendanceRecords = AttendanceRecords.create(new ArrayList<>(List.of(attendance)));
+
+        CrewAttendanceBook crewAttendanceBook = CrewAttendanceBook.create(
+                List.of(CrewAttendance.create(crewName, attendanceRecords))
+        );
+        AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
+
+        // when
+        AttendanceTime updateTime = new AttendanceTime(10, 31);
+        attendanceManager.updateAttendanceTime(attendance, updateTime);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(attendance.getAttendanceTime()).isEqualTo(updateTime);
+            softly.assertThat(attendance.getAttendanceStatus()).isEqualTo(AttendanceStatus.ABSENCE);
+        });
     }
 }
