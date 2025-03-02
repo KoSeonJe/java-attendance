@@ -17,8 +17,8 @@ public final class ConsoleView {
         this.inputParser = inputParser;
     }
 
-    public Menu requestMenu(LocalDateTime applicationTime) {
-        String inputMenuSelector = inputView.inputMenuSelector(applicationTime);
+    public Menu requestMenu(LocalDate applicationDate) {
+        String inputMenuSelector = inputView.inputMenuSelector(applicationDate);
         return Menu.findBySelector(inputMenuSelector);
     }
 

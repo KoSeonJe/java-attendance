@@ -8,9 +8,8 @@ public final class InputView {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public String inputMenuSelector(LocalDateTime applicationTime) {
-        LocalDate localDate = applicationTime.toLocalDate();
-        System.out.printf("오늘은 %d월 %d일 금요일입니다. 기능을 선택해 주세요.\n", localDate.getMonthValue(), localDate.getDayOfMonth());
+    public String inputMenuSelector(LocalDate applicationDate) {
+        System.out.printf("오늘은 %d월 %d일 금요일입니다. 기능을 선택해 주세요.\n", applicationDate.getMonthValue(), applicationDate.getDayOfMonth());
         System.out.println("""
                 1. 출석 확인
                 2. 출석 수정
