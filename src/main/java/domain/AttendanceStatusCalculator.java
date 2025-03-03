@@ -8,8 +8,8 @@ public class AttendanceStatusCalculator {
 
     private static final int INIT_NUMBER = 1;
 
-    public AttendanceStatusCounter calculateAllCount(List<Attendance> attendances) {
-        EnumMap<AttendanceStatus, Integer> attendanceStatusesCount = attendances.stream()
+    public AttendanceStatusCounter calculateAllCount(AttendanceRecords attendanceRecords) {
+        EnumMap<AttendanceStatus, Integer> attendanceStatusesCount = attendanceRecords.attendances().stream()
                 .map(Attendance::getAttendanceStatus)
                 .collect(Collectors.toMap(
                         status -> status,

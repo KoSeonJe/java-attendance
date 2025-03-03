@@ -13,8 +13,8 @@ public class CrewPenaltyManager {
         this.attendanceStatusCalculator = attendanceStatusCalculator;
     }
 
-    public PenaltyTarget retrieveAllPenaltyTarget(String crewName, List<Attendance> attendances) {
-        AttendanceStatusCounter attendanceStatusCounter = attendanceStatusCalculator.calculateAllCount(attendances);
+    public PenaltyTarget retrieveAllPenaltyTarget(String crewName, AttendanceRecords attendanceRecords) {
+        AttendanceStatusCounter attendanceStatusCounter = attendanceStatusCalculator.calculateAllCount(attendanceRecords);
         int lateCount = attendanceStatusCounter.retrieveAttendanceStatusCount(AttendanceStatus.LATE);
         int absenceCount = attendanceStatusCounter.retrieveAttendanceStatusCount(AttendanceStatus.ABSENCE);
         Penalty penalty = calculatePenalty(lateCount, absenceCount);

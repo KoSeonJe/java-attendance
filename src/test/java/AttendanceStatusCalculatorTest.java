@@ -1,6 +1,7 @@
 import static org.assertj.core.api.Assertions.assertThat;
 
 import domain.Attendance;
+import domain.AttendanceRecords;
 import domain.AttendanceStatus;
 import domain.AttendanceStatusCalculator;
 import domain.AttendanceStatusCounter;
@@ -32,7 +33,7 @@ public class AttendanceStatusCalculatorTest {
 
         AttendanceStatusCalculator calculator = new AttendanceStatusCalculator();
         // when
-        AttendanceStatusCounter result = calculator.calculateAllCount(attendances);
+        AttendanceStatusCounter result = calculator.calculateAllCount(new AttendanceRecords(attendances));
 
         // then
         SoftAssertions.assertSoftly(softly -> {

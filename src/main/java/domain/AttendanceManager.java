@@ -19,7 +19,7 @@ public record AttendanceManager(
         attendanceRecords.add(attendance);
     }
 
-    public List<Attendance> retrieveFilledAttendanceUntilDate(String crewName, LocalDate todayDate) {
+    public AttendanceRecords retrieveFilledAttendanceUntilDate(String crewName, LocalDate todayDate) {
         AttendanceRecords attendanceRecords = crewAttendanceBook.retrieveAttendanceRecordsByName(crewName);
 
         LocalDate oldestDayInBook = crewAttendanceBook.retrieveOldestDayInBook();
@@ -27,7 +27,7 @@ public record AttendanceManager(
 
         filledAttendances.removeIf(attendance -> !SchoolDay.isPossibleAttendance(attendance.getAttendanceDate()));
 
-        return filledAttendances;
+        return new AttendanceRecords(filledAttendances);
     }
 
     public Attendance retrieveAttendance(String crewName, LocalDate attendanceDate) {

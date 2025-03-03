@@ -2,6 +2,7 @@ package controller;
 
 import domain.Attendance;
 import domain.AttendanceManager;
+import domain.AttendanceRecords;
 import domain.CrewAttendance;
 import domain.CrewPenaltyManager;
 import domain.PenaltyTargetComparator;
@@ -38,8 +39,8 @@ public class PenaltyRetrieveExecutor implements MenuExecutor {
         List<PenaltyTarget> penaltyTargets = crewAttendances.stream()
                 .map(crewAttendance -> {
                     String crewName = crewAttendance.crewName();
-                    List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, date);
-                    return crewPenaltyManager.retrieveAllPenaltyTarget(crewName, attendances);
+                    AttendanceRecords attendanceRecords = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, date);
+                    return crewPenaltyManager.retrieveAllPenaltyTarget(crewName, attendanceRecords);
                 })
                 .filter(penaltyTarget -> !penaltyTarget.isNone())
                 .sorted(new PenaltyTargetComparator())

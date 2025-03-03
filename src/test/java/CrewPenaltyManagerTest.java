@@ -29,7 +29,7 @@ public class CrewPenaltyManagerTest {
 
         CrewPenaltyManager crewPenaltyManager = new CrewPenaltyManager(new AttendanceStatusCalculator());
         // when
-        PenaltyTarget penaltyTarget = crewPenaltyManager.retrieveAllPenaltyTarget(nickName, attendances);
+        PenaltyTarget penaltyTarget = crewPenaltyManager.retrieveAllPenaltyTarget(nickName, new AttendanceRecords(attendances));
 
         // then
         SoftAssertions.assertSoftly(softly -> {

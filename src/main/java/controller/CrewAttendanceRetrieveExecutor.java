@@ -1,14 +1,14 @@
 package controller;
 
 import controller.dto.CrewAttendanceRecord;
-import domain.Attendance;
 import domain.AttendanceManager;
+import domain.AttendanceRecords;
 import domain.AttendanceStatus;
 import domain.AttendanceStatusCalculator;
 import domain.AttendanceStatusCounter;
 import domain.Penalty;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collections;
 import util.ApplicationDate;
 import view.ConsoleView;
 
@@ -36,18 +36,17 @@ public class CrewAttendanceRetrieveExecutor implements MenuExecutor{
         String nickName = consoleView.requestNickName();
         LocalDate date = applicationDate.getApplicationDate();
 
-        List<Attendance> attendances = retrieveSortedFillAttendances(nickName, date);
-        AttendanceStatusCounter attendanceStatusCounter = attendanceStatusCalculator.calculateAllCount(attendances);
+        AttendanceRecords attendanceRecords = retrieveSortedFillAttendances(nickName, date);
+        AttendanceStatusCounter attendanceStatusCounter = attendanceStatusCalculator.calculateAllCount(attendanceRecords);
         Penalty penalty = calculatePenalty(attendanceStatusCounter);
 
-        consoleView.printCrewAttendanceRecord(CrewAttendanceRecord.of(attendances, attendanceStatusCounter, penalty));
+        consoleView.printCrewAttendanceRecord(CrewAttendanceRecord.of(attendanceRecords, attendanceStatusCounter, penalty));
     }
 
-    private List<Attendance> retrieveSortedFillAttendances(String nickName, LocalDate date) {
-        List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(nickName, date);
-        return attendances.stream()
-                .sorted()
-                .toList();
+    private AttendanceRecords retrieveSortedFillAttendances(String nickName, LocalDate date) {
+        AttendanceRecords attendanceRecords = attendanceManager.retrieveFilledAttendanceUntilDate(nickName, date);
+        Collections.sort(attendanceRecords.attendances());
+        return attendanceRecords;
     }
 
     private Penalty calculatePenalty(AttendanceStatusCounter attendanceStatusCounter) {

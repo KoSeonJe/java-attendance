@@ -101,10 +101,10 @@ public class AttendanceManagerTest {
         AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
 
         // when
-        List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, today);
+        AttendanceRecords filledAttendanceRecords = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, today);
 
         // then
-        assertThat(attendances).hasSize(2);
+        assertThat(filledAttendanceRecords.attendances()).hasSize(2);
     }
 
     @DisplayName("입력 날짜까지 출석 기록 조회시, 공휴일 및 주말을 제외하고 출석 기록이 없는 날짜에 결석 기록을 추가하여 반환한다")
@@ -127,10 +127,10 @@ public class AttendanceManagerTest {
         AttendanceManager attendanceManager = new AttendanceManager(crewAttendanceBook);
 
         // when
-        List<Attendance> attendances = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, today);
+        AttendanceRecords filledAttendanceRecords = attendanceManager.retrieveFilledAttendanceUntilDate(crewName, today);
 
         // then
-        assertThat(attendances).hasSize(5);
+        assertThat(filledAttendanceRecords.attendances()).hasSize(5);
     }
 
     @DisplayName("이름과 날짜로 출석을 조회할 수 있다")
