@@ -22,13 +22,13 @@ public class AttendanceApplication {
 
     public void execute() {
         Menu menu = null;
-        while (!Menu.isQuit(menu)) {
+        do {
             try {
                 menu = consoleView.requestMenu(applicationDate.getApplicationDate());
                 attendanceHandler.handle(menu);
             } catch (Exception e) {
                 consoleView.printMessage(e.getMessage());
             }
-        }
+        } while (!menu.isQuit());
     }
 }

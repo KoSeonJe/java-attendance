@@ -24,7 +24,7 @@ public enum Menu {
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 메뉴를 찾을 수 없습니다"));
     }
 
-    public static boolean isQuit(Menu menu) {
-        return menu == QUIT;
+    public boolean isQuit() {
+        return this == QUIT;
     }
 }
