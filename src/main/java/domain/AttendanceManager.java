@@ -8,7 +8,7 @@ public record AttendanceManager(
 ) {
 
     public void processAttendance(String crewName, LocalDate attendanceDate, AttendanceTime attendanceTime) {
-        SchoolDay.validateSchoolDay(attendanceDate);
+        AttendancePolicy.validateSchoolDay(attendanceDate);
         if (!crewAttendanceBook.existCrew(crewName)) {
             Attendance attendance = createAttendance(attendanceDate, attendanceTime);
             crewAttendanceBook.createCrewAttendance(crewName, attendance);
@@ -25,7 +25,7 @@ public record AttendanceManager(
         LocalDate oldestDayInBook = crewAttendanceBook.retrieveOldestDayInBook();
         List<Attendance> filledAttendances = attendanceRecords.retrieveAllFilledNonExistingDay(oldestDayInBook, todayDate);
 
-        filledAttendances.removeIf(attendance -> !SchoolDay.isPossibleAttendance(attendance.getAttendanceDate()));
+        filledAttendances.removeIf(attendance -> !AttendancePolicy.isPossibleAttendance(attendance.getAttendanceDate()));
 
         return new AttendanceRecords(filledAttendances);
     }
@@ -36,13 +36,13 @@ public record AttendanceManager(
     }
 
     public void updateAttendanceTime(Attendance attendance, AttendanceTime attendanceTime) {
-        int startHour = SchoolDay.retrieveStartHourByDate(attendance.getAttendanceDate());
+        int startHour = AttendancePolicy.retrieveStartHourByDate(attendance.getAttendanceDate());
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(startHour, attendanceTime);
         attendance.updateAttendance(attendanceTime.hour(), attendanceTime.minute(), attendanceStatus);
     }
 
     private Attendance createAttendance(LocalDate attendanceDate, AttendanceTime attendanceTime) {
-        int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
+        int startHour = AttendancePolicy.retrieveStartHourByDate(attendanceDate);
         AttendanceStatus attendanceStatus = AttendanceStatus.findByStartHourAndAttendanceTime(startHour, attendanceTime);
         return Attendance.create(attendanceDate, attendanceTime, attendanceStatus);
     }

@@ -1,15 +1,15 @@
 package domain.vo;
 
-import domain.Penalty;
+import domain.CrewPenaltyPolicy;
 
 public record PenaltyTarget(
         String nickName,
         int lateCount,
         int absenceCount,
-        Penalty penalty
+        CrewPenaltyPolicy crewPenaltyPolicy
 ) {
 
     public boolean isNone() {
-        return penalty.isNone();
+        return crewPenaltyPolicy.isNone();
     }
 }

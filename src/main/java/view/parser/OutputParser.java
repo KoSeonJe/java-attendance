@@ -1,7 +1,7 @@
 package view.parser;
 
 import domain.AttendanceStatus;
-import domain.Penalty;
+import domain.CrewPenaltyPolicy;
 import java.util.Map;
 
 public class OutputParser {
@@ -12,18 +12,18 @@ public class OutputParser {
             AttendanceStatus.ABSENCE, "결석"
     );
 
-    private static final Map<Penalty, String> PENALTY_STATUS_MESSAGE = Map.of(
-            Penalty.WARNING, "경고",
-            Penalty.INTERVIEW, "면담",
-            Penalty.WEEDING, "제적",
-            Penalty.NONE, "해당없음"
+    private static final Map<CrewPenaltyPolicy, String> PENALTY_STATUS_MESSAGE = Map.of(
+            CrewPenaltyPolicy.WARNING, "경고",
+            CrewPenaltyPolicy.INTERVIEW, "면담",
+            CrewPenaltyPolicy.WEEDING, "제적",
+            CrewPenaltyPolicy.NONE, "해당없음"
     );
 
     public String parseAttendanceStatusToMessage(AttendanceStatus attendanceStatus) {
         return ATTENDANCE_STATUS_MESSAGE.get(attendanceStatus);
     }
 
-    public String parsePenaltyToMessage(Penalty penalty) {
-        return PENALTY_STATUS_MESSAGE.get(penalty);
+    public String parsePenaltyToMessage(CrewPenaltyPolicy crewPenaltyPolicy) {
+        return PENALTY_STATUS_MESSAGE.get(crewPenaltyPolicy);
     }
 }

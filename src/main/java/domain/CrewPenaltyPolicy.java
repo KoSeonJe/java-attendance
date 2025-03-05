@@ -1,6 +1,6 @@
 package domain;
 
-public enum Penalty {
+public enum CrewPenaltyPolicy {
     WARNING,
     INTERVIEW,
     WEEDING,
@@ -12,7 +12,7 @@ public enum Penalty {
     private static final int ABSENCE_UNIT = 3;
 
 
-    public static Penalty judge(int absenceCount) {
+    public static CrewPenaltyPolicy judge(int absenceCount) {
         if (absenceCount > WEEDING_LIMIT_COUNT) {
             return WEEDING;
         }

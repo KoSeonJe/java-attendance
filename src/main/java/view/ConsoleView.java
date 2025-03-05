@@ -80,7 +80,7 @@ public final class ConsoleView {
         outputView.printIntroAttendanceRecord();
         record.attendanceResults().forEach(this::printAttendanceResult);
         outputView.printAttendancesCount(record.attendanceCount(), record.lateCount(), record.absenceCount());
-        outputView.printPenaltyStatus(outputParser.parsePenaltyToMessage(record.penalty()));
+        outputView.printPenaltyStatus(outputParser.parsePenaltyToMessage(record.crewPenaltyPolicy()));
     }
 
     public void printPenaltyTargets(List<PenaltyTarget> penaltyTargets) {
@@ -90,7 +90,7 @@ public final class ConsoleView {
                         penaltyTarget.nickName(),
                         penaltyTarget.lateCount(),
                         penaltyTarget.absenceCount(),
-                        outputParser.parsePenaltyToMessage(penaltyTarget.penalty())
+                        outputParser.parsePenaltyToMessage(penaltyTarget.crewPenaltyPolicy())
                 ));
     }
 

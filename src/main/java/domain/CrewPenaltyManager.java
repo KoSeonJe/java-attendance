@@ -1,7 +1,6 @@
 package domain;
 
 import domain.vo.PenaltyTarget;
-import java.util.List;
 
 public class CrewPenaltyManager {
 
@@ -17,12 +16,12 @@ public class CrewPenaltyManager {
         AttendanceStatusCounter attendanceStatusCounter = attendanceStatusCalculator.calculateAllCount(attendanceRecords);
         int lateCount = attendanceStatusCounter.retrieveAttendanceStatusCount(AttendanceStatus.LATE);
         int absenceCount = attendanceStatusCounter.retrieveAttendanceStatusCount(AttendanceStatus.ABSENCE);
-        Penalty penalty = calculatePenalty(lateCount, absenceCount);
-        return new PenaltyTarget(crewName, lateCount, absenceCount, penalty);
+        CrewPenaltyPolicy crewPenaltyPolicy = calculatePenalty(lateCount, absenceCount);
+        return new PenaltyTarget(crewName, lateCount, absenceCount, crewPenaltyPolicy);
     }
 
-    private Penalty calculatePenalty(int lateCount, int absenceCount) {
-        int totalAbsenceCount = Penalty.calculateTotalAbsence(lateCount, absenceCount);
-        return Penalty.judge(totalAbsenceCount);
+    private CrewPenaltyPolicy calculatePenalty(int lateCount, int absenceCount) {
+        int totalAbsenceCount = CrewPenaltyPolicy.calculateTotalAbsence(lateCount, absenceCount);
+        return CrewPenaltyPolicy.judge(totalAbsenceCount);
     }
 }

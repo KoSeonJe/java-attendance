@@ -1,6 +1,6 @@
 import static org.assertj.core.api.Assertions.*;
 
-import domain.SchoolDay;
+import domain.AttendancePolicy;
 import java.time.LocalDate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class SchoolDayTest {
+public class AttendancePolicyTest {
 
     @DisplayName("입력 날짜가 출석 가능다면 true를 반환한다")
     @Test
@@ -17,7 +17,7 @@ public class SchoolDayTest {
         LocalDate localDate = LocalDate.of(2024, 12, 13);
 
         // when
-        boolean isPossibleAttendance = SchoolDay.isPossibleAttendance(localDate);
+        boolean isPossibleAttendance = AttendancePolicy.isPossibleAttendance(localDate);
 
         // then
         assertThat(isPossibleAttendance).isTrue();
@@ -30,7 +30,7 @@ public class SchoolDayTest {
         LocalDate localDate = LocalDate.of(2024, 12, 14);
 
         // when
-        boolean isPossibleAttendance = SchoolDay.isPossibleAttendance(localDate);
+        boolean isPossibleAttendance = AttendancePolicy.isPossibleAttendance(localDate);
 
         // then
         assertThat(isPossibleAttendance).isFalse();
@@ -43,7 +43,7 @@ public class SchoolDayTest {
         LocalDate holiday = LocalDate.of(2024, 12, 25);
 
         // when
-        boolean isPossibleAttendance = SchoolDay.isPossibleAttendance(holiday);
+        boolean isPossibleAttendance = AttendancePolicy.isPossibleAttendance(holiday);
 
         // then
         assertThat(isPossibleAttendance).isFalse();
@@ -56,7 +56,7 @@ public class SchoolDayTest {
         LocalDate attendanceDate = LocalDate.of(2024, 12, 13);
 
         // when
-        int startHour = SchoolDay.retrieveStartHourByDate(attendanceDate);
+        int startHour = AttendancePolicy.retrieveStartHourByDate(attendanceDate);
 
         // then
         assertThat(startHour).isEqualTo(10);
@@ -71,7 +71,7 @@ public class SchoolDayTest {
 
         // when && then
         assertThatThrownBy(
-                () -> SchoolDay.retrieveStartHourByDate(holiday)
+                () -> AttendancePolicy.retrieveStartHourByDate(holiday)
         ).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 주말 혹은 공휴일에는 출석 시각을 조회할 수 없습니다");
     }
@@ -83,7 +83,7 @@ public class SchoolDayTest {
         LocalDate date = LocalDate.of(2024, 12, 14);
         // when & then
         Assertions.assertThatThrownBy(
-                () -> SchoolDay.validateSchoolDay(date)
+                () -> AttendancePolicy.validateSchoolDay(date)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 }

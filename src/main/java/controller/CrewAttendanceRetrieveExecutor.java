@@ -6,7 +6,7 @@ import domain.AttendanceRecords;
 import domain.AttendanceStatus;
 import domain.AttendanceStatusCalculator;
 import domain.AttendanceStatusCounter;
-import domain.Penalty;
+import domain.CrewPenaltyPolicy;
 import java.time.LocalDate;
 import java.util.Collections;
 import util.ApplicationDate;
@@ -38,9 +38,10 @@ public class CrewAttendanceRetrieveExecutor implements MenuExecutor{
 
         AttendanceRecords attendanceRecords = retrieveSortedFillAttendances(nickName, date);
         AttendanceStatusCounter attendanceStatusCounter = attendanceStatusCalculator.calculateAllCount(attendanceRecords);
-        Penalty penalty = calculatePenalty(attendanceStatusCounter);
+        CrewPenaltyPolicy crewPenaltyPolicy = calculatePenalty(attendanceStatusCounter);
 
-        consoleView.printCrewAttendanceRecord(CrewAttendanceRecord.of(attendanceRecords, attendanceStatusCounter, penalty));
+        consoleView.printCrewAttendanceRecord(CrewAttendanceRecord.of(attendanceRecords, attendanceStatusCounter,
+                crewPenaltyPolicy));
     }
 
     private AttendanceRecords retrieveSortedFillAttendances(String nickName, LocalDate date) {
@@ -49,10 +50,10 @@ public class CrewAttendanceRetrieveExecutor implements MenuExecutor{
         return attendanceRecords;
     }
 
-    private Penalty calculatePenalty(AttendanceStatusCounter attendanceStatusCounter) {
+    private CrewPenaltyPolicy calculatePenalty(AttendanceStatusCounter attendanceStatusCounter) {
         int lateCount = attendanceStatusCounter.retrieveAttendanceStatusCount(AttendanceStatus.LATE);
         int absenceCount = attendanceStatusCounter.retrieveAttendanceStatusCount(AttendanceStatus.ABSENCE);
-        int totalAbsenceCount = Penalty.calculateTotalAbsence(lateCount, absenceCount);
-        return Penalty.judge(totalAbsenceCount);
+        int totalAbsenceCount = CrewPenaltyPolicy.calculateTotalAbsence(lateCount, absenceCount);
+        return CrewPenaltyPolicy.judge(totalAbsenceCount);
     }
 }

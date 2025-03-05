@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public enum SchoolDay {
+public enum AttendancePolicy {
 
     MONDAY(true, 13, 18),
     TUESDAY(true, 10, 18),
@@ -23,7 +23,7 @@ public enum SchoolDay {
     private final boolean isPossibleAttendance;
     private final int startHour;
 
-    SchoolDay(boolean isPossibleAttendance, int startHour, int endHour) {
+    AttendancePolicy(boolean isPossibleAttendance, int startHour, int endHour) {
         this.isPossibleAttendance = isPossibleAttendance;
         this.startHour = startHour;
     }
@@ -41,9 +41,9 @@ public enum SchoolDay {
             throw new IllegalArgumentException("[ERROR] 주말 혹은 공휴일에는 출석 시각을 조회할 수 없습니다");
         }
 
-        return Arrays.stream(SchoolDay.values())
-                .filter(schoolDay -> equalDayOfWeek(schoolDay, date.getDayOfWeek()))
-                .map(SchoolDay::getStartHour)
+        return Arrays.stream(AttendancePolicy.values())
+                .filter(attendancePolicy -> equalDayOfWeek(attendancePolicy, date.getDayOfWeek()))
+                .map(AttendancePolicy::getStartHour)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
     }
@@ -58,9 +58,9 @@ public enum SchoolDay {
         if (isHoliday(date)) {
             return false;
         }
-        return Arrays.stream(SchoolDay.values())
-                .filter(schoolDay -> equalDayOfWeek(schoolDay, date.getDayOfWeek()))
-                .map(SchoolDay::isPossibleAttendance)
+        return Arrays.stream(AttendancePolicy.values())
+                .filter(attendancePolicy -> equalDayOfWeek(attendancePolicy, date.getDayOfWeek()))
+                .map(AttendancePolicy::isPossibleAttendance)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("[ERROR] 해당하는 요일을 찾지 못했습니다"));
     }
@@ -77,7 +77,7 @@ public enum SchoolDay {
         return HOLIDAY.contains(date.getDayOfMonth());
     }
 
-    private static boolean equalDayOfWeek(SchoolDay schoolDay, DayOfWeek dayOfWeek) {
-        return Objects.equals(schoolDay.name(), dayOfWeek.name());
+    private static boolean equalDayOfWeek(AttendancePolicy attendancePolicy, DayOfWeek dayOfWeek) {
+        return Objects.equals(attendancePolicy.name(), dayOfWeek.name());
     }
 }
