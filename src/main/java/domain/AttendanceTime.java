@@ -12,11 +12,9 @@ public record AttendanceTime(
     private static final int OPERATING_OPEN_HOUR = 8;
     private static final int OPERATING_CLOSE_HOUR = 23;
 
-    public AttendanceTime(int hour, int minute) {
+    public AttendanceTime {
         validateMinuteRange(minute);
         validateOperatingHour(hour);
-        this.hour = hour;
-        this.minute = minute;
     }
 
     public boolean isEqualHour(int hour) {
